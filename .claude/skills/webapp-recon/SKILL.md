@@ -41,6 +41,10 @@ hostname(s)/URL(s) are confirmed in scope.
   WordPress.
 - Browser dev tools / JS bundle review for client-side-referenced API
   endpoints not otherwise discoverable.
+- A large-wordlist `gobuster`/`dirb` run can exceed a single Kali MCP
+  `execute_command` call's timeout — for those, use the `tmux-shell` MCP
+  server (a persistent tmux session on the Kali host) instead of manually
+  backgrounding and polling.
 
 ## Output
 

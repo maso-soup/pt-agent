@@ -20,6 +20,7 @@ pt-agent/
 │   │   ├── network-pentest-agent.md
 │   │   ├── cloud-pentest-agent.md
 │   │   └── webapp-pentest-agent.md
+│   ├── settings.json       # project-wide permissions (e.g. denies legacy tools superseded by an MCP server)
 │   └── skills/             # one directory per skill, each with a SKILL.md
 │       ├── network-recon/
 │       ├── smb-enum-exploitation/
@@ -43,14 +44,15 @@ pt-agent/
 │       ├── lfi-rfi-exploitation/
 │       ├── default-creds-admin-panels/
 │       ├── pentest-methodology/
+│       ├── linux-privilege-escalation/
+│       ├── windows-privilege-escalation/
 │       └── pentest-reporting/
-├── mcp-servers/            # custom tool integrations (scaffolding for now)
 └── .mcp.json               # MCP server registry
 ```
 
 This layout is deliberately flat and additive: new domains get a new agent plus a
-new set of skill directories; new tool integrations get a new subdirectory under
-`mcp-servers/` and an entry in `.mcp.json`.
+new set of skill directories; new tool integrations get a new entry in
+`.mcp.json`.
 
 ## Agents
 
@@ -75,7 +77,7 @@ engagements actually get a first shell / first credential / first access.
 - [credential-spraying](.claude/skills/credential-spraying/SKILL.md) — low-and-slow spraying against SSH/RDP/WinRM/web logins
 - [kerberos-attacks](.claude/skills/kerberos-attacks/SKILL.md) — Kerberoasting and AS-REP roasting for AD credential theft
 - [llmnr-nbns-poisoning](.claude/skills/llmnr-nbns-poisoning/SKILL.md) — Responder-style poisoning and hash relay/cracking
-- [vulnerable-service-exploitation](.claude/skills/vulnerable-service-exploitation/SKILL.md) — matching enumerated versions to known CVEs and exploiting with Metasploit
+- [vulnerable-service-exploitation](.claude/skills/vulnerable-service-exploitation/SKILL.md) — matching a fingerprinted version (network service or web app/CMS/platform) to known CVEs and exploiting with Metasploit; also used from the Web Application domain below
 - [default-creds-exploitation](.claude/skills/default-creds-exploitation/SKILL.md) — default/weak creds on SNMP, routers, printers, IoT, and other exposed services
 
 ### Cloud
@@ -89,6 +91,7 @@ engagements actually get a first shell / first credential / first access.
 
 ### Web Application
 - [webapp-recon](.claude/skills/webapp-recon/SKILL.md) — subdomain/content discovery, tech stack fingerprinting, attack surface mapping
+- [vulnerable-service-exploitation](.claude/skills/vulnerable-service-exploitation/SKILL.md) — check for a known, weaponized CVE against the fingerprinted app/CMS/platform version before assuming a custom exploitation path is needed (shared with the Network domain above)
 - [sql-injection-exploitation](.claude/skills/sql-injection-exploitation/SKILL.md) — detecting and exploiting SQLi for data access or auth bypass
 - [auth-bypass-testing](.claude/skills/auth-bypass-testing/SKILL.md) — broken authentication, session, and access-control flaws
 - [file-upload-exploitation](.claude/skills/file-upload-exploitation/SKILL.md) — unrestricted upload to webshell/RCE
@@ -98,15 +101,41 @@ engagements actually get a first shell / first credential / first access.
 
 ### Shared
 - [pentest-methodology](.claude/skills/pentest-methodology/SKILL.md) — scoping and rules-of-engagement gate every domain agent runs before touching a target
+- [linux-privilege-escalation](.claude/skills/linux-privilege-escalation/SKILL.md) — turn a Linux foothold into root (kernel/sudo CVEs, SUID/capabilities, cron/incron-triggered scripts, credential reuse)
+- [windows-privilege-escalation](.claude/skills/windows-privilege-escalation/SKILL.md) — turn a Windows foothold into SYSTEM (token privileges, service/task misconfigurations, stored credentials)
 - [pentest-reporting](.claude/skills/pentest-reporting/SKILL.md) — consolidate findings from any domain into a CVSS-scored, evidence-backed client report
 
 ## MCP Servers
 
-See [mcp-servers/README.md](mcp-servers/README.md). No custom servers are built yet —
-skills are written to work with generic Bash tooling and, where available, an existing
-pentest-focused MCP (e.g. a Kali toolkit exposing nmap/gobuster/hydra/sqlmap/metasploit).
-As specific gaps show up, add a purpose-built server here and register it in
-`.mcp.json`.
+Two MCP servers are registered in [.mcp.json](.mcp.json), both running on the Kali
+VM and reached over SSH-wrapped stdio (`ssh -i <key> kali@<host> <server-binary>`)
+so their state — tmux sessions, Metasploit sessions — lives where the actual work
+happens, not on the machine running Claude Code.
+
+- **`tmux-shell`** ([persistent-shell-mcp](https://github.com/TNTisdial/persistent-shell-mcp))
+  — persistent tmux-backed shell sessions on Kali. Use for anything without a
+  structured API, and for long-running commands that would exceed a single Kali
+  MCP `execute_command` call's timeout: full `-p-` nmap sweeps, large-wordlist
+  `gobuster` runs, `linPEAS`, or driving `msfconsole` interactively for anything
+  the Metasploit MCP server below doesn't cover.
+- **`metasploit`** ([MetasploitMCP](https://github.com/fishke22/MetasploitMCP),
+  installed via `apt install metasploitmcp` on Kali) — talks to `msfrpcd`
+  (a loopback-only systemd service on Kali) over structured RPC instead of
+  scraping `msfconsole`'s text output. Covers module search/execution, payload
+  generation, and session/listener/job lifecycle (`list_active_sessions`,
+  `send_session_command`, `terminate_session`, `start_listener`, `stop_job`).
+  [.claude/settings.json](.claude/settings.json) denies the older
+  `mcp__kali__metasploit_run` tool, so this server is the only path for
+  Metasploit work in this project — see
+  [vulnerable-service-exploitation](.claude/skills/vulnerable-service-exploitation/SKILL.md)
+  for how a skill is expected to use it.
+
+Credentials for both (the `msfrpcd` RPC password, the SSH private key) live only
+on the Kali host or in `~/.ssh/` — never in `.mcp.json` itself, since that file is
+git-tracked.
+
+As further gaps show up, register the next server the same way: point a new
+`.mcp.json` entry at wherever it needs to run.
 
 ## Adding a new domain
 
