@@ -8,7 +8,8 @@ process from recon through initial foothold.
 **Authorized use only.** Every agent and skill in this repo assumes a signed
 engagement letter / rules of engagement and an explicitly in-scope target. None of
 this replaces the scoping, authorization, and reporting discipline in
-`pentest-methodology` — treat that as the baseline this framework builds on top of.
+[pentest-methodology](.claude/skills/pentest-methodology/SKILL.md) — treat that as
+the baseline this framework builds on top of.
 
 ## Structure
 
@@ -41,6 +42,7 @@ pt-agent/
 │       ├── ssrf-exploitation/
 │       ├── lfi-rfi-exploitation/
 │       ├── default-creds-admin-panels/
+│       ├── pentest-methodology/
 │       └── pentest-reporting/
 ├── mcp-servers/            # custom tool integrations (scaffolding for now)
 └── .mcp.json               # MCP server registry
@@ -95,6 +97,7 @@ engagements actually get a first shell / first credential / first access.
 - [default-creds-admin-panels](.claude/skills/default-creds-admin-panels/SKILL.md) — default/weak credentials on exposed admin interfaces
 
 ### Shared
+- [pentest-methodology](.claude/skills/pentest-methodology/SKILL.md) — scoping and rules-of-engagement gate every domain agent runs before touching a target
 - [pentest-reporting](.claude/skills/pentest-reporting/SKILL.md) — consolidate findings from any domain into a CVSS-scored, evidence-backed client report
 
 ## MCP Servers
