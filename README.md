@@ -40,7 +40,8 @@ pt-agent/
 │       ├── file-upload-exploitation/
 │       ├── ssrf-exploitation/
 │       ├── lfi-rfi-exploitation/
-│       └── default-creds-admin-panels/
+│       ├── default-creds-admin-panels/
+│       └── pentest-reporting/
 ├── mcp-servers/            # custom tool integrations (scaffolding for now)
 └── .mcp.json               # MCP server registry
 ```
@@ -92,6 +93,9 @@ engagements actually get a first shell / first credential / first access.
 - [ssrf-exploitation](.claude/skills/ssrf-exploitation/SKILL.md) — server-side request forgery for internal pivoting
 - [lfi-rfi-exploitation](.claude/skills/lfi-rfi-exploitation/SKILL.md) — local/remote file inclusion toward code execution
 - [default-creds-admin-panels](.claude/skills/default-creds-admin-panels/SKILL.md) — default/weak credentials on exposed admin interfaces
+
+### Shared
+- [pentest-reporting](.claude/skills/pentest-reporting/SKILL.md) — consolidate findings from any domain into a CVSS-scored, evidence-backed client report
 
 ## MCP Servers
 
