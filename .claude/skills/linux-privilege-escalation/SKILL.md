@@ -1,6 +1,6 @@
 ---
 name: linux-privilege-escalation
-description: Systematically enumerate and exploit privilege escalation paths on a compromised Linux host — kernel/sudo CVEs, SUID/capabilities, credential reuse, and cron/incron-triggered scripts reachable by the current low-privileged account. Use once an initial foothold (shell) is established on a Linux target and further access (root) is the goal.
+description: Systematically enumerate and exploit privilege escalation paths on a compromised Linux host — kernel/sudo CVEs, SUID/capabilities, credential reuse, and cron triggered scripts reachable by the current low-privileged account. Use once an initial foothold (shell) is established on a Linux target and further access (root) is the goal.
 ---
 
 ## Purpose
@@ -95,6 +95,34 @@ identified.
   timeout on a busy host; use the `tmux-shell` MCP server for it, or launch
   it backgrounded with output redirected to a file and poll for completion
   rather than blocking a single call on it.
+- `tmux-shell` MCP server — this is the tool for driving any *stateful*
+  session against the foothold (a listening reverse-shell process, a
+  long-running scan, anything that must survive across multiple tool calls).
+  The Kali MCP `execute_command` is stateless per call and can't hold that
+  open, so reach for `tmux-shell` whenever the session itself needs to
+  persist, not just when a single command runs long. Two reliability traps
+  to plan around from the start rather than discover mid-session:
+  - `send_input` chokes on literal `;`, `(`, `)` in the text — tmux's own
+    command parser, not the remote shell, misinterprets them, producing an
+    opaque `unknown command:` error. Send one command per call, and for any
+    payload containing shell metacharacters or parens (e.g. an inline
+    `python3 -c "..."` one-liner), base64-encode it and send
+    `echo <b64> | base64 -d | <interpreter>` instead — that literal string
+    is safe to type.
+  - A bare `mkfifo`+`nc` reverse shell has no real controlling TTY. Running
+    `clear`, `less`, `top`, or anything else that queries terminal
+    capabilities can hang the session permanently with no error output,
+    forcing a full restart of the listener. Avoid TTY-dependent commands
+    over such a shell entirely. If a fully interactive shell is actually
+    needed, prefer stabilizing with `socat` (which allocates a real pty)
+    over a raw fifo — it sidesteps this whole class of hang rather than
+    just avoiding the commands that trigger it.
+  - For "has this finished yet," tmux capture-pane (`get_output`) is built
+    for a human watching a terminal and can be ambiguous about whether a
+    command is still running, failed silently, or just scrolled off screen.
+    When precise completion detection matters, have the process log to a
+    file and read that file back with a plain, stateless
+    `execute_command`/`cat`/`tail` rather than polling capture-pane output.
 - [linux-smart-enumeration](https://github.com/diego-treitos/linux-smart-enumeration)
   (`lse.sh`) as a faster, leveled first pass before committing to a full
   linPEAS run.

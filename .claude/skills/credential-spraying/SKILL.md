@@ -15,6 +15,16 @@ After recon identifies exposed SSH/RDP/WinRM/web-login services and a valid
 username list exists or can be derived (e.g. from OSINT, email format
 conventions, or prior enumeration).
 
+If the login belongs to a fingerprinted, versioned, open-source product
+(rather than a generic OS-level login), exhaust
+[vulnerable-service-exploitation](../vulnerable-service-exploitation/SKILL.md)'s
+CVE/advisory-research workflow first — including that skill's full
+advisory-list check, not just an initial search. A known misconfiguration or
+credential-disclosure vector on well-known software is often faster to find
+and far less noisy than spraying, and spraying a login form should be a
+fallback once the CVE angle is genuinely exhausted, not the default first
+move just because a valid username was confirmed.
+
 ## Methodology
 
 1. Build a username list (from OSINT, LinkedIn/company naming convention,
