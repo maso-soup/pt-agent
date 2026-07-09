@@ -1,9 +1,10 @@
 # pt-agent
 
-An AI framework for penetration testing, built on Claude Code's agents/skills/MCP
-architecture. It packages domain-specific pentest agents, methodology-driven skills,
-and tool integrations (MCP servers) so engagements follow a consistent, repeatable
-process from recon through initial foothold.
+An AI framework for penetration testing, built on Claude Code's agents/skills
+architecture. It packages domain-specific pentest agents and methodology-driven
+skills so engagements follow a consistent, repeatable process from recon through
+initial foothold. It is designed to run directly on a Kali (or similar) host,
+using the standard CLI tooling on that machine — no MCP servers required.
 
 **Authorized use only.** Every agent and skill in this repo assumes a signed
 engagement letter / rules of engagement and an explicitly in-scope target. None of
@@ -20,7 +21,7 @@ pt-agent/
 │   │   ├── network-pentest-agent.md
 │   │   ├── cloud-pentest-agent.md
 │   │   └── webapp-pentest-agent.md
-│   ├── settings.json       # project-wide permissions (e.g. denies legacy tools superseded by an MCP server)
+│   ├── settings.json       # project-wide permissions
 │   └── skills/             # one directory per skill, each with a SKILL.md
 │       ├── network-recon/
 │       ├── smb-enum-exploitation/
@@ -47,12 +48,10 @@ pt-agent/
 │       ├── linux-privilege-escalation/
 │       ├── windows-privilege-escalation/
 │       └── pentest-reporting/
-└── .mcp.json               # MCP server registry
 ```
 
 This layout is deliberately flat and additive: new domains get a new agent plus a
-new set of skill directories; new tool integrations get a new entry in
-`.mcp.json`.
+new set of skill directories.
 
 ## Agents
 
@@ -105,37 +104,24 @@ engagements actually get a first shell / first credential / first access.
 - [windows-privilege-escalation](.claude/skills/windows-privilege-escalation/SKILL.md) — turn a Windows foothold into SYSTEM (token privileges, service/task misconfigurations, stored credentials)
 - [pentest-reporting](.claude/skills/pentest-reporting/SKILL.md) — consolidate findings from any domain into a CVSS-scored, evidence-backed client report
 
-## MCP Servers
+## Tooling
 
-Two MCP servers are registered in [.mcp.json](.mcp.json), both running on the Kali
-VM and reached over SSH-wrapped stdio (`ssh -i <key> kali@<host> <server-binary>`)
-so their state — tmux sessions, Metasploit sessions — lives where the actual work
-happens, not on the machine running Claude Code.
+This framework runs directly on the testing host (Kali or equivalent) and uses
+the standard CLI tooling already installed there — `nmap`, `ffuf`/`gobuster`,
+`hydra`, `sqlmap`, `netexec`, `impacket`, `msfconsole`, `searchsploit`, `john`/
+`hashcat`, and so on — invoked through the normal shell. There are no MCP servers
+to register or keep running, which keeps the setup simple and portable across
+machines.
 
-- **`tmux-shell`** ([persistent-shell-mcp](https://github.com/TNTisdial/persistent-shell-mcp))
-  — persistent tmux-backed shell sessions on Kali. Use for anything without a
-  structured API, and for long-running commands that would exceed a single Kali
-  MCP `execute_command` call's timeout: full `-p-` nmap sweeps, large-wordlist
-  `gobuster` runs, `linPEAS`, or driving `msfconsole` interactively for anything
-  the Metasploit MCP server below doesn't cover.
-- **`metasploit`** ([MetasploitMCP](https://github.com/fishke22/MetasploitMCP),
-  installed via `apt install metasploitmcp` on Kali) — talks to `msfrpcd`
-  (a loopback-only systemd service on Kali) over structured RPC instead of
-  scraping `msfconsole`'s text output. Covers module search/execution, payload
-  generation, and session/listener/job lifecycle (`list_active_sessions`,
-  `send_session_command`, `terminate_session`, `start_listener`, `stop_job`).
-  [.claude/settings.json](.claude/settings.json) denies the older
-  `mcp__kali__metasploit_run` tool, so this server is the only path for
-  Metasploit work in this project — see
-  [vulnerable-service-exploitation](.claude/skills/vulnerable-service-exploitation/SKILL.md)
-  for how a skill is expected to use it.
+Practical notes that the skills assume:
 
-Credentials for both (the `msfrpcd` RPC password, the SSH private key) live only
-on the Kali host or in `~/.ssh/` — never in `.mcp.json` itself, since that file is
-git-tracked.
-
-As further gaps show up, register the next server the same way: point a new
-`.mcp.json` entry at wherever it needs to run.
+- For long-running commands (full `-p-` nmap sweeps, large-wordlist content
+  discovery, linPEAS), give the command a generous timeout, or run it in the
+  background with output redirected to a file and poll the file for completion.
+- To hold a stateful foothold (a caught reverse shell, an interactive session),
+  catch it yourself (`nc -lvnp`, then stabilize with `socat` or a pty upgrade)
+  and prefer scripting enumeration as one-shot commands whose output you read
+  back, rather than babysitting a fragile interactive shell.
 
 ## Adding a new domain
 

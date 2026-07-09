@@ -29,9 +29,8 @@ identified.
    escalation vectors on their own), `systeminfo` (OS build/patch level),
    and any credentials already captured during the foothold.
 2. **Automated triage** — run WinPEAS (or PowerUp.ps1 / Seatbelt as
-   alternatives) against the session, and Metasploit's
-   `post/multi/recon/local_exploit_suggester` (via the Metasploit MCP
-   server's `run_post_module`, against the active session). Same caveat as
+   alternatives) against the session, and (if you have a live Metasploit
+   session) `post/multi/recon/local_exploit_suggester`. Same caveat as
    Linux: verify any build-number-based CVE suggestion against the actual
    patch level (installed KBs / Windows Update history), not just the
    marketing OS version — a suggester tool working off the OS version alone
@@ -74,16 +73,12 @@ identified.
 ## Tools
 
 - WinPEAS / PowerUp.ps1 / Seatbelt — upload and run via the active session
-  (e.g. Meterpreter `upload`). For anything long-running, prefer the
-  `tmux-shell` MCP server or a backgrounded run with output redirected to a
-  file over blocking a single Kali MCP `execute_command` call on it.
+  (e.g. Meterpreter `upload`). For anything long-running, run it backgrounded
+  with output redirected to a file and poll the file rather than blocking on it.
 - Metasploit's `post/multi/recon/local_exploit_suggester` and the
-  Potato-family local exploits, run through the **Metasploit MCP server**
-  (`run_post_module` / `run_exploit`) against the active session. Manage the
-  session and follow-up commands with `list_active_sessions` /
-  `send_session_command` rather than re-triggering the original foothold
-  exploit for every check. This project denies the older
-  `mcp__kali__metasploit_run` tool — use the Metasploit MCP server instead.
+  Potato-family local exploits, run against a live session. Reuse the session
+  for follow-up checks rather than re-triggering the original foothold exploit
+  each time.
 - `icacls` / Sysinternals `accesschk` for service, file, and registry ACL
   checks.
 - [LOLBAS](https://lolbas-project.github.io/) (the Windows equivalent of

@@ -33,18 +33,14 @@ hostname(s)/URL(s) are confirmed in scope.
 
 ## Tools
 
-- `gobuster` / `dirb` (or the Kali MCP `gobuster_scan`/`dirb_scan` tools) for
-  content/directory discovery against a curated wordlist.
-- `nikto` (or the Kali MCP `nikto_scan` tool) for known-vulnerability and
-  misconfiguration checks.
-- `wpscan` (or the Kali MCP `wpscan_analyze` tool) when the target is
-  WordPress.
+- `gobuster` / `dirb` / `feroxbuster` for content/directory discovery against a
+  curated wordlist.
+- `nikto` for known-vulnerability and misconfiguration checks.
+- `wpscan` when the target is WordPress.
 - Browser dev tools / JS bundle review for client-side-referenced API
   endpoints not otherwise discoverable.
-- A large-wordlist `gobuster`/`dirb` run can exceed a single Kali MCP
-  `execute_command` call's timeout — for those, use the `tmux-shell` MCP
-  server (a persistent tmux session on the Kali host) instead of manually
-  backgrounding and polling.
+- A large-wordlist `gobuster`/`dirb` run can be slow — give it a generous
+  timeout, or run it in the background and poll the output file.
 
 ## Output
 

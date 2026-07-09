@@ -38,9 +38,8 @@ identified.
      daemon can be a direct path to root that skips the intermediate user
      entirely.
 2. **Automated triage** — run linPEAS against the session in **default mode
-   (no flags), or `-s` for superfast/stealth**, and Metasploit's
-   `post/multi/recon/local_exploit_suggester` (via the Metasploit MCP
-   server's `run_post_module`, against the active session). **Never run
+   (no flags), or `-s` for superfast/stealth**, and (if you have a Metasploit
+   session) `post/multi/recon/local_exploit_suggester`. **Never run
    linPEAS with `-a` (all checks)** — it adds a whole-filesystem password
    search, brute-force user enumeration, and a slow CVE-database check that
    together can run 10+ minutes for findings that mostly duplicate the
@@ -100,57 +99,37 @@ identified.
 
 ## Tools
 
-- linPEAS — upload and run via the active session, **default mode or `-s`
-  only, never `-a`** (see Methodology step 2). Even in default mode, a scan
-  can run long enough to exceed a single Kali MCP `execute_command` call's
-  timeout on a busy host; use the `tmux-shell` MCP server for it, or launch
-  it backgrounded with output redirected to a file and poll for completion
-  rather than blocking a single call on it.
-- `tmux-shell` MCP server — this is the tool for driving any *stateful*
-  session against the foothold (a listening reverse-shell process, a
-  long-running scan, anything that must survive across multiple tool calls).
-  The Kali MCP `execute_command` is stateless per call and can't hold that
-  open, so reach for `tmux-shell` whenever the session itself needs to
-  persist, not just when a single command runs long. Two reliability traps
-  to plan around from the start rather than discover mid-session:
-  - `send_input` chokes on literal `;`, `(`, `)` in the text — tmux's own
-    command parser, not the remote shell, misinterprets them, producing an
-    opaque `unknown command:` error. Send one command per call, and for any
-    payload containing shell metacharacters or parens (e.g. an inline
-    `python3 -c "..."` one-liner), base64-encode it and send
-    `echo <b64> | base64 -d | <interpreter>` instead — that literal string
-    is safe to type.
+- linPEAS — upload and run via the foothold, **default mode or `-s` only,
+  never `-a`** (see Methodology step 2). Even in default mode a scan can run
+  for minutes; launch it backgrounded with output redirected to a file and
+  poll the file for completion rather than blocking a single call on it.
+- Driving a stateful foothold shell (a caught reverse shell, a long-running
+  scan — anything that must survive across multiple commands). Prefer
+  scripting enumeration as one-shot commands through the RCE and reading
+  output back, and hold a live interactive shell only when you genuinely need
+  back-and-forth I/O. A few reliability traps worth planning around:
+  - When feeding commands into a raw reverse shell, literal shell
+    metacharacters/parens (e.g. an inline `python3 -c "..."` one-liner) are
+    easy to mangle in transit. Base64-encode the payload and send
+    `echo <b64> | base64 -d | <interpreter>` — a plain alphanumeric string is
+    safe to transport.
   - A bare `mkfifo`+`nc` reverse shell has no real controlling TTY. Running
     `clear`, `less`, `top`, or anything else that queries terminal
-    capabilities can hang the session permanently with no error output,
-    forcing a full restart of the listener. Avoid TTY-dependent commands
-    over such a shell entirely. If a fully interactive shell is actually
-    needed, prefer stabilizing with `socat` (which allocates a real pty)
-    over a raw fifo — it sidesteps this whole class of hang rather than
-    just avoiding the commands that trigger it.
-  - For "has this finished yet," tmux capture-pane (`get_output`) is built
-    for a human watching a terminal and can be ambiguous about whether a
-    command is still running, failed silently, or just scrolled off screen.
-    When precise completion detection matters, have the process log to a
-    file and read that file back with a plain, stateless
-    `execute_command`/`cat`/`tail` rather than polling capture-pane output.
+    capabilities can hang the session permanently with no error output. Avoid
+    TTY-dependent commands over such a shell; if a fully interactive shell is
+    actually needed, stabilize with `socat` (which allocates a real pty) or a
+    `python3 -c 'pty.spawn' ` upgrade — it sidesteps this class of hang.
+  - For "has this finished yet," don't eyeball scrollback. Have the process
+    log to a file and read that file back with a plain `cat`/`tail`.
 - [linux-smart-enumeration](https://github.com/diego-treitos/linux-smart-enumeration)
   (`lse.sh`) as a faster, leveled first pass before committing to a full
   linPEAS run.
 - `pspy` for live process/cron/incron monitoring — the most direct way to
   catch a root-triggered scheduled job, faster and more conclusive than
   spotting the same thing in a static enumeration dump.
-- Metasploit's `post/multi/recon/local_exploit_suggester`, run through the
-  **Metasploit MCP server** (`run_post_module`) against the active session.
-  Note this needs a *live, commandable* session — which the MCP session
-  bridge doesn't reliably sustain (PHP Meterpreter sessions in particular
-  list as alive but reject commands). If the suggester is what you want and
-  the session won't hold, the raw `mcp__kali__metasploit_run` tool (native
-  `msfconsole` session handling) is the fallback; otherwise manual triage
-  (linPEAS / `lse.sh` / `pspy`) covers the same ground without a session
-  dependency. See [mcp-tooling-strategy](../mcp-tooling-strategy/SKILL.md)
-  for the full decision rule on delivery vs. interactive sessions vs.
-  one-shot commands, and the reliability traps in the tools below.
+- Metasploit's `post/multi/recon/local_exploit_suggester` if you already have
+  a live Metasploit session; otherwise manual triage (linPEAS / `lse.sh` /
+  `pspy`) covers the same ground without a session dependency.
 - [GTFOBins](https://gtfobins.github.io/) for known SUID/sudo/capability
   abuse recipes once a specific binary is identified.
 - `searchsploit`/CVE research for kernel and sudo version-specific

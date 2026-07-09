@@ -35,15 +35,11 @@ depends on this being thorough and correct.
 
 - `nmap` — the primary tool. Typical flow: `-sn` for discovery, `-p-` full TCP
   sweep, `-sV -sC` for version/script detection on discovered ports, `-sU` for a
-  top-N UDP scan. If the Kali MCP toolkit is available, use its `nmap_scan` tool
-  rather than shelling out directly.
+  top-N UDP scan.
 - `masscan` for very large ranges where nmap's full sweep would be too slow —
   follow up with nmap `-sV` on masscan's hits for accuracy.
-- A full `-p-` sweep or a large `-sV -sC` run can exceed a single Kali MCP
-  `execute_command` call's timeout. If that happens, use the `tmux-shell` MCP
-  server (a persistent tmux session on the Kali host) to launch the scan and
-  poll its output, rather than backgrounding it manually with `nohup`/`&` and
-  polling via repeated `execute_command` calls.
+- A full `-p-` sweep or a large `-sV -sC` run can be slow; give it a generous
+  timeout, or run it in the background and poll the output file.
 
 ## Output
 

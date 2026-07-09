@@ -41,7 +41,7 @@ move just because a valid username was confirmed.
 
 ## Tools
 
-- `hydra` (or the Kali MCP `hydra_attack` tool) with a single password and full
+- `hydra` with a single password and full
   user list, `-t` kept low for stealth, against `ssh`, `rdp`, `winrm` modules.
 - `kerbrute` for AD environments — validates usernames and sprays against
   Kerberos pre-auth without generating Windows event log noise the same way

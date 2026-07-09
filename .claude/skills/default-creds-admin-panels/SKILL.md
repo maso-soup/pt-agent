@@ -34,9 +34,9 @@ vendor-specific product admin consoles.
 
 ## Tools
 
-- `wpscan` (or the Kali MCP `wpscan_analyze` tool) for WordPress-specific
+- `wpscan` for WordPress-specific
   credential and plugin/theme vulnerability checks.
-- `hydra` (or the Kali MCP `hydra_attack` tool) for a small, targeted
+- `hydra` for a small, targeted
   credential list against the login form.
 - Vendor default-credential references kept in engagement notes.
 

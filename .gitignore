@@ -7,12 +7,12 @@ Thumbs.db
 .idea/
 *.swp
 
-## Node (future MCP servers)
+## Node
 node_modules/
 npm-debug.log*
 dist/
 
-## Python (future MCP servers)
+## Python
 __pycache__/
 *.pyc
 .venv/

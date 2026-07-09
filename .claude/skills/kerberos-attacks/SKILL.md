@@ -37,7 +37,7 @@ from "domain user" to "domain foothold with a better account."
 
 - `GetUserSPNs.py` / `GetNPUsers.py` (Impacket) for Kerberoasting and AS-REP
   roasting requests respectively.
-- `john` or the Kali MCP `john_crack` tool for offline hash cracking
+- `john` (or `hashcat`) for offline hash cracking
   (`krb5tgs`/`krb5asrep` formats).
 
 ## Output
