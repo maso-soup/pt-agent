@@ -26,6 +26,17 @@ identified.
    already found during the foothold (config files, database credentials,
    API keys). Test credential/password reuse against `su` and SSH before
    anything else — it's often free and immediately conclusive.
+   - **Enumerate loopback-bound services early** (`ss -tlnp`). A service
+     listening only on `127.0.0.1`/`::1` was invisible to the external
+     recon scan but is fully reachable from the foothold — and it's a prime
+     privesc target precisely because it's often an internal-only,
+     less-hardened, or root-run daemon. Identify what's behind each local
+     port (owning process, and for a custom/manually-installed binary its
+     `--version` or `strings`), then version-fingerprint it and route it
+     through [vulnerable-service-exploitation](../vulnerable-service-exploitation/SKILL.md)
+     exactly like an external service — a known CVE in a root-run local
+     daemon can be a direct path to root that skips the intermediate user
+     entirely.
 2. **Automated triage** — run linPEAS against the session in **default mode
    (no flags), or `-s` for superfast/stealth**, and Metasploit's
    `post/multi/recon/local_exploit_suggester` (via the Metasploit MCP
@@ -131,10 +142,15 @@ identified.
   spotting the same thing in a static enumeration dump.
 - Metasploit's `post/multi/recon/local_exploit_suggester`, run through the
   **Metasploit MCP server** (`run_post_module`) against the active session.
-  Manage the session and follow-up commands with `list_active_sessions` /
-  `send_session_command` rather than re-triggering the original foothold
-  exploit for every check. This project denies the older
-  `mcp__kali__metasploit_run` tool — use the Metasploit MCP server instead.
+  Note this needs a *live, commandable* session — which the MCP session
+  bridge doesn't reliably sustain (PHP Meterpreter sessions in particular
+  list as alive but reject commands). If the suggester is what you want and
+  the session won't hold, the raw `mcp__kali__metasploit_run` tool (native
+  `msfconsole` session handling) is the fallback; otherwise manual triage
+  (linPEAS / `lse.sh` / `pspy`) covers the same ground without a session
+  dependency. See [mcp-tooling-strategy](../mcp-tooling-strategy/SKILL.md)
+  for the full decision rule on delivery vs. interactive sessions vs.
+  one-shot commands, and the reliability traps in the tools below.
 - [GTFOBins](https://gtfobins.github.io/) for known SUID/sudo/capability
   abuse recipes once a specific binary is identified.
 - `searchsploit`/CVE research for kernel and sudo version-specific

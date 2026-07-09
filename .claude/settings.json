@@ -1,7 +1,5 @@
 {
   "permissions": {
-    "deny": [
-      "mcp__kali__metasploit_run"
-    ]
+    "deny": []
   }
 }
