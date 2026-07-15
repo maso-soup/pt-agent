@@ -6,6 +6,7 @@ Thumbs.db
 .vscode/
 .idea/
 *.swp
+.obsidian/
 
 ## Node (future MCP servers)
 node_modules/
@@ -29,3 +30,5 @@ venv/
 /loot/
 /reports/*.pdf
 /reports/*.docx
+
+.mcp.json
