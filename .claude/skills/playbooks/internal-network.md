@@ -12,7 +12,6 @@ Use for authorized internal ranges, lab networks, or full pentest tasks where th
 
 1. **Connectivity and routing**
    - Verify Kali can reach the target range with `ip route`, `ping`, `arp`, or protocol-specific checks.
-   - If Docker cannot reach a host that the host OS can reach, follow `../environment/docker-mode-networking.md`.
 
    ```bash
    ip route            # confirm default gateway and subnet routes

@@ -1,7 +1,7 @@
 # httpx-toolkit
 
 - **Category**: Information Gathering / Web Analysis
-- **Risk Level**: 🟢
+- **Risk Level**: 🟢 Low
 
 ---
 

@@ -30,5 +30,3 @@ venv/
 /loot/
 /reports/*.pdf
 /reports/*.docx
-
-.mcp.json

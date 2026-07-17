@@ -34,82 +34,82 @@ A toolkit for security testing of Wi-Fi (802.11), Bluetooth, and other wireless 
 
 The aircrack-ng suite is the core toolkit for Wi-Fi penetration testing, composed of several sub-tools, each with a specific role:
 
-**[airmon-ng](airmon-ng.md)** — Wireless adapter mode switching  
+**[airmon-ng](tools/airmon-ng.md)** — Wireless adapter mode switching  
 Switches the wireless adapter into Monitor Mode, a prerequisite for using other aircrack-ng tools. Can also detect and kill interfering processes.  
 
-**[airodump-ng](airodump-ng.md)** — Wireless network scanning and packet capture  
+**[airodump-ng](tools/airodump-ng.md)** — Wireless network scanning and packet capture  
 Scans nearby Wi-Fi networks, displaying BSSID, channel, encryption type, client list, and captures packets (for subsequent handshake cracking). The core tool for Wi-Fi reconnaissance.  
 
-**[aireplay-ng](aireplay-ng.md)** — Packet injection and replay  
+**[aireplay-ng](tools/aireplay-ng.md)** — Packet injection and replay  
 Injects packets into target networks. Most commonly used to send Deauth frames to force clients to reconnect (triggering handshake capture), and also supports ARP injection (for WEP cracking).  
 
-**[aircrack-ng](aircrack-ng.md)** — WPA/WEP key cracking  
+**[aircrack-ng](tools/aircrack-ng.md)** — WPA/WEP key cracking  
 Performs offline password cracking on captured handshakes or WEP packets. Supports dictionary attacks (WPA/WPA2) and statistical attacks (WEP).  
 
-**[airbase-ng](airbase-ng.md)** — Create a fake AP (Evil Twin)  
+**[airbase-ng](tools/airbase-ng.md)** — Create a fake AP (Evil Twin)  
 Creates a spoofed wireless access point for man-in-the-middle attack testing. Can capture traffic from clients that connect to the fake AP.  
 
 ---
 
 ## Automated Attack Tools
 
-**[wifite](wifite.md)** — Automated Wi-Fi attacks  
+**[wifite](tools/wifite.md)** — Automated Wi-Fi attacks  
 An automated WPA/WPA2/WEP/WPS attack tool that wraps the full attack workflow of the aircrack-ng suite. Ideal for quick batch testing of all nearby networks with minimal effort.  
 
-**[wifiphisher](wifiphisher.md)** — Wi-Fi phishing attacks  
+**[wifiphisher](tools/wifiphisher.md)** — Wi-Fi phishing attacks  
 Creates an Evil Twin AP by forcibly disconnecting clients from a legitimate AP, then luring them to connect to the fake AP, where a phishing page captures the Wi-Fi password. No password dictionary required.  
 
-**[wifipumpkin3](wifipumpkin3.md)** — Rogue AP attack framework  
+**[wifipumpkin3](tools/wifipumpkin3.md)** — Rogue AP attack framework  
 A comprehensive rogue access point framework for MITM attacks, captive portal credential harvesting, DNS spoofing, and traffic interception. Provides a modular plugin architecture and supports transparent proxy, SSL stripping, and credential capture.  
 
-**[reaver](reaver.md)** — WPS PIN brute-force  
+**[reaver](tools/reaver.md)** — WPS PIN brute-force  
 Brute-forces the WPS (Wi-Fi Protected Setup) PIN code. Exploits a design flaw in the WPS protocol; typically cracks a WPS password in 4–10 hours. Some routers have WPS lockout protection.  
 
-**[bully](bully.md)** — Alternative WPS PIN brute-force  
+**[bully](tools/bully.md)** — Alternative WPS PIN brute-force  
 An alternative WPS brute-force tool that handles edge cases and AP firmware quirks better than reaver in some environments. Use bully when reaver fails or stalls.  
 
-**[pixiewps](pixiewps.md)** — Offline WPS Pixie Dust attack  
+**[pixiewps](tools/pixiewps.md)** — Offline WPS Pixie Dust attack  
 Exploits weak random number generation in WPS implementations to recover the PIN offline. Typically invoked automatically via `reaver -K` or `bully -d`.  
 
 ---
 
 ## Wireless Surveillance
 
-**[kismet](kismet.md)** — Passive wireless network discovery  
+**[kismet](tools/kismet.md)** — Passive wireless network discovery  
 Passively scans and logs all nearby wireless signals (Wi-Fi/Bluetooth/Zigbee, etc.) without transmitting any packets — completely covert. Provides a Web GUI; suitable for wireless network reconnaissance and compliance auditing.  
 
 ---
 
 ## Capture Processing
 
-**[hcxtools](hcxtools.md)** — Wireless capture file conversion  
+**[hcxtools](tools/hcxtools.md)** — Wireless capture file conversion  
 Converts hcxdumptool/airodump-ng captures to hashcat-compatible format (mode 22000) for offline WPA cracking. Supports PMKID and EAPOL hash extraction and ESSID filtering. PMKID attacks do not require a connected client.  
 
-**[cowpatty](cowpatty.md)** — WPA/WPA2 PSK dictionary cracker  
+**[cowpatty](tools/cowpatty.md)** — WPA/WPA2 PSK dictionary cracker  
 Offline dictionary cracker for WPA/WPA2 PSK handshakes. Supports precomputed PMK hash tables for faster cracking of specific SSIDs. CPU-based; use when GPU is unavailable.  
 
-**[asleap](asleap.md)** — LEAP and MS-CHAPv2 credential cracking  
+**[asleap](tools/asleap.md)** — LEAP and MS-CHAPv2 credential cracking  
 Cracks Cisco LEAP and MS-CHAPv2/PPTP credentials from captured challenge/response pairs. Use when wireless assessments encounter legacy LEAP authentication or when MS-CHAPv2 handshakes are captured from PPTP VPN or WPA Enterprise sessions.  
 
 ---
 
 ## Social Engineering Attacks
 
-**[fluxion](fluxion.md)** — Evil-twin captive portal attack  
+**[fluxion](tools/fluxion.md)** — Evil-twin captive portal attack  
 Creates an evil-twin AP, deauthenticates clients from the legitimate AP, and serves a captive portal page to harvest the Wi-Fi password. Validates the captured password against the WPA handshake before reporting success.  
 
 ---
 
 ## Automated Auditing
 
-**[airgeddon](airgeddon.md)** — All-in-one wireless auditing  
+**[airgeddon](tools/airgeddon.md)** — All-in-one wireless auditing  
 A menu-driven script orchestrating monitor mode setup, handshake/PMKID capture, evil-twin attacks, captive portal credential harvesting, and WPS attacks. Ideal for structured wireless security assessments.  
 
 ---
 
 ## 802.11 Protocol Testing
 
-**[mdk4](mdk4.md)** — 802.11 stress testing framework  
+**[mdk4](tools/mdk4.md)** — 802.11 stress testing framework  
 Performs 802.11 protocol stress testing including beacon flooding, authentication DoS, Deauth attacks, EAPOL flooding, and MAC filter brute force. Useful for testing wireless IDS/IPS detection and AP resilience. Highly disruptive — use only in isolated, authorized test environments.  
 
 ---
@@ -118,25 +118,25 @@ Performs 802.11 protocol stress testing including beacon flooding, authenticatio
 
 Testing Bluetooth requires a Bluetooth adapter. All CLI tools are pre-installed with the `bluez` package.
 
-**[hcitool](hcitool.md)** — Bluetooth device discovery
+**[hcitool](tools/hcitool.md)** — Bluetooth device discovery
 Scans for nearby Bluetooth devices (inquiry scan), reads device information (LMP version, features), and manages connections. The starting point for Bluetooth reconnaissance.
 
-**[sdptool](sdptool.md)** — SDP service enumeration
+**[sdptool](tools/sdptool.md)** — SDP service enumeration
 Browses Service Discovery Protocol records to enumerate RFCOMM channels — file transfer, audio, serial port, and networking services on discovered devices.
 
-**[gatttool](gatttool.md)** — BLE GATT characteristic interaction
+**[gatttool](tools/gatttool.md)** — BLE GATT characteristic interaction
 Reads from and writes to GATT characteristics on Bluetooth Low Energy devices. Tests whether sensitive operations (sensor data, lock commands) require authentication.
 
-**[btscanner](btscanner.md)** — Bluetooth reconnaissance report
+**[btscanner](tools/btscanner.md)** — Bluetooth reconnaissance report
 Ncurses-based Bluetooth discovery tool that records nearby device metadata. Launch interactively and extract results from its config-defined log location.
 
-**[blueranger](blueranger.md)** — Bluetooth proximity estimation
+**[blueranger](tools/blueranger.md)** — Bluetooth proximity estimation
 Uses signal strength to estimate the proximity of a discovered Bluetooth device.
 
-**[bluesnarfer](bluesnarfer.md)** — Bluetooth OBEX access testing
+**[bluesnarfer](tools/bluesnarfer.md)** — Bluetooth OBEX access testing
 Tests vulnerable OBEX services for unauthorized data access. High risk and device-specific authorization required.
 
-**[crackle](crackle.md)** — BLE legacy pairing key recovery
+**[crackle](tools/crackle.md)** — BLE legacy pairing key recovery
 Attempts key recovery and traffic decryption from vulnerable BLE legacy pairing captures.
 
 ### Bluetooth Reconnaissance Workflow
@@ -156,10 +156,10 @@ Attempts key recovery and traffic decryption from vulnerable BLE legacy pairing 
 
 Enterprise wireless networks using 802.1X (EAP-TLS, PEAP, EAP-TTLS) require additional methodology beyond PSK attacks. Testing typically involves deploying a rogue RADIUS server (e.g., `hostapd-wpe` or `eaphammer`) to capture RADIUS credentials. This is a high-risk operation that requires explicit authorization and a controlled test environment.
 
-**[eaphammer](eaphammer.md)** — WPA2-Enterprise evil twin attacks  
+**[eaphammer](tools/eaphammer.md)** — WPA2-Enterprise evil twin attacks  
 Targeted evil twin attack tool for WPA2-Enterprise networks with EAP credential harvesting. Automates rogue AP creation, certificate generation, and credential capture for PEAP, EAP-TTLS, and other EAP methods.  
 
-**[hostapd-mana](hostapd-mana.md)** — Rogue AP with MANA/KARMA attacks  
+**[hostapd-mana](tools/hostapd-mana.md)** — Rogue AP with MANA/KARMA attacks  
 A modified version of `hostapd` with MANA and KARMA attack capabilities for creating rogue access points. Responds to all probe requests, captures credentials from connecting clients, and supports targeted or opportunistic credential harvesting.  
 
 ## Hardware Requirements

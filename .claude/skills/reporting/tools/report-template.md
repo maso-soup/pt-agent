@@ -24,7 +24,6 @@ Not applicable. This is a reusable documentation template, not an installable co
 | `{System/Location}` | Affected system, endpoint, or asset |
 | `{impact description}` | Business or technical impact summary |
 | `F-###` | Finding identifier format |
-| CVSS fields | Standard CVSS vector values for severity scoring |
 
 ## Common Commands
 
@@ -32,7 +31,7 @@ Not applicable. This is a reusable documentation template, not an installable co
 
 ````markdown
 # Penetration Test Report
-**Client**: {Client Name}  
+**Client**: {Client Name}
 **Scope**: {IP/Domain}  
 **Test Period**: {Start Date} ~ {End Date}  
 **Test Type**: Black-box / Grey-box / White-box  
@@ -42,89 +41,73 @@ Not applicable. This is a reusable documentation template, not an installable co
 
 ---
 
-## Executive Summary (For Management)
+## Executive Summary
 
-(Non-technical language, within 500 words)
-
-This penetration test identified **X security vulnerabilities**, including:
-- 🔴 Critical: X (requires immediate remediation)
-- 🟠 High: X (remediate within 1 week)
-- 🟡 Medium: X (remediate within 1 month)
-- 🟢 Low: X (remediate within a reasonable timeframe)
-
-The most severe finding is **{Vulnerability Name}**, located at **{System/Location}**,
-which could allow an attacker to **{impact description}**.
-
-**Key Recommendations**:
-1. Immediately remediate the SQL injection vulnerability (F-001)
-2. Update Apache to the latest version (F-003)
-3. Enable a Web Application Firewall (WAF)
+This should be a succinct paragraph very briefly describing that the penetration test was performed and a brief recap of the type of testing and intention with this testing. Do not include any technical details or finding specifics, as this is more an introduction paragraph than a discussion. 
 
 ---
 
-## Scope
+## Improvement Opportunities
 
-### In-Scope
-- IP/Domain 1
-- IP/Domain 2
-
-### Out-of-Scope
-- IP/Domain X (critical production system, passive testing only)
-
-### Testing Constraints
-- Testing hours: Weekdays 09:00–18:00
-- No DoS attacks permitted
-- No data modification permitted
+These should be single sentence, high level versions of the vulnerability descriptions for each of the findings.  
 
 ---
 
-## Vulnerability Summary
+## Key Strengths
 
-| ID | Vulnerability | Risk | Affected Asset | CVSS | Status |
-|----|---------|------|-----------|------|------|
-| F-001 | SQL Injection | 🔴 Critical | /api/login | 10.0 | Open |
-| F-002 | Directory Traversal | 🟠 High | /files/ | 7.5 | Open |
-| F-003 | Outdated Apache | 🟡 Medium | 192.168.1.100 | 5.3 | Open |
-| F-004 | Weak Password Policy | 🟡 Medium | SSH service | 4.9 | Open |
-| F-005 | Sensitive Information Disclosure | 🟢 Low | robots.txt | 2.7 | Open |
+These should be a few different single sentence, high level versions of any secure parts of the system or security controls that were noted to be in place during the testing. 
 
 ---
 
-## Attack Chain
+## High Level Recommendations
 
-(Document how individual findings chain together to achieve the final compromise. Show the step-by-step progression from initial access to maximum impact. Include each finding ID used in the chain and the causal link between steps.)
+These should be single sentence, high level versions of the Remediations for each of the findings. 
 
-**Chain 1: {Chain Title}**
-1. {F-XXX} — {initial access step}
-2. {F-XXX} — {escalation step}
-3. {F-XXX} — {final impact}
+---
 
-**Overall Impact**: {combined impact that exceeds individual finding severities}
+## Test Objectives
+
+These are a few very high level test objectives that were used as guidance for engagement. These should be in a bulleted list. 
+
+---
+
+## Attack Narrative
+
+Testing Actions - These are few single sentence descriptors of high level discrete actions taken throughout the test. They should map to one or more of the test objectives, and be in a bulleted list. 
+
+---
+
+## Attack Narrative
+
+This is a section where a few succinct paragraphs should follow the general narrative of the testing, including what types of vulnerabilities were tested for and pieces of the system were targeted. 
 
 ---
 
 ## Vulnerability Details
 
-### F-001: SQL Injection (Critical)
-
-**Affected Location**: `POST http://target.com/api/login`  
-**Affected Parameter**: `username`  
-**Vulnerability Type**: SQL Injection (error-based)  
-**CVSS Score**: 10.0 (AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N)  
-**CWE**: CWE-89
+### F-001: SQL Injection
 
 **Description**:
-The `username` parameter on the login endpoint does not use parameterized queries.
-An attacker can inject malicious SQL to bypass authentication entirely
-and read, modify, or delete all data in the database.
+Insert a succinct description of the vulnerability. 
 
-**Reproduction Steps**:
+**Impact Description**:
+
+Insert a succinct paragraph describing the possible impact of the vulnerability in the organization. 
+
+**Likelihood Description**:
+
+Insert a succinct paragraph describing the possible likelihood of the exploitation of the vulnerability in the organization. 
+
+**Evidence**:
+
+Insert evidence of the vulnerability here. This can include tools used, commands, reproduction steps, screenshots, etc.
+
+Reproduction Steps:
 1. Navigate to `http://target.com/login`
 2. Enter in the username field: `admin' OR '1'='1`
 3. Enter any value in the password field and click Login
 4. Successfully log in as an administrator
 
-**Evidence (Screenshot/Output)**:
 ```
 $ sqlmap -u "http://target.com/api/login" --data="username=test&password=test" --batch
 [INFO] Parameter 'username' is vulnerable
@@ -132,92 +115,41 @@ $ sqlmap -u "http://target.com/api/login" --data="username=test&password=test" -
 [INFO] retrieved: admin, password_hash, email from users table
 ```
 
-**Impact**:
-- Attacker can log in as any administrator account
-- Can read all user data (including password hashes, emails, personal information)
-- May result in complete database exfiltration
-
 **Remediation**:
-1. **Immediately**: Replace string concatenation with parameterized queries (Prepared Statements)
-   ```python
-   # Vulnerable code
-   query = "SELECT * FROM users WHERE username='" + username + "'"
-   # Fixed code
-   query = "SELECT * FROM users WHERE username = %s"
-   cursor.execute(query, (username,))
-   ```
-2. Apply strict validation and filtering to all user input
-3. Configure WAF rules to detect SQL injection patterns
-4. Minimize database account privileges (do not use root)
-5. Do not return error messages to the client
 
-**References**:
-- OWASP SQL Injection: https://owasp.org/www-community/attacks/SQL_Injection
-- CWE-89: https://cwe.mitre.org/data/definitions/89.html
+Insert a brief description of possible remediation recommendations. 
 
 ---
 
 (Fill in remaining findings using the same format)
 
----
-
-## Testing Activity Log
-
-| Time | Phase | Action | Tool | Finding |
-|------|------|------|------|------|
-| 09:00 | Reconnaissance | Port scan | nmap | Open ports: 22/80/443/8080 |
-| 09:30 | Reconnaissance | Web fingerprinting | whatweb | Apache 2.4.49, PHP 7.4 |
-| 10:00 | Scanning | WAF detection | wafw00f | No WAF detected |
-| 10:15 | Scanning | Directory enumeration | gobuster | Found /admin /backup |
-| 10:45 | Web | SQL injection testing | sqlmap | **F-001 SQL Injection (Critical)** |
-| 11:30 | Web | XSS testing | dalfox | No XSS found |
-
----
-
-## Appendices
-
-### A. Tools Used
-| Tool | Version | Purpose |
-|------|------|------|
-| nmap | 7.94 | Port scanning |
-| nikto | 2.1.6 | Web vulnerability scanning |
-| sqlmap | 1.7.12 | SQL injection detection |
-
-### B. References
-- OWASP Top 10: https://owasp.org/Top10/
-- NIST NVD: https://nvd.nist.gov/
-- CVE Details: https://www.cvedetails.com/
-
-### C. Disclaimer
-This penetration test was conducted under an authorization agreement signed by both parties.
-All testing activities were performed within the agreed scope.
-The testers bear no responsibility for system anomalies resulting from testing activities.
 ````
 
-### Risk Level Definitions
+### Impact and Likelihood Level Definitions
 
-| Level | CVSS | Remediation Timeline | Description |
-|------|------|---------|------|
-| 🔴 Critical | 9.0–10.0 | Immediately (within 24h) | Remotely exploitable without authentication, leads directly to system compromise |
-| 🟠 High | 7.0–8.9 | Within 1 week | Exploitable, severely impacts confidentiality/integrity/availability |
-| 🟡 Medium | 4.0–6.9 | Within 1 month | Requires specific conditions, limited impact |
-| 🟢 Low | 0.1–3.9 | Reasonable timeframe | Difficult to exploit directly, minor impact |
-| ⚪ Informational | 0.0 | As needed | Configuration improvement suggestions, no direct threat |
+**Impact Level Definitions**
 
-### CVSS Quick Reference
+Critical - The vulnerability has proven to be exploitable and could be expected to have multiple severe or catastrophic adverse effects on the organization. 
 
-```text
-CVSS v4.0 Base Metrics:
-AV: Network(N) / Adjacent(A) / Local(L) / Physical(P)
-AC: Low(L) / High(H)
-AT: None(N) / Present(P)
-PR: None(N) / Low(L) / High(H)
-UI: None(N) / Passive(P) / Active(A)
-VC/VI/VA: High(H) / Low(L) / None(N)    (Vulnerable system)
-SC/SI/SA: High(H) / Low(L) / None(N)    (Subsequent system)
+High - The vulnerability could be expected to have a severe or catastrophic adverse effect on the organization. 
 
-Online Calculator: https://www.first.org/cvss/calculator/4.0
-```
+Medium - The vulnerability could be expected to have a serious adverse effect on the organization. 
+
+Low - The vulnerability could be expected to have a limited adverse effect on the organization. 
+
+Very Low - Observation means that no action is required. This value is selected when the organization should maintain awareness of a security best practice or guideline.
+
+**Likelihood Definitions**
+
+Critical - Adversary is almost certain to initiate the threat event.
+
+High - Adversary is highly likely to initiate the threat event.
+
+Medium - Adversary is somewhat likely to initiate the threat event.
+
+Low - Adversary is unlikely to initiate the threat event.
+
+Very Low - Adversary is highly unlikely to initiate the threat event.
 
 ### Placeholder Rules
 
@@ -232,7 +164,6 @@ Use these rules to populate placeholders automatically:
 | `{System/Location}` | From nuclei `host` field, `matched-at` URL, or nmap target |
 | `{impact description}` | Infer from vulnerability type: SQLi → "unauthorized database access", RCE → "full system compromise" |
 | `F-###` | Auto-number: sort findings by severity (Critical→High→Medium→Low), assign F-001, F-002, ... |
-| CVSS fields | If tool output includes CVE number, look up CVSS at NVD; otherwise estimate from the CVSS Quick Reference table below |
 | Tools Used table | Extract tool names and versions from `{tool} --version 2>&1` or `{tool} -h` output during testing |
 
 ### Data Extraction Commands
@@ -253,11 +184,5 @@ grep '<port protocol="tcp".*state="open"' scan.xml | grep -oP 'portid="\K[^"]+' 
 1. Keep the executive summary non-technical and focused on business impact.
 2. Every finding should include affected assets, reproducible evidence, impact, and remediation guidance.
 3. Preserve authorization scope and testing constraints in the final report.
-
----
-
-## Official References
-
-- [OWASP Web Security Testing Guide](https://owasp.org/www-project-web-security-testing-guide/)
-- [OWASP Top 10](https://owasp.org/Top10/)
-- [FIRST CVSS](https://www.first.org/cvss/)
+4. Before the final report is generated, if there are any major questions about what has or hasn't been tested, ask the user and wait for the response. This can help ensure full coverage. During the assessment the user may perform checks, tests, or actions outside of the session that you might not be aware of.
+5. When determining impact and likelihood, ask for the user for any extra details that may be relevant to determining the accurate ratings for impact and likelihood. 

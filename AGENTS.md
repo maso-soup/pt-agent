@@ -38,7 +38,7 @@ Do not run Deep or intrusive checks by default unless the user explicitly reques
 
 ### 1.3 Select Playbook
 
-See the decision tree in `skills/playbooks/SKILL.md` to select the correct playbook.
+See the decision tree in `.claude/skills/playbooks/SKILL.md` to select the correct playbook.
 
 If no playbook fits, follow the standard lifecycle: information gathering -> vulnerability analysis -> web or exploitation -> post-exploitation -> reporting.
 
@@ -48,10 +48,10 @@ If no playbook fits, follow the standard lifecycle: information gathering -> vul
 
 Follow this 4-layer reading sequence:
 
-1. `skills/playbooks/SKILL.md` — select the correct playbook from the decision tree (at task start, or when switching playbooks mid-task).
-2. `skills/playbooks/<playbook>.md` — follow the scenario workflow for the current phase.
-3. `skills/<category>/SKILL.md` — use Golden Path and Decision Tree to select suitable tools for the current phase.
-4. `skills/<category>/tools/<toolname>.md` — read only for the tool you are about to run.
+1. `.claude/skills/playbooks/SKILL.md` — select the correct playbook from the decision tree (at task start, or when switching playbooks mid-task).
+2. `.claude/skills/playbooks/<playbook>.md` — follow the scenario workflow for the current phase.
+3. `.claude/skills/<category>/SKILL.md` — use Golden Path and Decision Tree to select suitable tools for the current phase.
+4. `.claude/skills/<category>/tools/<toolname>.md` — read only for the tool you are about to run.
 
 When a playbook hands off to another playbook, restart this sequence from layer 2 for the new playbook. Do not pre-read materials for phases you have not reached.
 
@@ -59,20 +59,20 @@ When a playbook hands off to another playbook, restart this sequence from layer 
 
 | Phase | Reference | Start here when... |
 |-------|-----------|---------------------|
-| Information Gathering | `skills/information-gathering/` | Need to discover hosts, ports, subdomains, or OSINT |
-| Vulnerability Analysis | `skills/vulnerability/` | Need to enumerate services or find vulnerabilities |
-| Sniffing & Spoofing | `skills/sniffing-spoofing/` | Need ARP spoofing, MITM, credential sniffing, DNS spoofing, or packet crafting |
-| Web Testing | `skills/web/` | Target is a web application, API (GraphQL, OpenAPI/REST, gRPC, WebSocket) |
-| Exploitation | `skills/exploitation/` | Vulnerabilities are confirmed and exploitation is authorized |
-| Password Attacks | `skills/password/` | Have hashes to crack or credentials/services to test |
-| Wireless | `skills/wireless/` | Target is a wireless network |
-| Cloud-Native | `skills/cloud-native/` | Target is cloud accounts, Kubernetes, containers, registries, or Docker hosts |
-| RFID/NFC | `skills/rfid-nfc/` | Target is RFID/NFC, Proxmark3, PC/SC, smart cards, or physical credentials |
-| VoIP-ICS | `skills/voip-ics/` | Target is VoIP, SIP/IAX, ICS, OT, PLCs, or Modbus |
-| Reverse Engineering | `skills/reverse-engineering/` | Need binary analysis, disassembly, firmware extraction, or mobile app decompilation |
-| Forensics | `skills/forensics/` | Analyzing disk images, memory dumps, traffic captures, or logs |
-| Post-Exploitation | `skills/post-exploitation/` | Have initial access and need to escalate, pivot, analyze AD, or inspect binaries for privesc |
-| Reporting | `skills/reporting/` | Testing complete and a report is required |
+| Information Gathering | `.claude/skills/information-gathering/` | Need to discover hosts, ports, subdomains, or OSINT |
+| Vulnerability Analysis | `.claude/skills/vulnerability/` | Need to enumerate services or find vulnerabilities |
+| Sniffing & Spoofing | `.claude/skills/sniffing-spoofing/` | Need ARP spoofing, MITM, credential sniffing, DNS spoofing, or packet crafting |
+| Web Testing | `.claude/skills/web/` | Target is a web application, API (GraphQL, OpenAPI/REST, gRPC, WebSocket) |
+| Exploitation | `.claude/skills/exploitation/` | Vulnerabilities are confirmed and exploitation is authorized |
+| Password Attacks | `.claude/skills/password/` | Have hashes to crack or credentials/services to test |
+| Wireless | `.claude/skills/wireless/` | Target is a wireless network |
+| Cloud-Native | `.claude/skills/cloud-native/` | Target is cloud accounts, Kubernetes, containers, registries, or Docker hosts |
+| RFID/NFC | `.claude/skills/rfid-nfc/` | Target is RFID/NFC, Proxmark3, PC/SC, smart cards, or physical credentials |
+| VoIP-ICS | `.claude/skills/voip-ics/` | Target is VoIP, SIP/IAX, ICS, OT, PLCs, or Modbus |
+| Reverse Engineering | `.claude/skills/reverse-engineering/` | Need binary analysis, disassembly, firmware extraction, or mobile app decompilation |
+| Forensics | `.claude/skills/forensics/` | Analyzing disk images, memory dumps, traffic captures, or logs |
+| Post-Exploitation | `.claude/skills/post-exploitation/` | Have initial access and need to escalate, pivot, analyze AD, or inspect binaries for privesc |
+| Reporting | `.claude/skills/reporting/` | Testing complete and a report is required |
 
 Use multiple complementary tools for critical checks. A clean result from one tool is not proof that the target is clean.
 
@@ -95,24 +95,23 @@ Use multiple complementary tools for critical checks. A clean result from one to
 
 ### Artifact and State Management
 
-State files live on the Agent's local host at `/tmp/pt-agent-state/<target>/`. Raw tool output lives in `/tmp/pt-agent-output/<target>`).
+State files live on the Agent's local host at `~/pt-agent-state/<target>/`. Raw tool output lives in `~/pt-agent-output/<target>`.
 
-Before starting each new task, create the temporary directory for state files:
+Before starting each new task, create the directories for state and output files:
 
 ```bash
-mkdir -p /tmp/pt-agent-state/<target>/
+mkdir -p ~/pt-agent-state/<target>/
+mkdir -p ~/pt-agent-output/<target>/
 ```
 
-This runs directly on the Agent host.
-
-After each tool execution, extract key findings to that state directory.
+After each tool execution, extract key findings to the relevant directory.
 
 Rules:
 - Do not rely on conversation memory — state files are the only data that survives context compression.
 - At the start of each new phase, re-read state files to confirm current progress.
-- When switching playbooks, write the return point to `todo.txt` under `/tmp/pt-agent-state/<target>/`. When returning to a playbook, read `todo.txt` to resume at the correct phase and process deferred items.
+- When switching playbooks, write the return point to `todo.txt` under `~/pt-agent-state/<target>/`. When returning to a playbook, read `todo.txt` to resume at the correct phase and process deferred items.
 
-See `skills/state-files/SKILL.md` for file formats and naming.
+See `.claude/skills/state-files/SKILL.md` for file formats and naming.
 
 ### Output Management
 
@@ -136,14 +135,14 @@ Large tool outputs (full port scans, vulnerability scanners with thousands of te
 - **STOP on Critical/High finding:** Notify the user immediately and wait for explicit confirmation before further exploitation or escalation.
 - If exploitation fails, return to enumeration with a narrower hypothesis instead of repeating the same tool.
 - If new hosts, credentials, domains, or pivots are discovered, restart the relevant playbook within the authorized scope.
-- Update `/tmp/pt-agent-state/<target>/` files with each iteration's new findings before planning the next action.
+- Update `~/pt-agent-state/<target>/` files with each iteration's new findings before planning the next action.
 - **Self-check before closing a service:** Before marking any service as done, verify that every item from the Execution Standards systematic testing requirements has been completed or explicitly recorded as not applicable. A service that "looks secure" has not been tested — it has only been identified.
 
 ## Step 4: Report
 
-Follow `skills/playbooks/reporting-workflow.md` step by step — it is an 8-step workflow, not a single "write report" action. Use `skills/reporting/tools/report-template.md` as the document structure — do not invent a custom structure.
+Follow `.claude/skills/playbooks/reporting-workflow.md` step by step — it is an 8-step workflow, not a single "write report" action. Use `.claude/skills/reporting/tools/report-template.md` as the document structure — do not invent a custom structure.
 
-Before starting the report, execute the active playbook's Stop When checklist. Unmet items require returning to the relevant phase — do not proceed to reporting with known coverage gaps undocumented.
+Before starting the report, execute the active playbook's Stop When checklist. Unmet items require returning to the relevant phase — do not proceed to reporting with known coverage gaps undocumented. If any coverage gaps remain after that and cannot be reconciled, ask the user for relevant information or to make a decision. 
 
 Include:
 
@@ -153,17 +152,17 @@ Include:
 - Negative results that matter, such as unreachable hosts or services tested with no finding.
 - Artifacts produced and where they were saved.
 
-See `skills/reporting/SKILL.md` for reporting tool selection.
+See `.claude/skills/reporting/SKILL.md` for reporting tool selection.
 
 ### Report File Generation
 
-Reports can exceed 20KB. Do not attempt to write the full report in a single tool call — split into segments (≤8KB each) using `cat >` for the first segment and `cat >>` for subsequent ones. Write the report to `/tmp/pt-agent-state/<target>/`.
+Reports can exceed 20KB. Do not attempt to write the full report in a single tool call — split into segments (≤8KB each) using `cat >` for the first segment and `cat >>` for subsequent ones. Write the report to `~/pt-agent-state/<target>/`.
 
 ---
 
 ## Skills Layout
 
-- `skills/state-files/` defines how to keep track of the status of the engagement, workflows, and tools.
-- `skills/playbooks/` defines scenario workflows and decision points.
-- `skills/<category>/SKILL.md` helps select suitable tools in a category.
-- `skills/<category>/tools/<name>.md` provides concrete command parameters and examples.
+- `.claude/skills/state-files/` defines how to keep track of the status of the engagement, workflows, and tools.
+- `.claude/skills/playbooks/` defines scenario workflows and decision points.
+- `.claude/skills/<category>/SKILL.md` helps select suitable tools in a category.
+- `.claude/skills/<category>/tools/<name>.md` provides concrete command parameters and examples.

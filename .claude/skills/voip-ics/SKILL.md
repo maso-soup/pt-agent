@@ -25,40 +25,40 @@ Tools for authorized assessment of niche or high-sensitivity protocols such as V
 
 ## VoIP
 
-**[sipvicious](sipvicious.md)** — SIP discovery, enumeration, and credential testing
+**[sipvicious](tools/sipvicious.md)** — SIP discovery, enumeration, and credential testing
 Discovers SIP services, enumerates extensions, and tests SIP credentials when authorized.
 
-**[enumiax](enumiax.md)** — IAX2 username enumeration
+**[enumiax](tools/enumiax.md)** — IAX2 username enumeration
 Enumerates IAX users on Asterisk systems.
 
-**[voiphopper](voiphopper.md)** — Voice VLAN discovery and hopping assessment
+**[voiphopper](tools/voiphopper.md)** — Voice VLAN discovery and hopping assessment
 Tests CDP/LLDP-MED voice VLAN exposure from a local network port.
 
-**[sippts](sippts.md)** — Comprehensive SIP penetration testing suite
+**[sippts](tools/sippts.md)** — Comprehensive SIP penetration testing suite
 A full-featured SIP security testing toolkit covering service scanning, extension enumeration, authentication cracking, call simulation, and RTP stream testing. Provides deeper SIP-specific testing capabilities beyond sipvicious.
 
 ---
 
 ## ICS and OT
 
-**[plcscan](plcscan.md)** — PLC and ICS service discovery
+**[plcscan](tools/plcscan.md)** — PLC and ICS service discovery
 Identifies PLC and industrial protocol exposure in authorized OT ranges.
 
-**[modbus-cli](modbus-cli.md)** — Modbus TCP client
+**[modbus-cli](tools/modbus-cli.md)** — Modbus TCP client
 Reads Modbus coils and registers for controlled validation.
 
 ---
 
 ## Layer 2 Protocols
 
-**[yersinia](yersinia.md)** — Layer 2 protocol attack framework
+**[yersinia](tools/yersinia.md)** — Layer 2 protocol attack framework
 Attacks and tests Layer 2 protocols including STP (root bridge takeover), CDP (flooding/spoofing), DTP (VLAN trunk negotiation), DHCP (starvation/rogue server), HSRP (active router hijacking), 802.1Q (VLAN hopping), and 802.1X (EAP injection). Highly disruptive — use only in isolated, authorized test environments.
 
 ---
 
 ## IPMI / BMC
 
-**[ipmitool](ipmitool.md)** — IPMI/BMC management and security testing
+**[ipmitool](tools/ipmitool.md)** — IPMI/BMC management and security testing
 Manages and tests Baseboard Management Controllers via the IPMI protocol. Enumerates BMC users, tests default credentials, retrieves RAKP hashes (IPMI v2.0 cipher zero vulnerability), and accesses Serial-over-LAN for remote console. Essential for any network containing server hardware with out-of-band management interfaces.
 
 Common checks:
@@ -73,8 +73,8 @@ Common checks:
 
 For SNMP community string testing and enumeration, use the tools documented in the vulnerability analysis category:
 
-- [onesixtyone](onesixtyone.md) — fast SNMP community string brute-force
-- [snmpwalk](snmpwalk.md) — full SNMP MIB tree walk with known community strings
+- [onesixtyone](../vulnerability/tools/onesixtyone.md) — fast SNMP community string brute-force
+- [snmpwalk](../vulnerability/tools/snmpwalk.md) — full SNMP MIB tree walk with known community strings
 
 SNMP often exposes system details, network configuration, running processes, and installed software that feed directly into further enumeration.
 

@@ -1,6 +1,6 @@
 ---
-name: Reporting
-description: The penetration test report is the final deliverable. Use this skill when beginning to create the final report.
+name: reporting
+description: The penetration test report is the final deliverable. Use when beginning to create the final report.
 ---
 
 # Reporting
@@ -27,14 +27,14 @@ For bulk web service screenshots, use `gowitness` or `eyewitness` from the infor
 
 ## Document Processing
 
-**[pandoc](pandoc.md)** — Document format conversion  
+**[pandoc](tools/pandoc.md)** — Document format conversion  
 Converts Markdown to Word/PDF/HTML and other formats. Can be used with report templates to batch-generate professional reports.  
 
 ---
 
 ## Report Templates and Standards
 
-**[report-template](report-template.md)** — Standard report template  
+**[report-template](tools/report-template.md)** — Standard report template  
 Includes a complete penetration test report structure template, risk level definitions (CVSS scoring), and vulnerability description standards.  
 
 ---

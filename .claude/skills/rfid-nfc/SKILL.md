@@ -24,23 +24,23 @@ Tools for authorized RFID/NFC, Proxmark3, PC/SC smart-card, and physical credent
 
 ## RFID and NFC
 
-**[proxmark3](proxmark3.md)** — RFID/NFC research and card assessment platform
+**[proxmark3](tools/proxmark3.md)** — RFID/NFC research and card assessment platform
 CLI tool for LF/HF card identification, MIFARE checks, dumps, simulation, and cloning workflows.
 
-**[libnfc tools](libnfc.md)** — NFC reader utilities
+**[libnfc tools](tools/libnfc.md)** — NFC reader utilities
 Includes `nfc-list`, `nfc-poll`, and `nfc-mfclassic` for NFC tag detection and MIFARE Classic reads.
 
 ---
 
 ## Smart Cards
 
-**[opensc-tool](opensc-tool.md)** — PC/SC smart-card inventory
+**[opensc-tool](tools/opensc-tool.md)** — PC/SC smart-card inventory
 Lists readers and cards, including ATR information.
 
-**[pkcs15-tool](pkcs15-tool.md)** — PKCS#15 smart-card data access
+**[pkcs15-tool](tools/pkcs15-tool.md)** — PKCS#15 smart-card data access
 Reads certificates and token objects from supported smart cards.
 
-**[scriptor](scriptor.md)** — text-mode APDU script runner
+**[scriptor](tools/scriptor.md)** — text-mode APDU script runner
 Sends scripted APDU commands to smart cards through PC/SC.
 
 ---

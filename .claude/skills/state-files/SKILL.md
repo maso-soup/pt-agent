@@ -9,7 +9,7 @@ State files persist key findings on the Agent's local host so progress survives 
 
 ## State Directory
 
-Location: `/tmp/pt-agent-state/<target>/`
+Location: `~/pt-agent-state/<target>/`
 
 Naming rules for `<target>`:
 
@@ -35,7 +35,7 @@ Naming rules for `<target>`:
 
 ## Raw Tool Output
 
-Raw tool output lives in `/tmp/pt-agent-output/<target>/`.
+Raw tool output lives in `~/pt-agent-output/<target>/`.
 
 | Data | Preferred format |
 |------|------------------|

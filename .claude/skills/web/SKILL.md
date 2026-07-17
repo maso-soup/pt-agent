@@ -38,22 +38,22 @@ A toolset for security testing of Web applications, APIs, CMSes, and more. Cover
 
 ## Vulnerability Scanning
 
-**[nuclei](nuclei.md)** — Template-based Web vulnerability scanning
+**[nuclei](../vulnerability/tools/nuclei.md)** — Template-based Web vulnerability scanning
 A high-speed vulnerability scanning framework based on YAML templates. 12000+ templates cover Web CVEs, misconfigurations, exposure detection, API security testing, and more — with a low false-positive rate. **In Web penetration testing, most commonly used for quickly detecting known CVEs and common misconfigurations; should be run early in almost every Web assessment.**
 
-**[nikto](nikto.md)** — Web server vulnerability scanning
+**[nikto](tools/nikto.md)** — Web server vulnerability scanning
 Quickly scans Web servers for known vulnerabilities, misconfigurations, and outdated software. Contains 6700+ detection checks. Suitable for quickly finding low-hanging fruit, but scanning has a distinctive fingerprint and is easily detected.
 
-**[zaproxy](zaproxy.md)** — OWASP ZAP CLI and DAST automation
+**[zaproxy](tools/zaproxy.md)** — OWASP ZAP CLI and DAST automation
 OWASP ZAP is a web security testing proxy and DAST scanner with official command-line, daemon/API, Automation Framework, and Docker packaged scan support. Use baseline scans for low-impact passive testing, API scans for OpenAPI/GraphQL targets, and full scans only with explicit authorization.
 
-**[wapiti](wapiti.md)** — Black-box web vulnerability scanner
+**[wapiti](tools/wapiti.md)** — Black-box web vulnerability scanner
 A black-box web application vulnerability scanner that crawls target sites and tests for XSS, SQL injection, SSRF, XXE, command injection, CRLF injection, open redirects, and more. Generates HTML/JSON/XML reports. Useful as a complementary scanner alongside `nuclei` and `nikto`.
 
-**[slowhttptest](slowhttptest.md)** — HTTP slow attack testing
+**[slowhttptest](tools/slowhttptest.md)** — HTTP slow attack testing
 Tests web servers for vulnerability to slow HTTP attacks including Slowloris (slow headers), Slow POST (slow body), Slow Read (small receive window), and Range Header DoS. Identifies servers susceptible to connection exhaustion with minimal bandwidth.
 
-**[subjack](subjack.md)** — Subdomain takeover detection
+**[subjack](tools/subjack.md)** — Subdomain takeover detection
 Scans subdomains for potential takeover vulnerabilities caused by deprovisioned cloud services (S3 buckets, Azure, GitHub Pages, Heroku, etc.). Checks CNAME records against known fingerprints of claimable services. Pipeline-friendly for bulk scanning after subdomain enumeration.
 
 ---
@@ -68,22 +68,22 @@ Injection vulnerabilities remain the most impactful class of Web flaws. Choose t
 | Command injection | `commix` | Parameters that may reach OS commands (`ping`, `curl`, `system()`) |
 | SSTI | `sstimap` | Template-rendered user input (Jinja2, Twig, Smarty, Freemarker) |
 
-**[sqlmap](sqlmap.md)** — SQL injection automation
+**[sqlmap](tools/sqlmap.md)** — SQL injection automation
 The most powerful SQL injection detection and exploitation tool. Supports Union/blind/error-based/time-based injection and all other injection types, covering MySQL/MSSQL/Oracle/PostgreSQL and other major databases. Can automatically obtain a shell. The standard tool for SQL injection testing.
 
-**[commix](commix.md)** — Command injection automation
+**[commix](tools/commix.md)** — Command injection automation
 Similar to sqlmap but focused on command injection vulnerabilities. Automatically detects injection points in GET/POST/Cookie/Header, and supports obtaining an interactive shell. Suitable for discovering OS command injection vulnerabilities.
 
-**[sstimap](sstimap.md)** — Server-Side Template Injection detection
+**[sstimap](tools/sstimap.md)** — Server-Side Template Injection detection
 Automated SSTI detection and exploitation supporting Jinja2, Twig, Smarty, and other template engines. Can escalate to remote command execution, file read/write. The sqlmap equivalent for SSTI vulnerabilities.
 
-**[tinja](tinja.md)** — Automated SSTI detection and exploitation
+**[tinja](tools/tinja.md)** — Automated SSTI detection and exploitation
 Detects and exploits Server-Side Template Injection vulnerabilities across multiple template engines. Automatically identifies the engine type and attempts code execution. Complements sstimap with additional engine support and detection techniques.
 
-**[phpggc](phpggc.md)** — PHP deserialization gadget chain generator
+**[phpggc](tools/phpggc.md)** — PHP deserialization gadget chain generator
 Generates serialized PHP payloads exploiting known gadget chains in 100+ frameworks and libraries (Laravel, Symfony, WordPress, Magento, etc.). Use when a PHP deserialization sink is confirmed to produce RCE, file write, or SSRF payloads.
 
-**[padbuster](padbuster.md)** — Padding oracle attack automation
+**[padbuster](tools/padbuster.md)** — Padding oracle attack automation
 Automates padding oracle attacks against CBC-mode encrypted tokens and parameters. Decrypts ciphertext and forges valid encrypted values without knowing the key. Use when a web application leaks padding validation errors in responses.
 
 ---
@@ -98,88 +98,88 @@ Client-side vulnerabilities — XSS, CRLF injection, and header injection — ar
 | XSS (depth analysis) | `xsstrike` | Blind XSS testing for backend panels |
 | CRLF injection | `crlfuzz` | Pipeline-friendly; reads URLs from stdin |
 
-**[dalfox](dalfox.md)** — Automated XSS detection
+**[dalfox](tools/dalfox.md)** — Automated XSS detection
 An intelligent XSS detection tool with low false-positive rates and fast speed. Supports reflected and DOM-based XSS; can batch-scan URLs or be used with pipes. Suitable for large-scale XSS testing and Bug Bounty programs.
 
-**[xsstrike](xsstrike.md)** — Context-aware XSS detection
+**[xsstrike](tools/xsstrike.md)** — Context-aware XSS detection
 An advanced XSS scanner that analyzes HTML/JavaScript context to generate precise, WAF-bypassing payloads. Supports crawling, blind XSS testing (for backend panels), and WAF fingerprinting. Complements dalfox in depth-over-speed scenarios.
 
-**[crlfuzz](crlfuzz.md)** — CRLF injection scanner
+**[crlfuzz](tools/crlfuzz.md)** — CRLF injection scanner
 A fast Go-based scanner for CRLF (Carriage Return Line Feed) injection vulnerabilities. Tests whether user-supplied input can inject CR+LF characters into HTTP headers, enabling response splitting and header injection. Pipeline-friendly — reads URLs from stdin or a file.
 
 ---
 
 ## Directory and Parameter Enumeration
 
-**[gobuster](gobuster.md)** — Directory/DNS/virtual host brute-forcing
+**[gobuster](tools/gobuster.md)** — Directory/DNS/virtual host brute-forcing
 A dictionary-based multi-mode brute-forcing tool supporting dir (directory), dns (subdomain), and vhost (virtual host) modes. Fast and suitable for quick enumeration of small to medium targets.
 
-**[dirb](dirb.md)** — Classic web directory/file brute-forcer
+**[dirb](tools/dirb.md)** — Classic web directory/file brute-forcer
 A traditional URL brute-forcing tool that tests paths from wordlists against a web server. Supports custom user agents, cookies, authentication, and certificate-based connections. A simple, reliable fallback when more modern tools are unavailable.
 
-**[dirsearch](dirsearch.md)** — Web directory brute-forcing with extension chaining
+**[dirsearch](tools/dirsearch.md)** — Web directory brute-forcing with extension chaining
 A fast web path scanner with a built-in wordlist and multi-extension support. Supports recursive scanning and multiple output formats. Useful as a cross-check alongside feroxbuster and gobuster.
 
-**[ffuf](ffuf.md)** — High-speed Web fuzzing
+**[ffuf](tools/ffuf.md)** — High-speed Web fuzzing
 More flexible than gobuster; can fuzz any position in URLs, Headers, and Body. Supports multiple keyword substitution, response filtering, and output format selection. Suitable for fuzzing scenarios requiring fine-grained control.
 
-**[feroxbuster](feroxbuster.md)** — Recursive directory enumeration
+**[feroxbuster](tools/feroxbuster.md)** — Recursive directory enumeration
 Written in Rust; supports automatic recursive subdirectory discovery, extremely fast, with automatic deduplication. Suitable for scenarios requiring deep directory traversal — an alternative to gobuster for recursive enumeration.
 
-**[wfuzz](wfuzz.md)** — Web fuzzing framework
+**[wfuzz](tools/wfuzz.md)** — Web fuzzing framework
 A powerful Web Fuzzer supporting multiple payload types, encoders, and filters. Suitable for complex testing scenarios such as authentication bypass and parameter enumeration.
 
-**[gospider](gospider.md)** — Fast web spider for endpoint and subdomain discovery
+**[gospider](tools/gospider.md)** — Fast web spider for endpoint and subdomain discovery
 A Go-based web spider that discovers URLs, JavaScript endpoints, subdomains, and AWS S3 buckets. Also queries historical URLs from the Wayback Machine, Common Crawl, and VirusTotal. Supports parallel multi-site crawling.
 
-**[katana](katana.md)** — Modern web crawler and endpoint discovery
+**[katana](tools/katana.md)** — Modern web crawler and endpoint discovery
 ProjectDiscovery's CLI crawler for HTTP and optional headless browser crawling. Supports JavaScript endpoint parsing, known-file crawling, form extraction, scope controls, JSONL output, and pipelines into nuclei or parameter discovery tools.
 
-**[arjun](arjun.md)** — Hidden HTTP parameter discovery
+**[arjun](tools/arjun.md)** — Hidden HTTP parameter discovery
 Specifically designed to discover hidden parameters in Web endpoints. Supports GET/POST/JSON/XML; helps find injection points that might otherwise be overlooked. Suitable for API testing and parameter mining.
 
 ---
 
 ## CMS Scanning
 
-**[wpscan](wpscan.md)** — WordPress security scanning
+**[wpscan](tools/wpscan.md)** — WordPress security scanning
 A WordPress-specific scanning tool that enumerates users/plugins/themes, detects known CVEs, and supports password brute-forcing. An essential tool for assessing WordPress sites.
 
-**[cmseek](cmseek.md)** — CMS detection and enumeration
+**[cmseek](tools/cmseek.md)** — CMS detection and enumeration
 Detects 180+ CMS types (WordPress, Joomla, Drupal, etc.) and enumerates version, users, plugins, and themes. Automatically identifies the target CMS and retrieves associated information for vulnerability research.
 
-**[joomscan](joomscan.md)** — Joomla-specific vulnerability scanning
+**[joomscan](tools/joomscan.md)** — Joomla-specific vulnerability scanning
 OWASP JoomScan checks Joomla versions, components, administrative paths, common backup/config files, and Joomla-specific exposure. Use it after fingerprinting confirms or strongly suggests Joomla.
 
 ---
 
 ## WebDAV Testing
 
-**[davtest](davtest.md)** — WebDAV server testing
+**[davtest](tools/davtest.md)** — WebDAV server testing
 Tests WebDAV-enabled web servers for file upload and execution capabilities. Uploads files with various extensions (PHP, ASP, JSP, CGI, etc.) and verifies whether they can be executed on the server. Essential for identifying file upload vulnerabilities on WebDAV endpoints.
 
-**[weevely](weevely.md)** — Obfuscated PHP webshell generator and manager
+**[weevely](tools/weevely.md)** — Obfuscated PHP webshell generator and manager
 Generates obfuscated PHP webshells and provides an interactive terminal with built-in post-exploitation modules for file management, network pivoting, brute-forcing, and privilege escalation. Use after gaining file upload or code execution on a PHP-based target.
 
 ---
 
 ## Source and Secret Scanning
 
-**[gitleaks](gitleaks.md)** — Git and source secret scanning
+**[gitleaks](tools/gitleaks.md)** — Git and source secret scanning
 Scans Git repositories, directories, files, and stdin for hardcoded secrets such as passwords, API keys, and tokens. Use it when source code, exposed `.git` data, deployment bundles, or CI artifacts are in scope.
 
 ---
 
 ## Authentication Testing
 
-**[jwt_tool](jwt_tool.md)** — JWT vulnerability testing
+**[jwt_tool](tools/jwt_tool.md)** — JWT vulnerability testing
 A toolkit for analyzing and attacking JSON Web Tokens. Tests for alg:none, algorithm confusion (RS256→HS256), weak secrets, and claim injection. Essential for any API or Single Page Application (SPA) assessment.
 
 ---
 
 ## Proxy and Traffic Interception
 
-**[mitmproxy](mitmproxy.md)** — Scriptable HTTP(S) interception proxy
+**[mitmproxy](tools/mitmproxy.md)** — Scriptable HTTP(S) interception proxy
 Official CLI-capable interception proxy toolkit. Use `mitmdump` for non-interactive capture, HAR export, request replay, reverse proxy mode, SOCKS mode, and Python addon-based traffic inspection or modification.
 
 ---
@@ -188,25 +188,25 @@ Official CLI-capable interception proxy toolkit. Use `mitmdump` for non-interact
 
 Modern web applications increasingly rely on APIs (REST, GraphQL, gRPC) and WebSocket connections rather than traditional form-based interactions. When the target exposes API endpoints or real-time WebSocket channels, use these tools for schema-driven tests, introspection exploitation, and protocol-specific fuzzing.
 
-**[kiterunner](kiterunner.md)** — API route discovery
+**[kiterunner](tools/kiterunner.md)** — API route discovery
 Discovers REST API routes using API-aware wordlists. Use instead of `ffuf`/`feroxbuster` for API-specific path patterns.
 
-**[schemathesis](schemathesis.md)** — Schema-based API fuzzing
+**[schemathesis](tools/schemathesis.md)** — Schema-based API fuzzing
 Generates API requests from OpenAPI or GraphQL schemas to detect crashes and schema violations. High-risk; explicit approval required.
 
-**[graphw00f](graphw00f.md)** — GraphQL engine fingerprinting
+**[graphw00f](tools/graphw00f.md)** — GraphQL engine fingerprinting
 Identifies GraphQL server implementations and engine-specific behavior.
 
-**[clairvoyance](clairvoyance.md)** — GraphQL schema recovery
+**[clairvoyance](tools/clairvoyance.md)** — GraphQL schema recovery
 Infers schema details when introspection is disabled. Avoid when request volume is not approved.
 
-**[grpcurl](grpcurl.md)** — gRPC command-line client
+**[grpcurl](tools/grpcurl.md)** — gRPC command-line client
 Lists services, describes methods, and invokes RPC calls. Requires proto files if reflection is disabled.
 
-**[websocat](websocat.md)** — WebSocket command-line client
+**[websocat](tools/websocat.md)** — WebSocket command-line client
 Sends and receives WebSocket messages for handshake and message-level testing.
 
-**[mitmproxy2swagger](mitmproxy2swagger.md)** — OpenAPI specification recovery
+**[mitmproxy2swagger](tools/mitmproxy2swagger.md)** — OpenAPI specification recovery
 Converts captured HTTP traffic into OpenAPI 3.0 definitions. Requires representative captured traffic.
 
 ---
@@ -227,7 +227,13 @@ Select the approach when the Golden Path doesn't fit:
 | API with OpenAPI/Swagger spec available | `schemathesis` for automated spec-driven testing |
 | GraphQL endpoint detected | `graphw00f` fingerprint, then `clairvoyance` for schema recovery if introspection disabled |
 | Need recursive directory discovery | `feroxbuster` (auto-recursive); `ffuf` for custom recursion logic |
-| API requires custom request signing (HMAC, timestamp, nonce, encrypted login) | `mitmproxy` addon with `--set http2=false` as signing proxy (see [mitmproxy](mitmproxy.md)); proxy-incompatible tools (nikto) inject auth headers directly via their own header flags |
+| API requires custom request signing (HMAC, timestamp, nonce, encrypted login) | `mitmproxy` addon with `--set http2=false` as signing proxy (see [mitmproxy](tools/mitmproxy.md)); proxy-incompatible tools (nikto) inject auth headers directly via their own header flags |
+
+---
+
+## Playbook
+
+For the full scenario workflow, priority checks, and risk gates, see `../playbooks/web-application.md` (or `../playbooks/api-security.md` for GraphQL/OpenAPI/gRPC/WebSocket targets).
 
 ---
 

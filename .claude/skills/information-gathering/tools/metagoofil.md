@@ -1,7 +1,7 @@
 # Metagoofil
 
 - **Category**: Information Gathering / OSINT
-- **Risk Level**: 🟢
+- **Risk Level**: 🟢 Low
 
 ---
 

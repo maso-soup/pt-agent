@@ -59,23 +59,6 @@ Use after testing, or throughout testing to keep evidence ready for a final repo
    pandoc /tmp/report/report.md -o /tmp/report/report.pdf --pdf-engine=wkhtmltopdf
    ```
 
-   Transfer evidence from the test environment to the report host before generating the report:
-
-   ```bash
-   # Copy evidence from remote Kali over SSH
-   scp -r user@kali:/tmp/pentest_evidence/ /tmp/report/evidence/
-   # Or copy evidence from a Docker container
-   docker cp kali-pentest:/tmp/pentest_evidence/ /tmp/report/evidence/
-   ```
-
-   **Multi-source evidence collection:** Evidence may be on multiple hosts — Kali server (nmap, nuclei, hashcat outputs), target hosts (linpeas, config files, bash_history), pivot hosts (additional scan outputs), and the local workstation (screenshots, notes). Collect from all sources before generating the report.
-
-   6b. **Remediation prioritization**
-   - Order fixes by: risk severity x ease of exploitation x business impact.
-   - Group related findings that share a common root cause or remediation path.
-   - Identify quick wins (low effort, high impact) vs long-term improvements (architectural changes, process updates).
-   - Note dependencies between remediations — for example, fixing a shared authentication flaw may resolve multiple downstream findings.
-
 7. **Peer review**
    - Before final delivery, conduct a peer review covering:
      - Technical accuracy: are findings correctly described and categorized?

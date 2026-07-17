@@ -26,42 +26,42 @@ Intercept, manipulate, and forge network traffic on local and adjacent network s
 
 ## Network MITM
 
-**[bettercap](bettercap.md)** — Modern network MITM and attack framework
+**[bettercap](tools/bettercap.md)** — Modern network MITM and attack framework
 A fully-featured network attack framework and modern replacement for Ettercap. Supports ARP spoofing, DNS spoofing, SSL stripping, HTTP/HTTPS traffic interception, WiFi attacks, and BLE scanning. Provides an interactive console, Web UI, and REST API for automation.
 
-**[ettercap](ettercap.md)** — LAN man-in-the-middle attack suite
+**[ettercap](tools/ettercap.md)** — LAN man-in-the-middle attack suite
 A comprehensive MITM attack suite for LAN environments. Supports ARP poisoning, ICMP redirect, and DHCP spoofing to intercept traffic between hosts; automatically dissects and displays credentials from HTTP, FTP, Telnet, POP3, and other protocols. Always use `-T` (text mode) for CLI/automated operation.
 
-**[dsniff](dsniff.md)** — Network sniffing and spoofing suite
+**[dsniff](tools/dsniff.md)** — Network sniffing and spoofing suite
 A collection of network auditing tools including `arpspoof` (ARP poisoning), `dnsspoof` (DNS spoofing), `macof` (MAC flooding), `urlsnarf` (URL logging), `tcpkill` (connection termination), and passive password sniffing for 30+ cleartext protocols. Useful for targeted interception tasks when bettercap's full framework is not needed.
 
-**[dnschef](dnschef.md)** — Configurable DNS proxy for domain spoofing
+**[dnschef](tools/dnschef.md)** — Configurable DNS proxy for domain spoofing
 A highly configurable DNS proxy that selectively spoofs DNS responses for specified domains while passing all other queries to a legitimate upstream resolver. Useful during MITM attacks for redirecting specific services without disrupting all DNS traffic.
 
-**[sslstrip](sslstrip.md)** — HTTPS downgrade attack tool
+**[sslstrip](tools/sslstrip.md)** — HTTPS downgrade attack tool
 Strips SSL/TLS from HTTPS connections between the victim and the attacker proxy, presenting HTTP to the victim while maintaining HTTPS to the server. Used in MITM scenarios to capture credentials transmitted over supposedly secure connections.
 
 ---
 
 ## Packet Crafting
 
-**[scapy](scapy.md)** — Python packet manipulation framework
+**[scapy](tools/scapy.md)** — Python packet manipulation framework
 Crafts, sends, sniffs, and dissects packets at any protocol layer from Python. More flexible than hping3 for complex scenarios: ARP scanning, custom protocol fuzzing, PoC exploit development, and multi-step packet exchanges. Used both interactively and as a Python library.
 
-**[hping3](hping3.md)** — Custom TCP/IP packet crafting
+**[hping3](tools/hping3.md)** — Custom TCP/IP packet crafting
 An active network packet crafting tool supporting TCP, UDP, ICMP, and raw IP modes. Used for firewall rule testing, port scanning with custom TCP flags, TCP traceroute that bypasses ICMP filters, and DoS simulation. Irreplaceable for low-level network probing where fine-grained single-packet control is needed.
 
-**[netsniff-ng](netsniff-ng.md)** — High-performance zero-copy packet capture toolkit
+**[netsniff-ng](tools/netsniff-ng.md)** — High-performance zero-copy packet capture toolkit
 A high-performance Linux networking toolkit featuring zero-copy packet capture (netsniff-ng), traffic generation (trafgen), stateless traceroute (astraceroute), and pcap manipulation. Suitable for high-throughput environments where tcpdump performance is insufficient.
 
-**[ngrep](ngrep.md)** — Network grep
+**[ngrep](tools/ngrep.md)** — Network grep
 Applies regex pattern matching against live network traffic or pcap files, displaying packets that match specified patterns. Useful for quickly finding cleartext credentials, specific protocol strings, or suspicious content in network streams.
 
 ---
 
 ## MAC Address Spoofing
 
-**[macchanger](macchanger.md)** — MAC address spoofing
+**[macchanger](tools/macchanger.md)** — MAC address spoofing
 Changes the network interface MAC address to prevent hardware identification in ARP tables, DHCP logs, and switch CAM tables. Use before any network scanning or MITM operation.
 
 ---
