@@ -1,5 +1,5 @@
 ---
-name: Information Gathering and Reconnaissance
+name: information-gathering
 description: The first phase of penetration testing. The goal is to collect as much information about the target as possible without triggering alerts. Divided into passive reconnaissance (no contact with the target, pure OSINT) and active reconnaissance (direct interaction with the target).
 ---
 

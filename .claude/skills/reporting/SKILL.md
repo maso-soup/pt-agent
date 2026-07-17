@@ -46,23 +46,6 @@ A professional penetration test report should include:
 1. **Executive Summary** — high-level risk overview for management; no technical jargon
 2. **Scope and Methodology** — target assets, testing window, approach, and any limitations
 3. **Findings** — each finding with title, severity, description, evidence (screenshots/commands), affected assets, and remediation
-4. **Remediation Summary** — prioritized action items grouped by severity
-5. **Appendix** — raw tool output, full scan results, wordlists used, and environment details
-
----
-
-## Severity Framework
-
-Use CVSS v3.1 or v4.0 for consistent severity scoring:
-
-| Rating | CVSS Score | Description |
-|--------|-----------|-------------|
-| Critical | 9.0 - 10.0 | Immediate exploitation risk, full system compromise |
-| High | 7.0 - 8.9 | Significant impact, likely exploitable |
-| Medium | 4.0 - 6.9 | Moderate impact, requires specific conditions |
-| Low | 0.1 - 3.9 | Minor impact, informational or defense-in-depth |
-
-Reference `tools/report-template.md` for the full template with CVSS scoring guidelines.
 
 ---
 

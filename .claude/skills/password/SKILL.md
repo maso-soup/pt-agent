@@ -1,5 +1,5 @@
 ---
-name: Password Attacks
+name: password
 description: Password attacks cover techniques including online brute-forcing, offline hash cracking, wordlist generation, and network hash capture. They are a key method for gaining access during penetration testing.
 ---
 

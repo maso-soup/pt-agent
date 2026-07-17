@@ -1,5 +1,5 @@
 ---
-name: Specialized Protocols
+name: voip-ics
 description: Tools for authorized assessment of niche or high-sensitivity protocols such as VoIP and ICS/OT. Use conservative defaults and confirm protocol-specific safety constraints before active testing.
 ---
 

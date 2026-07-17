@@ -1,5 +1,5 @@
 ---
-name: Web Application Penetration
+name: web
 description: A toolset for security testing of Web applications, APIs, CMSes, and more. Covers directory enumeration, injection detection, XSS, parameter discovery, CMS scanning, proxy interception, and the full chain of Web penetration capabilities.
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: Wireless Security
+name: wireless
 description: A toolkit for security testing of Wi-Fi (802.11), Bluetooth, and other wireless networks. Testing wireless networks requires a wireless adapter that supports Monitor Mode (e.g., Alfa AWUS036ACH).
 ---
 

@@ -11,7 +11,6 @@ Use after testing, or throughout testing to keep evidence ready for a final repo
 ## Workflow
 
 1. **Executive summary**
-   - Write a 1-2 page high-level risk narrative for leadership before detailing individual findings.
    - Cover: engagement scope, testing approach and methodology, key risk themes identified, count of critical and high findings, and overall risk posture assessment.
    - Keep language non-technical — frame risks in business impact terms (data exposure, service disruption, regulatory consequence).
    - This section is the first thing stakeholders read; ensure it stands alone as a meaningful summary.
@@ -37,13 +36,11 @@ Use after testing, or throughout testing to keep evidence ready for a final repo
 4. **Assign severity**
    - Rate impact and likelihood in context.
    - Note exploitability, authentication requirement, exposure, and compensating controls.
-   - Use CVSS v4.0 base score calculation as the default: Attack Vector, Attack Complexity, Privileges Required, User Interaction, Scope, and CIA impact. Use CVSS v3.1 when the client specifically requests it or when comparing against vulnerability databases that have not migrated to v4.0.
-   - Apply Environmental and Temporal adjustments when the target environment context is known (e.g., compensating controls, exploit maturity).
-   - Reference the [CVSS Calculator](https://www.first.org/cvss/calculator/4.0) for consistent scoring.
-   - Where relevant, map findings to compliance frameworks: PCI DSS requirements, SOC 2 trust criteria, or HIPAA safeguards.
+   - Apply Environmental and Temporal adjustments when the target environment context is known (e.g., compensating controls, defense-in-depth, exploit maturity).
+
 
 5. **Write findings**
-   - Include title, severity, affected assets, impact, evidence, reproduction steps, and remediation.
+   - Include title, description, impact, likelihood, evidence, affected assets, reproduction steps, and remediation.
    - Avoid unsupported claims and clearly state limitations.
 
 6. **Create supporting artifacts**

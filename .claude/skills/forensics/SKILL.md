@@ -1,5 +1,5 @@
 ---
-name: Digital Forensics
+name: forensics
 description: Digital forensics is used to collect, preserve, and analyze digital evidence. It is also an important capability in penetration testing for analyzing target systems and extracting valuable information.
 ---
 

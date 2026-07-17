@@ -1,5 +1,5 @@
 ---
-name: Playbooks
+name: playbooks
 description: Scenario playbooks describe how an agent should combine tools across categories. They are workflow guides, not parameter references.
 ---
 

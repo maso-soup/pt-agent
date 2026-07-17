@@ -1,5 +1,5 @@
 ---
-name: Cloud-Native Security
+name: cloud-native
 description: Tools for authorized cloud, Kubernetes, container image, container registry, and Docker host security assessment. Use when the scope includes cloud accounts, Kubernetes clusters, deployment manifests, container images, registries, or Docker hosts.
 ---
 

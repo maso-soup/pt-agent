@@ -1,5 +1,5 @@
 ---
-name: State File Management
+name: state-files
 description: State files persist key findings on the agent's host so progress survives context compression. This is important for keeping track of the engagement status.
 ---
 

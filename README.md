@@ -129,7 +129,7 @@ falling back to `go install`/`pip install` for tools outside the apt repos).
 
 This project began as a fork of [x-glacier/kali-pentest](https://github.com/x-glacier/kali-pentest)
 and is licensed under the [Apache License 2.0](LICENSE). Large portions of the
-original have been added, removed, and substantially modified, and the project
+original have been added, removed, and modified, and the project
 continues to diverge from upstream over time.
 
 Attribution for the original work is recorded in [NOTICE](NOTICE), as required by

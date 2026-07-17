@@ -1,6 +1,6 @@
 ---
-name: Reverse Engineering
-description: CLI/headless binary analysis tools for pentest decisions: security-attribute checking, symbol/import analysis, targeted disassembly, and Android app decompilation.
+name: reverse-engineering
+description: CLI/headless binary analysis tools for pentest decisions including security-attribute checking, symbol/import analysis, targeted disassembly, and Android app decompilation.
 ---
 
 # Reverse Engineering

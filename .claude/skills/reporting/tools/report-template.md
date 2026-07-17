@@ -49,37 +49,37 @@ This should be a succinct paragraph very briefly describing that the penetration
 
 ## Improvement Opportunities
 
-These should be single sentence, high level versions of the vulnerability descriptions for each of the findings.  
+These should be single sentence, high-level versions of the vulnerability descriptions for each of the findings. These should be in a bulleted list. 
 
 ---
 
 ## Key Strengths
 
-These should be a few different single sentence, high level versions of any secure parts of the system or security controls that were noted to be in place during the testing. 
+These should be a few different single sentence, high level versions of any secure parts of the system or security controls that were noted to be in place during the testing. These should be in a bulleted list. 
 
 ---
 
 ## High Level Recommendations
 
-These should be single sentence, high level versions of the Remediations for each of the findings. 
+These should be single sentence, high level versions of the Remediations for each of the findings. These should be in a bulleted list.
 
 ---
 
 ## Test Objectives
 
-These are a few very high level test objectives that were used as guidance for engagement. These should be in a bulleted list. 
+These are a few very high level test objectives that were used as guidance for engagement. These should be in a bulleted list.
+
+---
+
+## Test Actions
+
+These are few single sentence descriptors of high level discrete actions taken throughout the test. These should be in a bulleted list. 
 
 ---
 
 ## Attack Narrative
 
-Testing Actions - These are few single sentence descriptors of high level discrete actions taken throughout the test. They should map to one or more of the test objectives, and be in a bulleted list. 
-
----
-
-## Attack Narrative
-
-This is a section where a few succinct paragraphs should follow the general narrative of the testing, including what types of vulnerabilities were tested for and pieces of the system were targeted. 
+This is a section where a few succinct paragraphs should follow the general narrative of the testing, including what types of vulnerabilities were tested for and components of the system were targeted. 
 
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: Sniffing and Spoofing
+name: sniffing-spoofing
 description: Intercept, manipulate, and forge network traffic on local and adjacent network segments. Covers ARP/DNS spoofing, credential sniffing, SSL stripping, MAC flooding, and custom packet crafting.
 ---
 
