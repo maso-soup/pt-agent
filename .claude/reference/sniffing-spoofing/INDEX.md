@@ -1,8 +1,3 @@
----
-name: sniffing-spoofing
-description: Intercept, manipulate, and forge network traffic on local and adjacent network segments. Covers ARP/DNS spoofing, credential sniffing, SSL stripping, MAC flooding, and custom packet crafting.
----
-
 # Sniffing and Spoofing
 
 Intercept, manipulate, and forge network traffic on local and adjacent network segments. Covers ARP/DNS spoofing, credential sniffing, SSL stripping, MAC flooding, and custom packet crafting.
@@ -90,9 +85,9 @@ Select the approach when the Golden Path doesn't fit:
 |-----------|--------|
 | HSTS prevents SSL stripping | `bettercap` with HSTS bypass caplet; note: modern browsers resist this — consider alternative attack vectors |
 | Target uses 802.1X port authentication | ARP spoofing will fail; piggyback on an authenticated port (hub between device and switch) or wait for auth timeout to hijack the session |
-| Need to capture NTLM hashes passively | Use `responder` (see `../password/SKILL.md`) — LLMNR/NBT-NS poisoning, not ARP spoofing |
+| Need to capture NTLM hashes passively | Use `responder` (see `../password/INDEX.md`) — LLMNR/NBT-NS poisoning, not ARP spoofing |
 | Switched network, ARP spoofing ineffective | `dsniff` (macof) to overflow CAM table first, then sniff; or use `dnschef` for DNS-only interception |
-| Need to intercept traffic without being on the same VLAN | Combine with VLAN hopping (see `../voip-ics/SKILL.md` for `yersinia`) before MITM |
+| Need to intercept traffic without being on the same VLAN | Combine with VLAN hopping (see `../voip-ics/INDEX.md` for `yersinia`) before MITM |
 | Multiple targets simultaneously | `bettercap` with target list; `ettercap` limited to single target pair |
 
 ---
@@ -102,13 +97,13 @@ Select the approach when the Golden Path doesn't fit:
 - For HTTP(S) interception and web traffic analysis, see `../web/tools/mitmproxy.md`.
 - For LLMNR/NBT-NS hash capture, see `../password/tools/responder.md`.
 - For IPv6 DHCPv6 poisoning, see `../exploitation/tools/mitm6.md`.
-- For passive traffic capture and forensic analysis, see `../forensics/SKILL.md` (tcpdump, tshark).
+- For passive traffic capture and forensic analysis, see `../forensics/INDEX.md` (tcpdump, tshark).
 
 ---
 
 ## Playbook
 
-For network interception workflows, see `../playbooks/internal-network.md`.
+For network interception workflows, see `../../skills/internal-network/SKILL.md`.
 
 ---
 

@@ -1,3 +1,8 @@
+---
+name: web-application
+description: Scenario workflow for authorized web application testing: crawling, DAST scanning, authentication testing, injection detection, CMS-specific checks, and manual validation. Use for web applications, APIs, CMS targets, or HTTP services discovered during reconnaissance.
+---
+
 # Web Application Playbook
 
 Use for authorized web applications, APIs, CMS targets, or HTTP services discovered during reconnaissance.
@@ -11,11 +16,11 @@ Use for authorized web applications, APIs, CMS targets, or HTTP services discove
 ## Workflow
 
 1. **Baseline inventory**
-   - Probe URLs with `httpx` (see `../information-gathering/tools/httpx.md`), `whatweb` (see `../information-gathering/tools/whatweb.md`), and `wafw00f` (see `../information-gathering/tools/wafw00f.md`).
+   - Probe URLs with `httpx` (see `../../reference/information-gathering/tools/httpx.md`), `whatweb` (see `../../reference/information-gathering/tools/whatweb.md`), and `wafw00f` (see `../../reference/information-gathering/tools/wafw00f.md`).
    - Record redirects, cookies, headers, TLS details, WAF indicators, and technologies.
 
-   (See `../information-gathering/SKILL.md` for reconnaissance tool selection.)
-   - **TLS cipher audit**: run `sslscan` (see `../vulnerability/tools/sslscan.md`) or `testssl.sh` (see `../vulnerability/tools/testssl.sh.md`) to enumerate all accepted cipher suites and check for known TLS attacks (ROBOT, DROWN, CCS injection, Ticketbleed, Heartbleed) — do not rely on manual `openssl s_client` version checks alone. Flag 3DES, RC4, non-PFS suites, and missing TLS 1.3 support.
+   (See `../../reference/information-gathering/INDEX.md` for reconnaissance tool selection.)
+   - **TLS cipher audit**: run `sslscan` (see `../../reference/vulnerability/tools/sslscan.md`) or `testssl.sh` (see `../../reference/vulnerability/tools/testssl.sh.md`) to enumerate all accepted cipher suites and check for known TLS attacks (ROBOT, DROWN, CCS injection, Ticketbleed, Heartbleed) — do not rely on manual `openssl s_client` version checks alone. Flag 3DES, RC4, non-PFS suites, and missing TLS 1.3 support.
    - **Wildcard certificate → subdomain enumeration**: if the TLS certificate contains a wildcard SAN (e.g., `*.example.com`), enumerate subdomains with DNS queries and probe each for distinct services or response codes.
    - **CORS origin reconnaissance**: if the `Access-Control-Allow-Origin` header names a specific origin (e.g., `https://app.example.com`), probe that origin for headers, CSP directives, cookies, and technology details — its response metadata often reveals API endpoints, internal architecture, or unauthenticated paths. Run `nikto` and `nuclei` against any origin that returns HTTP 200 with real content.
    - **Certificate transparency**: query `crt.sh` for historical certificates to discover subdomains not found by DNS enumeration. Probe each discovered subdomain — different HTTP status codes (200, 403, 400 vs. default 404) indicate distinct routed services that require independent testing.
@@ -27,12 +32,12 @@ Use for authorized web applications, APIs, CMS targets, or HTTP services discove
    ```
 
 2. **Crawling and endpoint discovery**
-   - Crawl with `katana` (see `../web/tools/katana.md`), `gospider` (see `../web/tools/gospider.md`), `hakrawler` (see `../information-gathering/tools/hakrawler.md`), ZAP, or mitmproxy captures.
+   - Crawl with `katana` (see `../../reference/web/tools/katana.md`), `gospider` (see `../../reference/web/tools/gospider.md`), `hakrawler` (see `../../reference/information-gathering/tools/hakrawler.md`), ZAP, or mitmproxy captures.
    - Use `ffuf`, `gobuster`, `feroxbuster`, and `dirsearch` with appropriate wordlists.
-   - Use `arjun` for parameter discovery (see `../web/tools/arjun.md`).
-   - If GraphQL, OpenAPI, gRPC, WebSocket, or API-heavy behavior is discovered, switch to `api-security.md` for API-specific testing.
+   - Use `arjun` for parameter discovery (see `../../reference/web/tools/arjun.md`).
+   - If GraphQL, OpenAPI, gRPC, WebSocket, or API-heavy behavior is discovered, switch to `../api-security/SKILL.md` for API-specific testing.
 
-   (See `../web/SKILL.md` for web tool selection.)
+   (See `../../reference/web/INDEX.md` for web tool selection.)
    - **Frontend JS static analysis**: download all JavaScript files loaded by the target (check `<script src=...>` tags in the HTML source) and search for hardcoded API endpoints, internal URLs, subdomains, tokens, and secrets to discover internal services and attack surfaces not reachable by brute-forcing or crawling.
 
      ```bash
@@ -45,7 +50,7 @@ Use for authorized web applications, APIs, CMS targets, or HTTP services discove
 
    - **Target IP port scan**: when testing a web application, do not limit scanning to ports 80/443. Run a full TCP port scan against the target IP to discover additional services — HTTP on non-standard ports, admin panels, debug interfaces, or database services may be exposed.
 
-   Run `ffuf` or `feroxbuster` for directory enumeration with appropriate wordlists (see `../web/tools/ffuf.md` and `../web/tools/feroxbuster.md`).
+   Run `ffuf` or `feroxbuster` for directory enumeration with appropriate wordlists (see `../../reference/web/tools/ffuf.md` and `../../reference/web/tools/feroxbuster.md`).
 
    ```bash
    katana -u <target-url> -d 3 -jc -kf all -silent -o katana_urls.txt
@@ -64,10 +69,10 @@ Use for authorized web applications, APIs, CMS targets, or HTTP services discove
    - Use ZAP baseline/API scans for passive and API-oriented checks.
    - Use ZAP full scans only with explicit authorization.
 
-   (See `../vulnerability/SKILL.md` for vulnerability scanning tool selection.)
+   (See `../../reference/vulnerability/INDEX.md` for vulnerability scanning tool selection.)
 
-   Run `nikto` with JSON output (see `../web/tools/nikto.md` for variants including HTML/CSV reports).
-   Run `nuclei` from the vulnerability category for template-based checks (see `../vulnerability/tools/nuclei.md`).
+   Run `nikto` with JSON output (see `../../reference/web/tools/nikto.md` for variants including HTML/CSV reports).
+   Run `nuclei` from the vulnerability category for template-based checks (see `../../reference/vulnerability/tools/nuclei.md`).
 
    ```bash
    nikto -h <target-url> -Format json -o /tmp/nikto.json
@@ -83,22 +88,22 @@ Use for authorized web applications, APIs, CMS targets, or HTTP services discove
 4. **Targeted vulnerability testing**
    - Test SQL injection with `sqlmap` after identifying candidate parameters.
    - Test XSS, SSTI, SSRF, path traversal, file upload, command injection, JWT, CORS, and auth logic according to observed features.
-   - Use `sstimap` (see `../web/tools/sstimap.md`) for SSTI candidates and CMS-specific tools such as `wpscan` (see `../web/tools/wpscan.md`) or `joomscan` (see `../web/tools/joomscan.md`) when fingerprints match. Run `cmseek` first to identify the CMS before choosing a CMS-specific scanner (see `../web/tools/cmseek.md`).
+   - Use `sstimap` (see `../../reference/web/tools/sstimap.md`) for SSTI candidates and CMS-specific tools such as `wpscan` (see `../../reference/web/tools/wpscan.md`) or `joomscan` (see `../../reference/web/tools/joomscan.md`) when fingerprints match. Run `cmseek` first to identify the CMS before choosing a CMS-specific scanner (see `../../reference/web/tools/cmseek.md`).
 
-   (See `../web/SKILL.md` for injection and vulnerability testing tool selection. When a confirmed vulnerability warrants shell access, see `../exploitation/SKILL.md` for exploitation path selection.)
+   (See `../../reference/web/INDEX.md` for injection and vulnerability testing tool selection. When a confirmed vulnerability warrants shell access, see `../../reference/exploitation/INDEX.md` for exploitation path selection.)
 
      ```bash
      cmseek -u <target-url>
      ```
 
-   - **Command injection**: Use `commix` for systematic OS command injection testing (see `../web/tools/commix.md`).
+   - **Command injection**: Use `commix` for systematic OS command injection testing (see `../../reference/web/tools/commix.md`).
 
      ```bash
      commix --url "http://target/page?param=INJECT_HERE" --level=3 --batch
      ```
 
    - **File upload testing**: test file type restrictions, path traversal in upload filename, polyglot files (e.g., GIF header + PHP), and upload size limits.
-   - **Deserialization**: identify serialized objects in parameters or cookies; test with known gadget chains (Java/PHP/.NET). For PHP deserialization, use `phpggc` to generate gadget chains (see `../web/tools/phpggc.md`). For padding oracle attacks on CBC-mode encrypted cookies/tokens, use `padbuster` (see `../web/tools/padbuster.md`).
+   - **Deserialization**: identify serialized objects in parameters or cookies; test with known gadget chains (Java/PHP/.NET). For PHP deserialization, use `phpggc` to generate gadget chains (see `../../reference/web/tools/phpggc.md`). For padding oracle attacks on CBC-mode encrypted cookies/tokens, use `padbuster` (see `../../reference/web/tools/padbuster.md`).
    - **HTTP request smuggling**: test CL/TE and TE/CL confusion where front-end and back-end servers differ.
    - **SSRF**: test URL and file parameters for internal network access, cloud metadata (`http://169.254.169.254`), and internal service enumeration.
    - **XXE**: test XML inputs for external entity injection; attempt out-of-band retrieval if inline response is not reflected.
@@ -109,13 +114,13 @@ Use for authorized web applications, APIs, CMS targets, or HTTP services discove
    - **Cross-service configuration comparison**: when multiple services share the same infrastructure (e.g., API server, frontend, enterprise API on the same IP or wildcard cert), compare their TLS cipher suites, security headers, CORS policies, and authentication requirements. Inconsistencies often reveal the weakest link — a frontend missing TLS 1.3 while the API supports it, or an internal API lacking auth while the public API enforces it.
    - **CSP source validation**: if the target sets a `Content-Security-Policy` with external script sources, verify each allowed domain resolves and is not susceptible to subdomain takeover. NXDOMAIN results for CSP-allowed domains are a CSP bypass risk.
 
-   Run `sqlmap` with `--batch --dbs` on identified parameters (see `../web/tools/sqlmap.md` for full flags including tamper scripts, level/risk, and OS shell).
+   Run `sqlmap` with `--batch --dbs` on identified parameters (see `../../reference/web/tools/sqlmap.md` for full flags including tamper scripts, level/risk, and OS shell).
 
-   Run `dalfox` for XSS detection (see `../web/tools/dalfox.md`).
+   Run `dalfox` for XSS detection (see `../../reference/web/tools/dalfox.md`).
 
-   If template engine detected, test SSTI with `sstimap` (see `../web/tools/sstimap.md`).
+   If template engine detected, test SSTI with `sstimap` (see `../../reference/web/tools/sstimap.md`).
 
-   If WordPress is confirmed, run `wpscan` with user/plugin/theme enumeration (see `../web/tools/wpscan.md` for API token and brute-force options).
+   If WordPress is confirmed, run `wpscan` with user/plugin/theme enumeration (see `../../reference/web/tools/wpscan.md` for API token and brute-force options).
 
    **Per-endpoint coverage:** Every endpoint in the inventory from Step 2 must be tested against all applicable vulnerability classes (injection, XSS, SSRF, access control, file upload, deserialization) — not just endpoints that "look injectable." When sqlmap or other tools report zero findings on default settings, escalate sensitivity (e.g., `--level=5 --risk=3`) before accepting a negative result. Record tested and untested endpoints explicitly.
 
@@ -123,10 +128,10 @@ Use for authorized web applications, APIs, CMS targets, or HTTP services discove
    - Preserve session handling and rate limits.
    - Route tools through ZAP or mitmproxy when request replay, evidence capture, or token handling is needed.
 
-   (See `../web/SKILL.md` for web testing tool selection.)
+   (See `../../reference/web/INDEX.md` for web testing tool selection.)
    - Test these auth and authorization checks manually after obtaining a session:
      - **Broken authentication**: session fixation, weak token entropy, missing re-auth on sensitive actions.
-     - **JWT flaws**: `alg:none`, weak secret, `kid` injection — use `jwt_tool` to verify (see `../web/tools/jwt_tool.md`).
+     - **JWT flaws**: `alg:none`, weak secret, `kid` injection — use `jwt_tool` to verify (see `../../reference/web/tools/jwt_tool.md`).
      - **IDOR / BOLA**: replace object IDs across roles and verify response differences.
      - **CORS misconfiguration**: send `Origin: https://evil.com` and check reflected header.
      - **CSRF**: confirm token binding; test with or without the `SameSite` cookie attribute.
@@ -140,19 +145,19 @@ Use for authorized web applications, APIs, CMS targets, or HTTP services discove
    jwt_tool <token> -M pb
    jwt_tool <token> -M at
    ```
-   Capture traffic with `mitmdump` (see `../web/tools/mitmproxy.md` for listen flags and export formats).
+   Capture traffic with `mitmdump` (see `../../reference/web/tools/mitmproxy.md` for listen flags and export formats).
 
    **Credential discovery handling:** When credentials are found during web testing (config files, backup archives, error messages, source code, default credentials), immediately test them against all discovered authentication endpoints — admin panels, APIs, databases, and SSH — before continuing to the next test phase.
 
 6. **WebSocket testing**
    - If WebSocket endpoints are discovered during crawling or traffic capture:
 
-   (See `../web/SKILL.md` for web testing tool selection.)
+   (See `../../reference/web/INDEX.md` for web testing tool selection.)
      - Test handshake authentication: can you connect without valid credentials?
      - Test per-message authorization: send messages targeting other users' resources.
      - Test for injection in WebSocket messages (SQL, command, XSS payloads).
      - Monitor for sensitive data leakage in WebSocket frames.
-   - See `../web/tools/websocat.md` for CLI-based WebSocket interaction.
+   - See `../../reference/web/tools/websocat.md` for CLI-based WebSocket interaction.
 
 7. **Business logic testing**
    - **Race conditions**: send concurrent requests to critical operations (account creation, balance transfers, voting) and check for duplicate processing.
@@ -162,7 +167,7 @@ Use for authorized web applications, APIs, CMS targets, or HTTP services discove
 
 8. **Secrets and source artifacts**
    - Use `gitleaks` only when source code, repositories, archives, or artifacts are explicitly in scope.
-   - If source code is available, hand off to `source-code-audit.md` for static analysis.
+   - If source code is available, hand off to `../source-code-audit/SKILL.md` for static analysis.
 
    ```bash
    gitleaks dir --redact -f json -r /tmp/gitleaks_report.json <repo-dir>
@@ -170,12 +175,12 @@ Use for authorized web applications, APIs, CMS targets, or HTTP services discove
 
 ## Cross-References
 
-- `external-attack-surface.md` — when additional subdomains or related infrastructure is discovered during web testing.
-- `internal-network.md` — when the web application is on an internal network requiring broader network assessment.
-- `password-audit.md` — for cracking captured password hashes or testing credential strength.
-- `source-code-audit.md` — when application source code is available for static analysis.
-- `reporting-workflow.md` — for structuring findings into a deliverable report.
-- `api-security.md` — when GraphQL, REST API, gRPC, or WebSocket testing is needed.
+- `../external-attack-surface/SKILL.md` — when additional subdomains or related infrastructure is discovered during web testing.
+- `../internal-network/SKILL.md` — when the web application is on an internal network requiring broader network assessment.
+- `../password-audit/SKILL.md` — for cracking captured password hashes or testing credential strength.
+- `../source-code-audit/SKILL.md` — when application source code is available for static analysis.
+- `../reporting/SKILL.md` — for structuring findings into a deliverable report.
+- `../api-security/SKILL.md` — when GraphQL, REST API, gRPC, or WebSocket testing is needed.
 
 ## Expected Artifacts
 

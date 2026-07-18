@@ -1,3 +1,8 @@
+---
+name: cloud-native-assessment
+description: Scenario workflow for authorized cloud, Kubernetes, container, and CI/CD assessments: multi-cloud posture review, provider-specific audits (AWS/Azure/GCP), Kubernetes security, container/registry scanning, and serverless review. Use for cloud accounts, Kubernetes clusters, container images, registries, or Docker hosts.
+---
+
 # Cloud-Native Assessment Playbook
 
 Use for authorized cloud accounts, Kubernetes clusters, container images, registries, deployment manifests, serverless functions, CI/CD pipelines, or Docker hosts.
@@ -18,7 +23,7 @@ Use for authorized cloud accounts, Kubernetes clusters, container images, regist
    - Confirm read-only versus administrative access and whether exploitation (e.g., privilege escalation, container escape) is authorized.
    - Record the assessor identity, credential type (IAM user, assumed role, service principal, service account key), and permission level before any scanning.
 
-   (See `../cloud-native/SKILL.md` for cloud-native tool selection.)
+   (See `../../reference/cloud-native/INDEX.md` for cloud-native tool selection.)
 
    Identify the cloud provider and select the primary toolchain:
 
@@ -91,7 +96,7 @@ Use for authorized cloud accounts, Kubernetes clusters, container images, regist
    kubectl get clusterrolebindings -o json | jq '.items[] | select(.roleRef.name=="cluster-admin") | .subjects'
    ```
 
-   See `../cloud-native/tools/prowler.md` and `../cloud-native/tools/scoutsuite.md` for full parameter reference. Use `azurehound` for Azure AD attack path enumeration similar to BloodHound (see `../cloud-native/tools/azurehound.md`).
+   See `../../reference/cloud-native/tools/prowler.md` and `../../reference/cloud-native/tools/scoutsuite.md` for full parameter reference. Use `azurehound` for Azure AD attack path enumeration similar to BloodHound (see `../../reference/cloud-native/tools/azurehound.md`).
 
    **Per-resource iteration (mandatory):** Do not spot-check one resource and extrapolate. For IAM: review the attached and inline policies of EVERY role, user, and service account. For storage: test ACLs on EVERY bucket/container. For compute: check security groups on EVERY instance. Use CLI loops to automate iteration over all enumerated resources.
 
@@ -130,7 +135,7 @@ Use for authorized cloud accounts, Kubernetes clusters, container images, regist
    prowler aws --services ec2 s3 vpc --output-formats json-ocsf --output-directory /tmp/prowler_infra
    ```
 
-   Cross-reference with `internal-network.md` for deeper VPC network testing when authorized.
+   Cross-reference with `../internal-network/SKILL.md` for deeper VPC network testing when authorized.
 
 4. **Kubernetes cluster security**
    - Run CIS Kubernetes benchmark checks with `kube-bench` to identify node and cluster configuration gaps.
@@ -175,7 +180,7 @@ Use for authorized cloud accounts, Kubernetes clusters, container images, regist
    kubectl get namespaces -o json | jq '.items[] | {name: .metadata.name, labels: (.metadata.labels // {} | with_entries(select(.key | startswith("pod-security"))))}'
    ```
 
-   See `../cloud-native/tools/kube-bench.md` and `../cloud-native/tools/kubescape.md` for full parameter reference. For authorized in-cluster exploitation, use `peirates` (see `../cloud-native/tools/peirates.md`). Risk gate: `peirates` performs active exploitation of Kubernetes service accounts and secrets — use only with explicit pentest authorization.
+   See `../../reference/cloud-native/tools/kube-bench.md` and `../../reference/cloud-native/tools/kubescape.md` for full parameter reference. For authorized in-cluster exploitation, use `peirates` (see `../../reference/cloud-native/tools/peirates.md`). Risk gate: `peirates` performs active exploitation of Kubernetes service accounts and secrets — use only with explicit pentest authorization.
 
 5. **Container and image security**
    - Scan container images for OS and application vulnerabilities, embedded secrets, and misconfigurations.
@@ -210,9 +215,9 @@ Use for authorized cloud accounts, Kubernetes clusters, container images, regist
    kubectl get pods --all-namespaces -o json | jq '.items[] | select(.spec.volumes[]? | .hostPath.path == "/var/run/docker.sock") | {ns: .metadata.namespace, pod: .metadata.name}'
    ```
 
-   If container escape is authorized and vectors are found, cross-reference with `post-exploitation.md` for exploitation techniques.
+   If container escape is authorized and vectors are found, cross-reference with `../post-exploitation/SKILL.md` for exploitation techniques.
 
-   See `../vulnerability/tools/trivy.md` and `../cloud-native/tools/docker-bench-security.md` for full parameter reference.
+   See `../../reference/vulnerability/tools/trivy.md` and `../../reference/cloud-native/tools/docker-bench-security.md` for full parameter reference.
 
 6. **Serverless and CI/CD**
    - Review serverless function configurations: execution roles, environment variables, resource policies, and trigger sources.
@@ -238,7 +243,7 @@ Use for authorized cloud accounts, Kubernetes clusters, container images, regist
    trivy config --severity HIGH,CRITICAL --format json -o /tmp/trivy_cicd.json /path/to/repo/.github/workflows/
    ```
 
-   For CI/CD pipeline review, cross-reference with `source-code-audit.md` for IaC and configuration scanning of pipeline definition files.
+   For CI/CD pipeline review, cross-reference with `../source-code-audit/SKILL.md` for IaC and configuration scanning of pipeline definition files.
 
 7. **IMDS and cloud metadata**
    - Test Instance Metadata Service (IMDS) access from containers, pods, or VMs.
@@ -281,16 +286,16 @@ Use for authorized cloud accounts, Kubernetes clusters, container images, regist
      - **Serverless and CI/CD** — plaintext secrets, overly permissive execution roles.
      - **Metadata** — IMDS exposure, credential harvesting.
    - Prioritize: exploitation-proven findings first, then confirmed misconfigurations, then informational.
-   - Cross-reference with `reporting-workflow.md` for final documentation format and delivery.
+   - Cross-reference with `../reporting/SKILL.md` for final documentation format and delivery.
 
    **Zero-findings verification:** When prowler or ScoutSuite report zero high/critical findings, do not accept without verification. Manually confirm at least: root/admin MFA is enabled, audit logging is active, encryption at rest is enforced on storage and databases, and no IAM users have console access with long-lived access keys. Document each manual verification step.
 
 ## Cross-References
 
-- `internal-network.md` — VPC network testing.
-- `post-exploitation.md` — container escape exploitation.
-- `source-code-audit.md` — CI/CD pipeline and IaC review.
-- `reporting-workflow.md` — findings documentation and delivery.
+- `../internal-network/SKILL.md` — VPC network testing.
+- `../post-exploitation/SKILL.md` — container escape exploitation.
+- `../source-code-audit/SKILL.md` — CI/CD pipeline and IaC review.
+- `../reporting/SKILL.md` — findings documentation and delivery.
 
 ## Expected Artifacts
 

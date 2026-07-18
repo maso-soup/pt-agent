@@ -1,8 +1,3 @@
----
-name: web
-description: A toolset for security testing of Web applications, APIs, CMSes, and more. Covers directory enumeration, injection detection, XSS, parameter discovery, CMS scanning, proxy interception, and the full chain of Web penetration capabilities.
----
-
 # Web Application Penetration (Web)
 
 A toolset for security testing of Web applications, APIs, CMSes, and more. Covers directory enumeration, injection detection, XSS, parameter discovery, CMS scanning, proxy interception, and the full chain of Web penetration capabilities.
@@ -213,8 +208,8 @@ Converts captured HTTP traffic into OpenAPI 3.0 definitions. Requires representa
 
 ## Related Categories
 
-- For the full web application penetration playbook, see `../playbooks/web-application.md`.
-- For reconnaissance and fingerprinting before web testing, see `../information-gathering/SKILL.md`.
+- For the full web application penetration playbook, see `../../skills/web-application/SKILL.md`.
+- For reconnaissance and fingerprinting before web testing, see `../information-gathering/INDEX.md`.
 
 ## Decision Tree
 
@@ -233,7 +228,7 @@ Select the approach when the Golden Path doesn't fit:
 
 ## Playbook
 
-For the full scenario workflow, priority checks, and risk gates, see `../playbooks/web-application.md` (or `../playbooks/api-security.md` for GraphQL/OpenAPI/gRPC/WebSocket targets).
+For the full scenario workflow, priority checks, and risk gates, see `../../skills/web-application/SKILL.md` (or `../../skills/api-security/SKILL.md` for GraphQL/OpenAPI/gRPC/WebSocket targets).
 
 ---
 

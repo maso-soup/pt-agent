@@ -1,3 +1,8 @@
+---
+name: password-audit
+description: Scenario workflow for authorized password and credential attacks: hash identification, offline cracking (hashcat/john), password spraying, default credential checks, and credential reuse testing. Use for hash files, credential lists, or service logins.
+---
+
 # Password Audit Playbook
 
 Use for authorized password cracking, hash analysis, default credential checks, password spraying, or credential reuse testing.
@@ -20,10 +25,10 @@ Use for authorized password cracking, hash analysis, default credential checks, 
    - Identify hash types with `hashid`, tool context, or source system.
    - Separate hashes, plaintext credentials, usernames, and service targets.
 
-   (See `../password/SKILL.md` for hash identification tool selection.)
-   - **Hash extraction sources**: SAM database (local Windows accounts), NTDS.dit (Active Directory domain hashes via `impacket-secretsdump`), `/etc/shadow` (Linux/Unix), database credential tables, application configuration files, and memory dumps. Cross-reference `post-exploitation.md` for extraction methods and access prerequisites.
+   (See `../../reference/password/INDEX.md` for hash identification tool selection.)
+   - **Hash extraction sources**: SAM database (local Windows accounts), NTDS.dit (Active Directory domain hashes via `impacket-secretsdump`), `/etc/shadow` (Linux/Unix), database credential tables, application configuration files, and memory dumps. Cross-reference `../post-exploitation/SKILL.md` for extraction methods and access prerequisites.
 
-   Use `hashid -m` to identify hash types and get hashcat mode numbers (see `../password/tools/hashid.md`).
+   Use `hashid -m` to identify hash types and get hashcat mode numbers (see `../../reference/password/tools/hashid.md`).
 
    **Ambiguous hash identification:** When hashid returns multiple candidates, narrow by: (1) source context (shadow → sha512crypt/md5crypt; NTDS.dit → NT; Responder → NetNTLMv2), (2) hash length and character set, (3) test top candidates with a small wordlist before running the full escalation ladder.
 
@@ -31,16 +36,16 @@ Use for authorized password cracking, hash analysis, default credential checks, 
    - Use `rockyou.txt`, SecLists, `cewl`, `crunch`, and target-specific terms.
    - Avoid generating huge wordlists unless Deep depth is authorized.
 
-   (See `../password/SKILL.md` for wordlist generation tool selection.)
+   (See `../../reference/password/INDEX.md` for wordlist generation tool selection.)
 
-   Generate custom wordlists with `cewl` and `crunch` (see `../password/tools/cewl.md` and `../password/tools/crunch.md`).
+   Generate custom wordlists with `cewl` and `crunch` (see `../../reference/password/tools/cewl.md` and `../../reference/password/tools/crunch.md`).
 
 4. **Offline cracking**
    - Use `john` or `hashcat` based on hash type and hardware.
    - Check `hashcat -I` before GPU assumptions.
    - Save cracked results and potfile context.
 
-   (See `../password/SKILL.md` for cracking tool selection.)
+   (See `../../reference/password/INDEX.md` for cracking tool selection.)
    - Select attack mode based on hash type and known password policy:
      - `-a 0` dictionary attack: use with rules for most scenarios. Apply `-r /usr/share/hashcat/rules/best64.rule` for common mutations; chain multiple rule files for deeper coverage.
      - `-a 3` mask/brute-force: use for short passwords or when policy allows short lengths. Define masks matching known policy (e.g., `?u?l?l?l?d?d` for 6-char passwords starting uppercase).
@@ -48,8 +53,8 @@ Use for authorized password cracking, hash analysis, default credential checks, 
    - When hash type is slow (bcrypt, scrypt, Argon2, phpass, sha512crypt), prioritize targeted wordlists and smart rules over exhaustive brute force.
 
    Run offline cracking:
-   - GPU preferred: `hashcat -m <mode> -a 0 hashes.txt <wordlist>` (see `../password/tools/hashcat.md` for attack modes and rule files)
-   - CPU fallback: `john --wordlist=<wordlist> --format=<format> hashes.txt` (see `../password/tools/john.md`)
+   - GPU preferred: `hashcat -m <mode> -a 0 hashes.txt <wordlist>` (see `../../reference/password/tools/hashcat.md` for attack modes and rule files)
+   - CPU fallback: `john --wordlist=<wordlist> --format=<format> hashes.txt` (see `../../reference/password/tools/john.md`)
 
    ```bash
    # Dictionary with rules
@@ -81,12 +86,12 @@ Use for authorized password cracking, hash analysis, default credential checks, 
    - Use known credentials and default credentials before brute force.
    - Enforce lockout-safe delays, per-account attempt limits, and stop conditions.
 
-   (See `../password/SKILL.md` for online attack tool selection.)
+   (See `../../reference/password/INDEX.md` for online attack tool selection.)
 
    Online testing (respect lockout policy):
-   - SSH/FTP/Web forms: `hydra -l <user> -P <wordlist> <protocol>://<target>` (see `../password/tools/hydra.md` for protocol-specific syntax)
-   - SMB/WinRM credential testing: `nxc smb <cidr> -u <user> -p <pass>` (see `../password/tools/netexec.md`)
-   - Kerberos password spraying: `kerbrute passwordspray -d <domain> --dc <dc-ip> valid_users.txt '<password>'` (see `../password/tools/kerbrute.md`)
+   - SSH/FTP/Web forms: `hydra -l <user> -P <wordlist> <protocol>://<target>` (see `../../reference/password/tools/hydra.md` for protocol-specific syntax)
+   - SMB/WinRM credential testing: `nxc smb <cidr> -u <user> -p <pass>` (see `../../reference/password/tools/netexec.md`)
+   - Kerberos password spraying: `kerbrute passwordspray -d <domain> --dc <dc-ip> valid_users.txt '<password>'` (see `../../reference/password/tools/kerbrute.md`)
 
    ```bash
    # Kerberos password spraying (lockout-safe: one password across many users)
@@ -99,9 +104,9 @@ Use for authorized password cracking, hash analysis, default credential checks, 
    - Test cracked or provided credentials across authorized services only.
    - Record success, failure, MFA, disabled accounts, and permission level.
 
-   (See `../password/SKILL.md` for credential testing tool selection.)
+   (See `../../reference/password/INDEX.md` for credential testing tool selection.)
 
-   Test cracked credentials across services with `nxc` (see `../password/tools/netexec.md` for smb/winrm/mssql/ssh protocol modules).
+   Test cracked credentials across services with `nxc` (see `../../reference/password/tools/netexec.md` for smb/winrm/mssql/ssh protocol modules).
 
    ```bash
    nxc smb <CIDR> -u cracked_users.txt -p cracked_passwords.txt --continue-on-success
@@ -123,10 +128,10 @@ Use for authorized password cracking, hash analysis, default credential checks, 
    - Use `responder`, relay-related tools, or capture workflows only with explicit approval and internal scope.
    - Always start with analyze mode (`responder -A`) to observe traffic before active poisoning.
 
-   (See `../password/SKILL.md` for hash capture tool selection. See `../exploitation/SKILL.md` for relay tool selection.)
-   - For relay attacks, use `ntlmrelayx` to relay captured authentication to other services (see `../exploitation/tools/impacket.md`), and `mitm6` for IPv6-based MITM (see `../exploitation/tools/mitm6.md`).
+   (See `../../reference/password/INDEX.md` for hash capture tool selection. See `../../reference/exploitation/INDEX.md` for relay tool selection.)
+   - For relay attacks, use `ntlmrelayx` to relay captured authentication to other services (see `../../reference/exploitation/tools/impacket.md`), and `mitm6` for IPv6-based MITM (see `../../reference/exploitation/tools/mitm6.md`).
 
-   If authorized for internal LAN capture, run `responder -I <interface>` (see `../password/tools/responder.md`).
+   If authorized for internal LAN capture, run `responder -I <interface>` (see `../../reference/password/tools/responder.md`).
 
    ```bash
    # Step 1: analyze mode — observe without poisoning
@@ -141,9 +146,9 @@ Use for authorized password cracking, hash analysis, default credential checks, 
 
 ## Cross-References
 
-- `active-directory.md` — AS-REP roasting and Kerberoasting attack workflows.
-- `post-exploitation.md` — hash extraction methods.
-- `reporting-workflow.md` — findings documentation.
+- `../active-directory/SKILL.md` — AS-REP roasting and Kerberoasting attack workflows.
+- `../post-exploitation/SKILL.md` — hash extraction methods.
+- `../reporting/SKILL.md` — findings documentation.
 
 ## Expected Artifacts
 

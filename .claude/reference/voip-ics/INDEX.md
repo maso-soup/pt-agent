@@ -1,8 +1,3 @@
----
-name: voip-ics
-description: Tools for authorized assessment of niche or high-sensitivity protocols such as VoIP and ICS/OT. Use conservative defaults and confirm protocol-specific safety constraints before active testing.
----
-
 # Specialized Protocols
 
 Tools for authorized assessment of niche or high-sensitivity protocols such as VoIP and ICS/OT. Use conservative defaults and confirm protocol-specific safety constraints before active testing.
@@ -97,13 +92,13 @@ Select the approach when the Golden Path doesn't fit:
 
 ## Related Categories
 
-- Start broad port and service discovery with `../information-gathering/tools/nmap.md` and `../vulnerability/SKILL.md` before using protocol-specific tools.
+- Start broad port and service discovery with `../information-gathering/tools/nmap.md` and `../vulnerability/INDEX.md` before using protocol-specific tools.
 
 ---
 
 ## Playbook
 
-For a full scenario workflow covering phases, decision points, and risk gates, see `../playbooks/voip-ics.md`.
+For a full scenario workflow covering phases, decision points, and risk gates, see `../../skills/voip-ics/SKILL.md`.
 
 ---
 

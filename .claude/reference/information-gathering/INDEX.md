@@ -1,8 +1,3 @@
----
-name: information-gathering
-description: The first phase of penetration testing. The goal is to collect as much information about the target as possible without triggering alerts. Divided into passive reconnaissance (no contact with the target, pure OSINT) and active reconnaissance (direct interaction with the target).
----
-
 # Information Gathering and Reconnaissance
 
 The first phase of penetration testing. The goal is to collect as much information about the target as possible without triggering alerts. Divided into **passive reconnaissance** (no contact with the target, pure OSINT) and **active reconnaissance** (direct interaction with the target).
@@ -259,8 +254,8 @@ Select the approach when the Golden Path doesn't fit:
 
 ## Related Categories
 
-- For the full external attack surface playbook, see `../playbooks/external-attack-surface.md`.
-- For Web application and API testing after reconnaissance, see `../web/SKILL.md`.
+- For the full external attack surface playbook, see `../../skills/external-attack-surface/SKILL.md`.
+- For Web application and API testing after reconnaissance, see `../web/INDEX.md`.
 
 ---
 

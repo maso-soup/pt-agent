@@ -1,8 +1,3 @@
----
-name: rfid-nfc
-description: Tools for authorized RFID/NFC, Proxmark3, PC/SC smart-card, and physical credential assessment. Use this category only when the required hardware reader and explicit physical-access authorization are available.
----
-
 # Hardware Access Security
 
 Tools for authorized RFID/NFC, Proxmark3, PC/SC smart-card, and physical credential assessment. Use this category only when the required hardware reader and explicit physical-access authorization are available.
@@ -47,7 +42,7 @@ Sends scripted APDU commands to smart cards through PC/SC.
 
 ## Related Categories
 
-- For Wi-Fi, Bluetooth, and BLE radio assessment, read `../wireless/SKILL.md`.
+- For Wi-Fi, Bluetooth, and BLE radio assessment, read `../wireless/INDEX.md`.
 
 ---
 
@@ -68,7 +63,7 @@ Match the identified card type to the appropriate attack methodology:
 
 ## Playbook
 
-For a full scenario workflow covering phases, decision points, and risk gates, see `../playbooks/rfid-nfc.md`.
+For a full scenario workflow covering phases, decision points, and risk gates, see `../../skills/rfid-nfc/SKILL.md`.
 
 ---
 

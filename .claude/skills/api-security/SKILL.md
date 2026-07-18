@@ -1,3 +1,8 @@
+---
+name: api-security
+description: Scenario workflow for authorized API testing: schema recovery, endpoint discovery, authorization testing (BOLA, JWT), fuzzing, rate limiting, and business logic abuse. Use for GraphQL, OpenAPI/REST, gRPC, WebSocket, or API-heavy web application targets.
+---
+
 # API Security Playbook
 
 Use for authorized GraphQL, OpenAPI/REST, gRPC, WebSocket, or API-heavy web application testing.
@@ -13,11 +18,11 @@ Use for authorized GraphQL, OpenAPI/REST, gRPC, WebSocket, or API-heavy web appl
 1. **Inventory and classification**
    - Identify API style: OpenAPI/REST, GraphQL, gRPC, WebSocket, SOAP, or mixed.
    - Collect schemas, endpoints, auth headers, roles, and representative requests.
-   - For API-heavy web apps, run this playbook alongside `web-application.md`.
+   - For API-heavy web apps, run this playbook alongside `../web-application/SKILL.md`.
 
 2. **Passive mapping**
    - Even when API documentation is available, capture at least one authenticated session and cross-check against the docs.
-   - Use captured traffic, `mitmproxy` (see `../web/tools/mitmproxy.md`), `mitmproxy2swagger` (see `../web/tools/mitmproxy2swagger.md`), crawlers, and existing documentation.
+   - Use captured traffic, `mitmproxy` (see `../../reference/web/tools/mitmproxy.md`), `mitmproxy2swagger` (see `../../reference/web/tools/mitmproxy2swagger.md`), crawlers, and existing documentation.
    - Recover OpenAPI definitions only from representative authorized traffic.
 
    ```bash
@@ -26,14 +31,14 @@ Use for authorized GraphQL, OpenAPI/REST, gRPC, WebSocket, or API-heavy web appl
    ```
 
 3. **Protocol-specific discovery**
-   - GraphQL: fingerprint with `graphw00f` (see `../web/tools/graphw00f.md`); attempt schema recovery with `clairvoyance` (see `../web/tools/clairvoyance.md`) only when approved.
-   - REST/OpenAPI: use `kiterunner` (see `../web/tools/kiterunner.md`) for API route discovery and `schemathesis` (see `../web/tools/schemathesis.md`) for schema-driven tests.
-   - gRPC: use `grpcurl` (see `../web/tools/grpcurl.md`) with reflection or supplied `.proto` files.
-   - WebSocket: use `websocat` (see `../web/tools/websocat.md`) after capturing valid messages.
+   - GraphQL: fingerprint with `graphw00f` (see `../../reference/web/tools/graphw00f.md`); attempt schema recovery with `clairvoyance` (see `../../reference/web/tools/clairvoyance.md`) only when approved.
+   - REST/OpenAPI: use `kiterunner` (see `../../reference/web/tools/kiterunner.md`) for API route discovery and `schemathesis` (see `../../reference/web/tools/schemathesis.md`) for schema-driven tests.
+   - gRPC: use `grpcurl` (see `../../reference/web/tools/grpcurl.md`) with reflection or supplied `.proto` files.
+   - WebSocket: use `websocat` (see `../../reference/web/tools/websocat.md`) after capturing valid messages.
 
    - If signing blocks tool execution, defer to after the proxy is built. Record in `todo.txt`: `[DEFER] Phase 3 — resume after proxy`.
 
-   (See `../web/SKILL.md` for web and API tool selection.)
+   (See `../../reference/web/INDEX.md` for web and API tool selection.)
    ```bash
    # kiterunner — API route discovery
    kr scan <target-url> -w /path/to/routes.kite -A=apiroutes-240328
@@ -59,7 +64,7 @@ Use for authorized GraphQL, OpenAPI/REST, gRPC, WebSocket, or API-heavy web appl
    - **Bypass test** (always execute first): test whether signature validation can be bypassed — send malformed, empty, or constant values. If validation is weak, document the bypass as a finding and proceed without a signing proxy.
       - **Bypass confirmed:** automated tools are immediately usable. Execute the Automated Baseline Gate below, injecting the bypass values as static headers (e.g., `-H "X-Signature: "`). Then proceed to Phase 6.
       - **Bypass failed:** complete all steps below, then execute the Automated Baseline Gate through the proxy before proceeding to Phase 6. Record in `decisions.txt`: `[PROXY_BUILT] <approach> — verified: yes`.
-        - Locate the frontend application (SPA JavaScript bundle, mobile app, or SDK) and extract: signing algorithm and inputs, required custom headers, public keys or shared secrets, and API constants. Even when API documentation is available, fetch and analyze the frontend JS — documentation describes the spec, JS reflects the actual implementation. Discrepancies are high-value findings. (See `../reverse-engineering/SKILL.md` for binary/JS analysis tool selection.)
+        - Locate the frontend application (SPA JavaScript bundle, mobile app, or SDK) and extract: signing algorithm and inputs, required custom headers, public keys or shared secrets, and API constants. Even when API documentation is available, fetch and analyze the frontend JS — documentation describes the spec, JS reflects the actual implementation. Discrepancies are high-value findings. (See `../../reference/reverse-engineering/INDEX.md` for binary/JS analysis tool selection.)
 
           ```bash
           curl -sk https://<frontend-host>/main.js -o /tmp/main.js
@@ -70,7 +75,7 @@ Use for authorized GraphQL, OpenAPI/REST, gRPC, WebSocket, or API-heavy web appl
         - Implement a signing script, then confirm a signed request succeeds before proceeding.
         - **Encrypted request/response handling**: if API responses are base64-encoded binary rather than plaintext JSON, identify the encryption scheme from frontend code or API documentation, build encrypt/decrypt functions, and confirm decrypted responses match expected JSON before proceeding. All subsequent phases must route through the encryption layer.
         - **Proxy cost-benefit assessment**: before building a full mitmproxy addon, enumerate all user-controllable parameters across documented endpoints. Full proxy required if ANY: free-text fields, file uploads, complex nested JSON bodies, or path parameters accepting arbitrary strings. `sqlmap --eval` / manual sufficient ONLY IF all parameters are enum-type, numeric IDs, or fixed-format strings. Record the decision in `decisions.txt`: `[PROXY_DECISION] injectable params: <count/types> — decision: <full proxy / sqlmap --eval / manual> — reason: <why>`.
-        - Before choosing a proxy approach, check the Decision Tree in `../web/SKILL.md` — it maps common signing schemes to specific tool recommendations.
+        - Before choosing a proxy approach, check the Decision Tree in `../../reference/web/INDEX.md` — it maps common signing schemes to specific tool recommendations.
         - **Proxy implementation options** (lightest to heaviest):
           - `sqlmap --eval` with inline signature computation — sufficient for simple signing schemes.
           - Local HTTP server that accepts plaintext, wraps in the custom protocol, forwards, and returns decrypted responses.
@@ -100,7 +105,7 @@ Use for authorized GraphQL, OpenAPI/REST, gRPC, WebSocket, or API-heavy web appl
           # Verify: curl -sk -x http://127.0.0.1:8080 https://target/endpoint
           ```
 
-          Force `--set http2=false` when the target validates mixed-case custom headers. Use `--technique=BEUS` with sqlmap to skip time-based injection (per-request timestamp changes destabilize baselines). Details: `../web/tools/mitmproxy.md`.
+          Force `--set http2=false` when the target validates mixed-case custom headers. Use `--technique=BEUS` with sqlmap to skip time-based injection (per-request timestamp changes destabilize baselines). Details: `../../reference/web/tools/mitmproxy.md`.
 
         - After building a proxy, verify one request returns non-401, then execute the Automated Baseline Gate. For proxy-incompatible tools (nikto), inject auth headers directly via the tool's own header flags.
 
@@ -123,7 +128,7 @@ Use for authorized GraphQL, OpenAPI/REST, gRPC, WebSocket, or API-heavy web appl
    - Test missing auth, token reuse, role/tenant boundaries, object-level authorization, and method restrictions.
    - Preserve request/response evidence for every role tested.
    - Specific checks and tools:
-     - **JWT**: test `alg:none`, weak HS256 secret, `kid` header injection — use `jwt_tool` (see `../web/tools/jwt_tool.md`) `<token> -M pb` for a playbook scan, then `jwt_tool <token> -M at` for all tests. If the token format is not JWT (opaque, UUID-based, session ID), record in `decisions.txt`: `[N/A] jwt_tool — reason: token format is <format>, not JWT`.
+     - **JWT**: test `alg:none`, weak HS256 secret, `kid` header injection — use `jwt_tool` (see `../../reference/web/tools/jwt_tool.md`) `<token> -M pb` for a playbook scan, then `jwt_tool <token> -M at` for all tests. If the token format is not JWT (opaque, UUID-based, session ID), record in `decisions.txt`: `[N/A] jwt_tool — reason: token format is <format>, not JWT`.
      - **BOLA / IDOR**: replace object IDs (user IDs, resource IDs) with IDs from another test account; confirm isolation.
      - **Broken function-level auth**: call admin-only endpoints (e.g., `DELETE /users/<id>`, `/admin/*`) with low-privilege tokens.
      - **Mass assignment**: send extra fields in POST/PUT body that should be read-only (e.g., `role`, `is_admin`).
@@ -161,7 +166,7 @@ Use for authorized GraphQL, OpenAPI/REST, gRPC, WebSocket, or API-heavy web appl
 
    8.1. **Input validation and injection**
    - Test API parameters for SQL injection, NoSQL injection, command injection, LDAP injection, and XML external entity (XXE) attacks.
-   - Use `sqlmap` (see `../web/tools/sqlmap.md`) with API-specific options: save a representative request to a file and run `sqlmap -r request.txt --batch`; for JSON bodies use `--data` with the correct `--headers="Content-Type: application/json"`.
+   - Use `sqlmap` (see `../../reference/web/tools/sqlmap.md`) with API-specific options: save a representative request to a file and run `sqlmap -r request.txt --batch`; for JSON bodies use `--data` with the correct `--headers="Content-Type: application/json"`.
    - Test for SSRF through URL and file parameters — supply internal addresses (`http://169.254.169.254/`, `http://127.0.0.1:<port>`) and observe responses.
    - Fuzz all input vectors (path, query, header, body) with type-boundary and encoding-bypass payloads.
 
@@ -219,14 +224,14 @@ Use for authorized GraphQL, OpenAPI/REST, gRPC, WebSocket, or API-heavy web appl
 
 ## Cross-References
 
-- `internal-network.md` — when the API is on an internal network requiring broader assessment.
-- `external-attack-surface.md` — for discovering additional API endpoints through subdomain and port enumeration.
-- `password-audit.md` — for cracking JWT secrets, API keys, or captured credentials.
-- `source-code-audit.md` — when API source code is available for static analysis of endpoints and auth logic.
-- `web-application.md` — WebSocket and general web testing.
-- `post-exploitation.md` — when a confirmed API vulnerability leads to shell access; see also `../exploitation/SKILL.md` for exploitation path selection.
-- `../reverse-engineering/SKILL.md` — when frontend JS analysis is needed to extract signing or encryption logic.
-- `reporting-workflow.md` — report structure and delivery.
+- `../internal-network/SKILL.md` — when the API is on an internal network requiring broader assessment.
+- `../external-attack-surface/SKILL.md` — for discovering additional API endpoints through subdomain and port enumeration.
+- `../password-audit/SKILL.md` — for cracking JWT secrets, API keys, or captured credentials.
+- `../source-code-audit/SKILL.md` — when API source code is available for static analysis of endpoints and auth logic.
+- `../web-application/SKILL.md` — WebSocket and general web testing.
+- `../post-exploitation/SKILL.md` — when a confirmed API vulnerability leads to shell access; see also `../../reference/exploitation/INDEX.md` for exploitation path selection.
+- `../../reference/reverse-engineering/INDEX.md` — when frontend JS analysis is needed to extract signing or encryption logic.
+- `../reporting/SKILL.md` — report structure and delivery.
 
 ## Expected Artifacts
 

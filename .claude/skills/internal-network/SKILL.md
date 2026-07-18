@@ -1,3 +1,8 @@
+---
+name: internal-network
+description: Scenario workflow for authorized internal network or full pentest engagements: host discovery, port scanning, service enumeration, vulnerability validation, credential testing, and pivoting to specialized playbooks. Use for IP ranges, CIDRs, lab networks, or general pentest tasks with an unclear target type (this is the default playbook).
+---
+
 # Internal Network Playbook
 
 Use for authorized internal ranges, lab networks, or full pentest tasks where the starting point is an IP, CIDR, or known host.
@@ -24,7 +29,7 @@ Use for authorized internal ranges, lab networks, or full pentest tasks where th
    - Include IPv6 host discovery. Many internal networks have IPv6 enabled but unmonitored, making it a valuable attack surface.
    - Save a live-host list for later phases.
 
-   Use `nmap -sn` for ping sweep or `arp-scan` for local LAN (see `../information-gathering/tools/nmap.md` for host discovery flags; see `../information-gathering/SKILL.md` for tool selection).
+   Use `nmap -sn` for ping sweep or `arp-scan` for local LAN (see `../../reference/information-gathering/tools/nmap.md` for host discovery flags; see `../../reference/information-gathering/INDEX.md` for tool selection).
 
    ```bash
    arp-scan --localnet                     # ARP-based, LAN only, very fast
@@ -46,7 +51,7 @@ Use for authorized internal ranges, lab networks, or full pentest tasks where th
      - Deep: `nmap -sU --top-ports 100` or targeted based on discovered TCP services.
      - Always scan UDP/161 and UDP/623 on infrastructure devices (routers, switches, BMCs).
 
-   Start with top-port TCP + version detection on live hosts (see `../information-gathering/tools/nmap.md` for port range, timing, and output format variants; see `../information-gathering/SKILL.md` for tool selection).
+   Start with top-port TCP + version detection on live hosts (see `../../reference/information-gathering/tools/nmap.md` for port range, timing, and output format variants; see `../../reference/information-gathering/INDEX.md` for tool selection).
 
    ```bash
    nmap -sV -sC --top-ports 1000 -oA quick_tcp -iL live_hosts.txt
@@ -101,7 +106,7 @@ Use for authorized internal ranges, lab networks, or full pentest tasks where th
 
    **Locally-bound services:** When a service rejects connections based on source IP (e.g., MySQL `Host not allowed`, PostgreSQL pg_hba deny), mark it as "locally-bound — retest after shell access." Maintain a deferred-testing list for these services. After gaining initial access (Phase 8), return to this list and test each service from the compromised host.
 
-   **AD domain discovery:** When AD domain information is discovered during service scanning (domain names, computer names, user accounts via RID cycling), record it for the `active-directory.md` handoff but continue completing the per-service test matrix before switching.
+   **AD domain discovery:** When AD domain information is discovered during service scanning (domain names, computer names, user accounts via RID cycling), record it for the `../active-directory/SKILL.md` handoff but continue completing the per-service test matrix before switching.
 
    **CVE evaluation procedure:** For each service with an identified version: (1) `searchsploit <service> <version>` for offline Exploit-DB lookup, (2) `getsploit <service> <version>` for online multi-database search, (3) `nuclei -tags cve` against the service for template-based CVE detection, (4) manual check of NVD and vendor security advisories for recent or unindexed CVEs, (5) for application frameworks with plugin ecosystems (WordPress, Joomla, Drupal), use CMS-specific scanners (`wpscan`, `joomscan`, `droopescan`) — searchsploit and nuclei may not cover third-party plugin vulnerabilities.
 
@@ -126,13 +131,13 @@ Use for authorized internal ranges, lab networks, or full pentest tasks where th
    Route discovered services to the appropriate playbook or protocol reference:
 
    - HTTP/HTTPS: distinguish the service type before switching playbooks:
-     - Custom web application or CMS (unknown app, WordPress, Joomla, etc.): switch to `web-application.md`.
-     - Known product with web UI (Jenkins, Grafana, Cockpit, phpMyAdmin, Kibana, etc.): test version + known CVEs + default/discovered credentials + product-specific misconfigurations only. Do not run the full `web-application.md` workflow.
+     - Custom web application or CMS (unknown app, WordPress, Joomla, etc.): switch to `../web-application/SKILL.md`.
+     - Known product with web UI (Jenkins, Grafana, Cockpit, phpMyAdmin, Kibana, etc.): test version + known CVEs + default/discovered credentials + product-specific misconfigurations only. Do not run the full `../web-application/SKILL.md` workflow.
      - Static or default page (Apache/Nginx welcome, directory listing): directory enumeration + technology fingerprint only.
-   - API-heavy HTTP, OpenAPI, GraphQL, gRPC, or WebSocket: switch to `api-security.md`. An HTTP service is API-heavy when it returns `application/json` content-type, exposes `/api-docs`, `/swagger`, `/openapi.json`, or `/graphql` endpoints, or when `whatweb`/`httpx` identifies API frameworks (Express, FastAPI, Spring Boot, Django REST).
-   - Kubernetes, Docker API, container registries, cloud metadata: switch to `cloud-native-assessment.md`.
-   - SIP, IAX, VoIP, ICS/OT, PLC, Modbus: switch to `voip-ics.md`.
-   - All other protocols (SMB, MSRPC, SNMP, Kerberos, LDAP, RDP, WinRM, SSH, FTP, databases, mail, NFS, IPMI, Redis/NoSQL): follow `internal-network-protocols.md`.
+   - API-heavy HTTP, OpenAPI, GraphQL, gRPC, or WebSocket: switch to `../api-security/SKILL.md`. An HTTP service is API-heavy when it returns `application/json` content-type, exposes `/api-docs`, `/swagger`, `/openapi.json`, or `/graphql` endpoints, or when `whatweb`/`httpx` identifies API frameworks (Express, FastAPI, Spring Boot, Django REST).
+   - Kubernetes, Docker API, container registries, cloud metadata: switch to `../cloud-native-assessment/SKILL.md`.
+   - SIP, IAX, VoIP, ICS/OT, PLC, Modbus: switch to `../voip-ics/SKILL.md`.
+   - All other protocols (SMB, MSRPC, SNMP, Kerberos, LDAP, RDP, WinRM, SSH, FTP, databases, mail, NFS, IPMI, Redis/NoSQL): follow `../internal-network-protocols/SKILL.md`.
 
    **Playbook handoff:** When a discovered service triggers a switch to another playbook, complete that playbook's workflow, then return here to continue with the next service.
 
@@ -143,9 +148,9 @@ Use for authorized internal ranges, lab networks, or full pentest tasks where th
 6. **Vulnerability assessment**
    - Scan non-HTTP services for known vulnerabilities: `nuclei` network templates, SSL/TLS configuration checks (`testssl.sh`/`sslscan`), and protocol-specific vulnerability NSE scripts.
    - Use GVM/OpenVAS only for Deep scans when initialized and authorized.
-   - Note LLMNR/NBT-NS/mDNS poisoning exposure: if these protocols are active on the network, `responder` can capture credentials passively. Captured hashes should be forwarded to `password-audit.md` for offline cracking.
+   - Note LLMNR/NBT-NS/mDNS poisoning exposure: if these protocols are active on the network, `responder` can capture credentials passively. Captured hashes should be forwarded to `../password-audit/SKILL.md` for offline cracking.
 
-   (See `../vulnerability/SKILL.md` for vulnerability scanner selection.)
+   (See `../../reference/vulnerability/INDEX.md` for vulnerability scanner selection.)
 
    ```bash
    # Quick CVE scan on discovered web services
@@ -161,9 +166,9 @@ Use for authorized internal ranges, lab networks, or full pentest tasks where th
    - This phase covers proactive credential testing — default credentials, password spraying, and brute-force. Credentials discovered organically during earlier phases should already have been tested per the credential discovery handling directive.
    - Test default credentials and known credentials only within the authorized lockout policy.
    - Use `netexec` for multi-protocol default credential testing across discovered services.
-   - Switch to `password-audit.md` for hash cracking, password spraying, or brute force.
+   - Switch to `../password-audit/SKILL.md` for hash cracking, password spraying, or brute force.
 
-   (See `../password/SKILL.md` for credential tool selection.)
+   (See `../../reference/password/INDEX.md` for credential tool selection.)
 
    ```bash
    # Multi-protocol credential testing with nxc
@@ -176,8 +181,8 @@ Use for authorized internal ranges, lab networks, or full pentest tasks where th
    ```
 
 8. **Exploitation and post-exploitation**
-   - Exploit only confirmed vulnerabilities and only after explicit approval. See `../exploitation/SKILL.md` for the exploitation decision tree (known CVE, web vulnerability, valid credentials, tunnel/pivot path selection).
-   - If initial access is gained, switch to `post-exploitation.md` and restart reconnaissance on newly discovered in-scope networks. After post-exploitation completes on a host, return here to test deferred services from the compromised host and exploit remaining targets using newly discovered credentials.
+   - Exploit only confirmed vulnerabilities and only after explicit approval. See `../../reference/exploitation/INDEX.md` for the exploitation decision tree (known CVE, web vulnerability, valid credentials, tunnel/pivot path selection).
+   - If initial access is gained, switch to `../post-exploitation/SKILL.md` and restart reconnaissance on newly discovered in-scope networks. After post-exploitation completes on a host, return here to test deferred services from the compromised host and exploit remaining targets using newly discovered credentials.
    - When multiple exploitation paths exist, prioritize by: reliability (proven exploit > PoC), stealth (credential-based > RCE), and reversibility (login > code execution).
 
    ```bash
@@ -191,16 +196,16 @@ Use for authorized internal ranges, lab networks, or full pentest tasks where th
 
 ## Cross-References
 
-- `internal-network-protocols.md` — protocol-specific testing procedures for Phase 5 (integral — always read for non-HTTP protocol testing).
-- `active-directory.md` — domain enumeration, Kerberoasting, AS-REP roasting, and AD escalation paths.
-- `web-application.md` — web service testing for discovered HTTP/HTTPS endpoints.
-- `api-security.md` — API testing for discovered REST, GraphQL, gRPC, or WebSocket services.
-- `cloud-native-assessment.md` — when Kubernetes API, Docker daemon, or cloud service endpoints are discovered.
-- `voip-ics.md` — when VoIP/SIP, ICS/OT/Modbus, or IPMI/BMC services are discovered.
-- `password-audit.md` — hash cracking for captured NTLM, NTLMv2, and Kerberos hashes.
-- `post-exploitation.md` — post-exploitation activities after gaining initial access.
-- `wireless-assessment.md` — when wireless access points or Bluetooth devices are discovered on the internal network.
-- `reporting-workflow.md` — evidence packaging and report generation.
+- `../internal-network-protocols/SKILL.md` — protocol-specific testing procedures for Phase 5 (integral — always read for non-HTTP protocol testing).
+- `../active-directory/SKILL.md` — domain enumeration, Kerberoasting, AS-REP roasting, and AD escalation paths.
+- `../web-application/SKILL.md` — web service testing for discovered HTTP/HTTPS endpoints.
+- `../api-security/SKILL.md` — API testing for discovered REST, GraphQL, gRPC, or WebSocket services.
+- `../cloud-native-assessment/SKILL.md` — when Kubernetes API, Docker daemon, or cloud service endpoints are discovered.
+- `../voip-ics/SKILL.md` — when VoIP/SIP, ICS/OT/Modbus, or IPMI/BMC services are discovered.
+- `../password-audit/SKILL.md` — hash cracking for captured NTLM, NTLMv2, and Kerberos hashes.
+- `../post-exploitation/SKILL.md` — post-exploitation activities after gaining initial access.
+- `../wireless-assessment/SKILL.md` — when wireless access points or Bluetooth devices are discovered on the internal network.
+- `../reporting/SKILL.md` — evidence packaging and report generation.
 
 ## Expected Artifacts
 

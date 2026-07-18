@@ -1,3 +1,8 @@
+---
+name: forensics-triage
+description: Scenario workflow for authorized forensic analysis: evidence handling, memory/disk/network analysis, timeline construction, log analysis, and artifact extraction. Use for disk images, memory dumps, packet captures, logs, or suspected hidden data.
+---
+
 # Forensics Triage Playbook
 
 Use for authorized analysis of disk images, memory dumps, packet captures, logs, files, or suspected hidden data.
@@ -17,7 +22,7 @@ Use for authorized analysis of disk images, memory dumps, packet captures, logs,
    - Start chain of custody documentation: who acquired what, when, from which system, with what tool, and hash verification.
    - Always work on forensic copies, never originals. Create working copies from verified images.
 
-   (See `../forensics/SKILL.md` for forensic tool selection.)
+   (See `../../reference/forensics/INDEX.md` for forensic tool selection.)
 
    ```bash
    # Create forensic disk image with hash verification
@@ -30,7 +35,7 @@ Use for authorized analysis of disk images, memory dumps, packet captures, logs,
    sha256sum /tmp/evidence_image.dd >> /tmp/evidence_hashes.txt
    ```
 
-   Use `dc3dd` for forensic imaging with inline hashing (see `../forensics/tools/dc3dd.md`). Use `dcfldd` as an enhanced alternative to `dc3dd` with inline hashing and split output (see `../forensics/tools/dcfldd.md`). Use `ddrescue` for imaging damaged or failing media with automatic retry and error mapping (see `../forensics/tools/ddrescue.md`).
+   Use `dc3dd` for forensic imaging with inline hashing (see `../../reference/forensics/tools/dc3dd.md`). Use `dcfldd` as an enhanced alternative to `dc3dd` with inline hashing and split output (see `../../reference/forensics/tools/dcfldd.md`). Use `ddrescue` for imaging damaged or failing media with automatic retry and error mapping (see `../../reference/forensics/tools/ddrescue.md`).
 
    Decision branching based on available evidence:
    - Memory dump available: proceed to Phase 3 (memory analysis).
@@ -40,7 +45,7 @@ Use for authorized analysis of disk images, memory dumps, packet captures, logs,
    - Combine all findings in Phase 9 (anti-forensics detection) before reporting.
 
 2. **Identify file types**
-   - Use `file`, `binwalk` when available (see `../reverse-engineering/tools/binwalk.md`), `exiftool` (see `../forensics/tools/exiftool.md`), and archive tools as appropriate.
+   - Use `file`, `binwalk` when available (see `../../reference/reverse-engineering/tools/binwalk.md`), `exiftool` (see `../../reference/forensics/tools/exiftool.md`), and archive tools as appropriate.
    - For disk images, identify partitions and filesystems before extraction.
 
    ```bash
@@ -49,10 +54,10 @@ Use for authorized analysis of disk images, memory dumps, packet captures, logs,
    bulk_extractor -o /tmp/bulk_output/ <disk-image>
    ```
 
-   Use `foremost` for file carving from disk images (see `../forensics/tools/foremost.md`). Use `bulk_extractor` for bulk data extraction including emails, URLs, and credit card numbers (see `../forensics/tools/bulk-extractor.md`).
+   Use `foremost` for file carving from disk images (see `../../reference/forensics/tools/foremost.md`). Use `bulk_extractor` for bulk data extraction including emails, URLs, and credit card numbers (see `../../reference/forensics/tools/bulk-extractor.md`).
 
 3. **Memory analysis**
-   - Use `volatility` with the correct profile/symbols (see `../forensics/tools/volatility.md`).
+   - Use `volatility` with the correct profile/symbols (see `../../reference/forensics/tools/volatility.md`).
    - Extract process, network, credential, malware, and timeline indicators according to case objective.
 
    ```bash
@@ -97,7 +102,7 @@ Use for authorized analysis of disk images, memory dumps, packet captures, logs,
    scalpel -c /etc/scalpel/scalpel.conf -o /tmp/scalpel_out/ /tmp/disk_image.dd
    ```
 
-   Use `scalpel` alongside `foremost` for file carving with more configurable signature definitions (see `../forensics/tools/scalpel.md`).
+   Use `scalpel` alongside `foremost` for file carving with more configurable signature definitions (see `../../reference/forensics/tools/scalpel.md`).
 
    Verify recovered file integrity with `hashdeep` and identify similar files with `ssdeep` fuzzy hashing:
 
@@ -106,7 +111,7 @@ Use for authorized analysis of disk images, memory dumps, packet captures, logs,
    ssdeep -r /tmp/extracted/ > /tmp/fuzzy.txt && ssdeep -d /tmp/fuzzy.txt
    ```
 
-   Use `hashdeep` for recursive hash verification of recovered evidence (see `../forensics/tools/hashdeep.md`). Use `ssdeep` for fuzzy hash matching to identify similar or modified files across evidence sets (see `../forensics/tools/ssdeep.md`).
+   Use `hashdeep` for recursive hash verification of recovered evidence (see `../../reference/forensics/tools/hashdeep.md`). Use `ssdeep` for fuzzy hash matching to identify similar or modified files across evidence sets (see `../../reference/forensics/tools/ssdeep.md`).
 
    5.1. **Malware triage**
    - Scan extracted files and suspicious artifacts with YARA rules.
@@ -121,7 +126,7 @@ Use for authorized analysis of disk images, memory dumps, packet captures, logs,
    - Document malware artifacts with file path, hash, YARA rule match, and timestamps.
 
 6. **Traffic analysis**
-   - Use `tcpdump` and `tshark` for conversations, protocols, credentials, files, DNS, HTTP, TLS, and timelines (see `../forensics/tools/tshark.md` and `../forensics/tools/tcpdump.md`).
+   - Use `tcpdump` and `tshark` for conversations, protocols, credentials, files, DNS, HTTP, TLS, and timelines (see `../../reference/forensics/tools/tshark.md` and `../../reference/forensics/tools/tcpdump.md`).
 
    ```bash
    tshark -r capture.pcap -q -z conv,tcp                  # conversation summary
@@ -131,7 +136,7 @@ Use for authorized analysis of disk images, memory dumps, packet captures, logs,
    tcpflow -r capture.pcap -o /tmp/tcpflow_out/
    ```
 
-   Use `tcpflow` to reassemble and extract TCP stream content from packet captures for deeper content analysis (see `../forensics/tools/tcpflow.md`).
+   Use `tcpflow` to reassemble and extract TCP stream content from packet captures for deeper content analysis (see `../../reference/forensics/tools/tcpflow.md`).
 
 7. **Registry and application artifact analysis**
     - Windows registry hive examination for persistence mechanisms, user activity, and device history:
@@ -162,7 +167,7 @@ Use for authorized analysis of disk images, memory dumps, packet captures, logs,
     ```
 
 8. **Logs and metadata**
-   - Use `chainsaw` for Windows event logs (see `../forensics/tools/chainsaw.md`), `exiftool` for metadata (see `../forensics/tools/exiftool.md`), and `stegseek` for steganography passphrase cracking when relevant (see `../forensics/tools/stegseek.md`).
+   - Use `chainsaw` for Windows event logs (see `../../reference/forensics/tools/chainsaw.md`), `exiftool` for metadata (see `../../reference/forensics/tools/exiftool.md`), and `stegseek` for steganography passphrase cracking when relevant (see `../../reference/forensics/tools/stegseek.md`).
 
    ```bash
    chainsaw hunt <evtx-directory> -s /usr/share/sigma/rules/windows/ --mapping chainsaw/mappings/sigma-event-logs-all.yml
@@ -175,7 +180,7 @@ Use for authorized analysis of disk images, memory dumps, packet captures, logs,
    - Detect timestomping: look for MAC time anomalies where $STANDARD_INFORMATION timestamps differ from $FILE_NAME timestamps (NTFS), or where creation time is after modification time.
    - Detect log clearing: gaps in sequential event log records, Event ID 1102 (audit log cleared), or missing expected log files.
    - Detect data wiping: look for artifacts of secure-deletion tools (e.g., `sdelete`, `cipher /w`), large clusters of zeroed sectors, or filesystem journal anomalies.
-   - Detect encrypted containers: identify TrueCrypt/VeraCrypt containers, BitLocker volumes, or other encrypted partitions. If encrypted evidence is found, refer to the [password audit playbook](password-audit.md) for decryption approaches.
+   - Detect encrypted containers: identify TrueCrypt/VeraCrypt containers, BitLocker volumes, or other encrypted partitions. If encrypted evidence is found, refer to the [password audit playbook](../password-audit/SKILL.md) for decryption approaches.
 
    ```bash
    # Check for timestomping via MFT analysis (NTFS)
@@ -189,15 +194,15 @@ Use for authorized analysis of disk images, memory dumps, packet captures, logs,
    rkhunter --check --skip-keypress --report-warnings-only
    ```
 
-   Use `chkrootkit` and `rkhunter` to scan mounted evidence for rootkits, backdoors, and suspicious system modifications (see `../forensics/tools/chkrootkit.md` and `../forensics/tools/rkhunter.md`).
+   Use `chkrootkit` and `rkhunter` to scan mounted evidence for rootkits, backdoors, and suspicious system modifications (see `../../reference/forensics/tools/chkrootkit.md` and `../../reference/forensics/tools/rkhunter.md`).
 
    - Cross-reference anti-forensics indicators with the timeline (Phase 4) to determine if evidence destruction occurred after the incident.
 
 ## Cross-References
 
-- `password-audit.md` — encrypted evidence cracking.
-- `post-exploitation.md` — credential hashes extracted from memory analysis feed into post-exploitation workflows.
-- `reporting-workflow.md` — findings documentation and report structure.
+- `../password-audit/SKILL.md` — encrypted evidence cracking.
+- `../post-exploitation/SKILL.md` — credential hashes extracted from memory analysis feed into post-exploitation workflows.
+- `../reporting/SKILL.md` — findings documentation and report structure.
 
 ## Expected Artifacts
 

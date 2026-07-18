@@ -1,8 +1,3 @@
----
-name: password
-description: Password attacks cover techniques including online brute-forcing, offline hash cracking, wordlist generation, and network hash capture. They are a key method for gaining access during penetration testing.
----
-
 # Password Attacks (Password)
 
 Password attacks cover techniques including online brute-forcing, offline hash cracking, wordlist generation, and network hash capture. They are a key method for gaining access during penetration testing.
@@ -204,9 +199,9 @@ Select the approach when the Golden Path doesn't fit:
 
 ## Cross-References
 
-- **Password audit playbook**: `../playbooks/password-audit.md` -- full password audit scenario with policy review, hash extraction, cracking methodology, and reporting.
-- **Active Directory playbook**: `../playbooks/active-directory.md` -- Kerberoasting, AS-REP roasting, password spraying, and credential relay workflows.
-- **Post-exploitation credential tools**: `../post-exploitation/SKILL.md` -- mimikatz, lsassy, dploot for credential harvesting after initial access.
+- **Password audit playbook**: `../../skills/password-audit/SKILL.md` -- full password audit scenario with policy review, hash extraction, cracking methodology, and reporting.
+- **Active Directory playbook**: `../../skills/active-directory/SKILL.md` -- Kerberoasting, AS-REP roasting, password spraying, and credential relay workflows.
+- **Post-exploitation credential tools**: `../post-exploitation/INDEX.md` -- mimikatz, lsassy, dploot for credential harvesting after initial access.
 
 ---
 

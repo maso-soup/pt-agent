@@ -1,3 +1,8 @@
+---
+name: wireless-assessment
+description: Scenario workflow for authorized wireless testing: adapter setup, Wi-Fi reconnaissance, handshake capture, WPS attacks, evil twin attacks, Bluetooth/BLE enumeration, and post-authentication testing. Use for Wi-Fi, Bluetooth, or BLE targets with physical access and compatible hardware.
+---
+
 # Wireless Assessment Playbook
 
 Use for authorized Wi-Fi, Bluetooth, or BLE testing with physical access and compatible wireless hardware.
@@ -21,7 +26,7 @@ Use for authorized Wi-Fi, Bluetooth, or BLE testing with physical access and com
    - Use `airmon-ng`, `iw`, and `airmon-ng check` as needed.
    - Kill interfering processes before enabling monitor mode.
 
-   (See `../wireless/SKILL.md` for wireless tool selection.)
+   (See `../../reference/wireless/INDEX.md` for wireless tool selection.)
 
    ```bash
    iw dev                                                   # list wireless interfaces
@@ -68,8 +73,8 @@ Use for authorized Wi-Fi, Bluetooth, or BLE testing with physical access and com
    - Use `aircrack-ng`, `hashcat`, or `john` with approved wordlists and time budgets. Use `cowpatty` as a CPU-based fallback when `hashcat` GPU acceleration is unavailable.
    - Record whether cracking succeeded and avoid connecting to networks unless authorized.
 
-   (See `../password/SKILL.md` for cracking tool selection.)
-   - **WPA3/SAE awareness**: If WPA3 is detected, document the protection level and focus on other attack vectors: implementation flaws, transition mode downgrade (WPA3-Transition allows WPA2 fallback — attempt downgrade capture), and client misconfiguration. See `password-audit.md` for extended cracking strategies.
+   (See `../../reference/password/INDEX.md` for cracking tool selection.)
+   - **WPA3/SAE awareness**: If WPA3 is detected, document the protection level and focus on other attack vectors: implementation flaws, transition mode downgrade (WPA3-Transition allows WPA2 fallback — attempt downgrade capture), and client misconfiguration. See `../password-audit/SKILL.md` for extended cracking strategies.
 
    ```bash
    aircrack-ng -w /usr/share/wordlists/rockyou.txt /tmp/handshake*.cap
@@ -83,7 +88,7 @@ Use for authorized Wi-Fi, Bluetooth, or BLE testing with physical access and com
 
    6a. **Evil Twin / Rogue AP**
    - Set up a rogue AP mimicking the target network to test client behavior.
-   - Use `hostapd` or `wifiphisher` (see `../wireless/tools/wifiphisher.md`) to create the rogue AP with a captive portal.
+   - Use `hostapd` or `wifiphisher` (see `../../reference/wireless/tools/wifiphisher.md`) to create the rogue AP with a captive portal.
    - Capture credentials from clients that connect to the rogue AP.
    - Monitor for automatic client association: note which devices connect without user interaction.
    - Risk gate: requires explicit authorization and an isolated test environment to avoid impacting production users.
@@ -97,15 +102,15 @@ Use for authorized Wi-Fi, Bluetooth, or BLE testing with physical access and com
    wifipumpkin3 -i wlan0 -x "set essid <target_ssid>; start"
    ```
 
-   Use `wifipumpkin3` for rogue AP creation with built-in credential capture and traffic interception (see `../wireless/tools/wifipumpkin3.md`).
+   Use `wifipumpkin3` for rogue AP creation with built-in credential capture and traffic interception (see `../../reference/wireless/tools/wifipumpkin3.md`).
 
    6b. **WPA Enterprise (802.1X) testing**
    - If enterprise wireless (WPA2/WPA3-Enterprise, 802.1X) is detected: test PEAP/EAP-TTLS with a rogue RADIUS server to capture credentials from clients connecting to the evil twin.
    - Test certificate validation on supplicants — many clients accept untrusted certificates without warning.
    - This is critical for corporate environments where credential capture can lead to domain compromise.
    - Methodology: deploy a rogue AP with the target ESSID and a RADIUS server configured to accept all identities; capture EAP handshakes and relay or crack credentials.
-   - Tools: `hostapd-mana` and `eaphammer` — see tool docs at `../wireless/tools/hostapd-mana.md` and `../wireless/tools/eaphammer.md` for installation and usage.
-   - For cracking captured LEAP credentials, use `asleap` (see `../wireless/tools/asleap.md`):
+   - Tools: `hostapd-mana` and `eaphammer` — see tool docs at `../../reference/wireless/tools/hostapd-mana.md` and `../../reference/wireless/tools/eaphammer.md` for installation and usage.
+   - For cracking captured LEAP credentials, use `asleap` (see `../../reference/wireless/tools/asleap.md`):
 
      ```bash
      asleap -r /tmp/leap_capture.pcap -W /usr/share/wordlists/rockyou.txt
@@ -140,7 +145,7 @@ Use for authorized Wi-Fi, Bluetooth, or BLE testing with physical access and com
    - Test segmentation between wireless and wired networks — can the wireless client reach servers, printers, management interfaces, or other VLANs?
    - Check for internal services accessible from the wireless segment: DNS, DHCP, file shares, internal web applications, databases, and management consoles.
    - Identify the wireless VLAN assignment and compare access controls against the wired network policy.
-   - Cross-reference `internal-network.md` for full internal network assessment methodology once on the wireless segment.
+   - Cross-reference `../internal-network/SKILL.md` for full internal network assessment methodology once on the wireless segment.
 
    ```bash
    # After connecting to the target wireless network
@@ -152,9 +157,9 @@ Use for authorized Wi-Fi, Bluetooth, or BLE testing with physical access and com
 
 ## Cross-References
 
-- `internal-network.md` — post-authentication network testing.
-- `password-audit.md` — extended cracking techniques and wordlist strategies.
-- `reporting-workflow.md` — findings documentation and report generation.
+- `../internal-network/SKILL.md` — post-authentication network testing.
+- `../password-audit/SKILL.md` — extended cracking techniques and wordlist strategies.
+- `../reporting/SKILL.md` — findings documentation and report generation.
 
 ## Expected Artifacts
 
@@ -173,4 +178,4 @@ Use for authorized Wi-Fi, Bluetooth, or BLE testing with physical access and com
 
 - Authorized networks have been surveyed and tested to the approved depth.
 - Further work requires deauthentication, evil twin, phishing, BLE MITM, device writes, or credential use beyond the current authorization.
-- Post-authentication testing has mapped the wireless segment — switch to `internal-network.md` for deeper internal assessment.
+- Post-authentication testing has mapped the wireless segment — switch to `../internal-network/SKILL.md` for deeper internal assessment.

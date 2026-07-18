@@ -1,3 +1,8 @@
+---
+name: rfid-nfc
+description: Scenario workflow for authorized RFID/NFC and physical-access-hardware assessments: card identification, smart-card testing, embedded device checks, and firmware analysis. Use for RFID/NFC, Proxmark3, PC/SC smart cards, tokens, or physical credentials, with required hardware and physical-access authorization.
+---
+
 # RFID/NFC & Hardware Access Playbook
 
 Use for authorized RFID/NFC, Proxmark3, PC/SC smart-card, token, physical credential, embedded device, or USB security assessment.
@@ -21,7 +26,7 @@ Use for authorized RFID/NFC, Proxmark3, PC/SC smart-card, token, physical creden
    - Identify readers, card type, UID/ATR, frequency, and protocol.
    - Use `proxmark3`, `libnfc` tools, `opensc-tool`, or `pkcs15-tool` depending on hardware.
 
-   (See `../rfid-nfc/SKILL.md` for RFID/NFC tool selection.)
+   (See `../../reference/rfid-nfc/INDEX.md` for RFID/NFC tool selection.)
 
 2. **Read-only collection**
    - Collect public metadata, certificates, ATR, tag type, and approved dumps.
@@ -82,7 +87,7 @@ Use for authorized RFID/NFC, Proxmark3, PC/SC smart-card, token, physical creden
    opensc-tool --send-apdu 00A4040000   # send raw APDU (SELECT)
    ```
 
-   Use `scriptor` for interactive APDU command exchanges with smart cards (see `../rfid-nfc/tools/scriptor.md`).
+   Use `scriptor` for interactive APDU command exchanges with smart cards (see `../../reference/rfid-nfc/tools/scriptor.md`).
 
    - Smart card certificate and key enumeration with `pkcs15-tool`:
 
@@ -147,8 +152,8 @@ Use for authorized RFID/NFC, Proxmark3, PC/SC smart-card, token, physical creden
 
 ## Cross-References
 
-- `wireless-assessment.md` — Bluetooth proximity estimation for physical access correlation.
-- `reporting-workflow.md` — evidence packaging and report generation.
+- `../wireless-assessment/SKILL.md` — Bluetooth proximity estimation for physical access correlation.
+- `../reporting/SKILL.md` — evidence packaging and report generation.
 
 ## Expected Artifacts
 

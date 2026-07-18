@@ -1,3 +1,8 @@
+---
+name: reporting
+description: Scenario workflow for producing the penetration test deliverable: finding organization, severity scoring, evidence packaging, report generation, and delivery. Use after testing completes, or throughout testing to keep evidence report-ready.
+---
+
 # Reporting Workflow Playbook
 
 Use after testing, or throughout testing to keep evidence ready for a final report.
@@ -19,7 +24,7 @@ Use after testing, or throughout testing to keep evidence ready for a final repo
    - Group evidence by finding, affected asset, severity, and proof.
    - Keep raw tool output separate from analyst conclusions.
 
-   (See `../reporting/SKILL.md` for reporting tool selection.)
+   (See `../../reference/reporting/INDEX.md` for reporting tool selection.)
 
    ```bash
    mkdir -p /tmp/report/{evidence/{screenshots,scans,raw},findings}
@@ -45,9 +50,9 @@ Use after testing, or throughout testing to keep evidence ready for a final repo
 
 6. **Create supporting artifacts**
    - Before generating the report, copy all tool outputs and evidence files produced during the test from the remote environment to the host; report generation should run on the host.
-   - Use `gowitness` for screenshots when needed (see `../information-gathering/tools/gowitness.md`).
-   - Use `pandoc` for format conversion when requested (see `../reporting/tools/pandoc.md`).
-   - Use `../reporting/tools/report-template.md` as the base structure.
+   - Use `gowitness` for screenshots when needed (see `../../reference/information-gathering/tools/gowitness.md`).
+   - Use `pandoc` for format conversion when requested (see `../../reference/reporting/tools/pandoc.md`).
+   - Use `../../reference/reporting/tools/report-template.md` as the base structure.
    - Write long reports in sections rather than as a single operation to avoid write failures.
 
    ```bash
@@ -70,20 +75,20 @@ Use after testing, or throughout testing to keep evidence ready for a final repo
 
 ## Cross-References
 
-- `active-directory.md` — final deliverable step after AD testing completes.
-- `api-security.md` — final deliverable step after API testing completes.
-- `cloud-native-assessment.md` — final deliverable step after cloud assessment completes.
-- `external-attack-surface.md` — final deliverable step after external testing completes.
-- `forensics-triage.md` — final deliverable step after forensic triage completes.
-- `internal-network.md` — final deliverable step after internal network testing completes.
-- `mobile-application.md` — final deliverable step after mobile testing completes.
-- `password-audit.md` — final deliverable step after password audit completes.
-- `post-exploitation.md` — final deliverable step after post-exploitation completes.
-- `rfid-nfc.md` — final deliverable step after RFID/NFC testing completes.
-- `source-code-audit.md` — final deliverable step after source code audit completes.
-- `voip-ics.md` — final deliverable step after VoIP/ICS testing completes.
-- `web-application.md` — final deliverable step after web application testing completes.
-- `wireless-assessment.md` — final deliverable step after wireless assessment completes.
+- `../active-directory/SKILL.md` — final deliverable step after AD testing completes.
+- `../api-security/SKILL.md` — final deliverable step after API testing completes.
+- `../cloud-native-assessment/SKILL.md` — final deliverable step after cloud assessment completes.
+- `../external-attack-surface/SKILL.md` — final deliverable step after external testing completes.
+- `../forensics-triage/SKILL.md` — final deliverable step after forensic triage completes.
+- `../internal-network/SKILL.md` — final deliverable step after internal network testing completes.
+- `../mobile-application/SKILL.md` — final deliverable step after mobile testing completes.
+- `../password-audit/SKILL.md` — final deliverable step after password audit completes.
+- `../post-exploitation/SKILL.md` — final deliverable step after post-exploitation completes.
+- `../rfid-nfc/SKILL.md` — final deliverable step after RFID/NFC testing completes.
+- `../source-code-audit/SKILL.md` — final deliverable step after source code audit completes.
+- `../voip-ics/SKILL.md` — final deliverable step after VoIP/ICS testing completes.
+- `../web-application/SKILL.md` — final deliverable step after web application testing completes.
+- `../wireless-assessment/SKILL.md` — final deliverable step after wireless assessment completes.
 
 ## Expected Artifacts
 

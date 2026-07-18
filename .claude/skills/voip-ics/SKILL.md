@@ -1,3 +1,8 @@
+---
+name: voip-ics
+description: Scenario workflow for authorized specialized-protocol testing: VoIP/SIP enumeration, ICS/OT discovery, IPMI/BMC checks, SNMP testing, and protocol-specific read-only validation. Use for VoIP, SIP/IAX, ICS/OT, PLC, Modbus, or other high-sensitivity protocols.
+---
+
 # Specialized Protocols Playbook
 
 Use for authorized VoIP, SIP/IAX, voice VLAN, ICS/OT, PLC, Modbus, IPMI/BMC, or other high-sensitivity protocol testing.
@@ -47,7 +52,7 @@ Multiple branches may apply. For example, a site with both VoIP and ICS devices 
    nmap -sV -sU -p 161,623,1900 -T3 -oA /tmp/mgmt_scan <target-range>
    ```
 
-   For initial network discovery and host enumeration, see [Internal Network Playbook](internal-network.md) Phases 1-3.
+   For initial network discovery and host enumeration, see [Internal Network Playbook](../internal-network/SKILL.md) Phases 1-3.
 
    Risk gate: Do not proceed to any active testing phase until the scope document is confirmed and device criticality is classified. If any device is marked safety-critical, confirm that the OT owner has approved active scanning of that specific device.
 
@@ -55,7 +60,7 @@ Multiple branches may apply. For example, a site with both VoIP and ICS devices 
 
    Discover and enumerate SIP and IAX services within authorized scope.
 
-   (See `../voip-ics/SKILL.md` for VoIP/ICS tool selection.)
+   (See `../../reference/voip-ics/INDEX.md` for VoIP/ICS tool selection.)
 
    - **SIP device discovery**: Use `svmap` to identify SIP-enabled devices across the target range. Specify the SIP port and keep request rates within authorized limits.
    - **SIP extension enumeration**: Once SIP hosts are identified, use `svwar` to enumerate valid extensions. Use a dictionary of common extension ranges or a targeted list provided by the client.
@@ -80,7 +85,7 @@ Multiple branches may apply. For example, a site with both VoIP and ICS devices 
    enumiax -d /usr/share/wordlists/metasploit/unix_users.txt <iax-host>
    ```
 
-   See `../voip-ics/tools/sipvicious.md` for `svmap`/`svwar`/`svcrack` parameter details, `../voip-ics/tools/sippts.md` for SIP Pentest Tools Suite options, and `../voip-ics/tools/enumiax.md` for IAX enumeration options.
+   See `../../reference/voip-ics/tools/sipvicious.md` for `svmap`/`svwar`/`svcrack` parameter details, `../../reference/voip-ics/tools/sippts.md` for SIP Pentest Tools Suite options, and `../../reference/voip-ics/tools/enumiax.md` for IAX enumeration options.
 
    Decision point: If SIP extensions are found with registration capabilities, proceed to Phase 3 for security testing. If only passive SIP services are found (e.g., trunks with no user registration), document findings and skip to Phase 8.
 
@@ -112,9 +117,9 @@ Multiple branches may apply. For example, a site with both VoIP and ICS devices 
    nmap -sV -p 5061 --script ssl-enum-ciphers <sip-host>
    ```
 
-   See `../voip-ics/tools/sipvicious.md` for `svcrack` options, `../voip-ics/tools/voiphopper.md` for VLAN hopping modes, and `../forensics/tools/tshark.md` for packet analysis.
+   See `../../reference/voip-ics/tools/sipvicious.md` for `svcrack` options, `../../reference/voip-ics/tools/voiphopper.md` for VLAN hopping modes, and `../../reference/forensics/tools/tshark.md` for packet analysis.
 
-   For deeper credential testing workflows, see [Password Audit Playbook](password-audit.md).
+   For deeper credential testing workflows, see [Password Audit Playbook](../password-audit/SKILL.md).
 
    Risk gate: SIP credential brute force requires explicit written approval. VLAN hopping requires authorized local switch-port access. Stop immediately if any production call is disrupted or if the PBX shows signs of instability.
 
@@ -145,7 +150,7 @@ Multiple branches may apply. For example, a site with both VoIP and ICS devices 
    python plcscan.py <ot-target>
    ```
 
-   See `../voip-ics/tools/plcscan.md` for PLC discovery options and `../information-gathering/tools/nmap.md` for NSE script usage.
+   See `../../reference/voip-ics/tools/plcscan.md` for PLC discovery options and `../../reference/information-gathering/tools/nmap.md` for NSE script usage.
 
    Risk gate: Never proceed to Phase 5 without classifying every discovered device. Safety-critical devices (PLCs controlling physical actuators, safety instrumented systems) require OT owner approval for ANY interaction, including read-only queries. If a device cannot be classified, treat it as safety-critical.
 
@@ -177,7 +182,7 @@ Multiple branches may apply. For example, a site with both VoIP and ICS devices 
    traceroute -T -p 502 <ot-host>    # What path does traffic take?
    ```
 
-   See `../voip-ics/tools/modbus-cli.md` for register addressing formats and data types. See `../exploitation/tools/searchsploit.md` for vulnerability database queries.
+   See `../../reference/voip-ics/tools/modbus-cli.md` for register addressing formats and data types. See `../../reference/exploitation/tools/searchsploit.md` for vulnerability database queries.
 
    Strict rule: This phase is read-only. Only read registers (`h@`/`i@`). Never issue a write access spec (`w@`/`c@` with a value) or any command that changes device state. If a register read causes unexpected device behavior, stop immediately and notify the OT owner. Even read operations on safety-critical devices must be explicitly approved.
 
@@ -217,7 +222,7 @@ Multiple branches may apply. For example, a site with both VoIP and ICS devices 
    nmap -sV -p 80,443,9100 --script http-title <printer-ip>
    ```
 
-   See `../vulnerability/tools/onesixtyone.md` for community string brute-force options and `../vulnerability/tools/snmpwalk.md` for SNMP enumeration parameters. For credential testing workflows, see [Password Audit Playbook](password-audit.md).
+   See `../../reference/vulnerability/tools/onesixtyone.md` for community string brute-force options and `../../reference/vulnerability/tools/snmpwalk.md` for SNMP enumeration parameters. For credential testing workflows, see [Password Audit Playbook](../password-audit/SKILL.md).
 
    Risk gate: IPMI credential testing must respect lockout policies. If SNMPv3 with authentication is in use, do not attempt to bypass it without explicit approval. Printer testing should avoid modifying configurations or sending print jobs.
 
@@ -225,7 +230,7 @@ Multiple branches may apply. For example, a site with both VoIP and ICS devices 
 
    Test Layer 2 protocol security when authorized and the network segment supports it.
 
-   - Use `yersinia` for protocol-specific testing (see `../voip-ics/tools/yersinia.md`):
+   - Use `yersinia` for protocol-specific testing (see `../../reference/voip-ics/tools/yersinia.md`):
 
    ```bash
    # CDP/LLDP information gathering
@@ -266,9 +271,9 @@ Multiple branches may apply. For example, a site with both VoIP and ICS devices 
 
 ## Cross-References
 
-- `internal-network.md` — network segmentation testing.
-- `password-audit.md` — cracking captured SNMP community strings, SIP credentials, and IPMI hashes.
-- `reporting-workflow.md` — report structure and delivery.
+- `../internal-network/SKILL.md` — network segmentation testing.
+- `../password-audit/SKILL.md` — cracking captured SNMP community strings, SIP credentials, and IPMI hashes.
+- `../reporting/SKILL.md` — report structure and delivery.
 
 ## Expected Artifacts
 

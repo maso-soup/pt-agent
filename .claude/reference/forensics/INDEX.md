@@ -1,8 +1,3 @@
----
-name: forensics
-description: Digital forensics is used to collect, preserve, and analyze digital evidence. It is also an important capability in penetration testing for analyzing target systems and extracting valuable information.
----
-
 # Digital Forensics
 
 Digital forensics is used to collect, preserve, and analyze digital evidence. It is also an important capability in penetration testing for analyzing target systems and extracting valuable information.
@@ -138,7 +133,7 @@ Computes context-triggered piecewise hashes (fuzzy hashes) that identify files w
 
 ## Evidence Handling and Timeline Construction
 
-For evidence handling procedures and timeline construction methodology, see [forensics-triage playbook](../playbooks/forensics-triage.md).
+For evidence handling procedures and timeline construction methodology, see [forensics-triage playbook](../../skills/forensics-triage/SKILL.md).
 
 **[plaso](tools/plaso.md)** — Super-timeline generation engine  
 Automates timeline construction using plaso-log2timeline (extraction) and plaso-psort (sorting/filtering). Merges timestamped events from disk images, Windows registries, event logs, browser history, and other sources into a single unified timeline. Far more comprehensive than manual MAC-time correlation.  
@@ -161,7 +156,7 @@ Select the approach when the Golden Path doesn't fit:
 
 ## Playbook
 
-For a full scenario workflow covering phases, decision points, and risk gates, see `../playbooks/forensics-triage.md`.
+For a full scenario workflow covering phases, decision points, and risk gates, see `../../skills/forensics-triage/SKILL.md`.
 
 ---
 

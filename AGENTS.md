@@ -38,7 +38,7 @@ Do not run Deep or intrusive checks by default unless the user explicitly reques
 
 ### 1.3 Select Playbook
 
-See the decision tree in `.claude/skills/playbooks/SKILL.md` to select the correct playbook.
+Read the decision tree in `.claude/reference/playbook-selection.md` to select the correct playbook, then invoke it via `Skill(skill: "<name>")` rather than reading it as a plain file. Do not rely on automatic Skill-description matching alone — the routing doc's branching and cross-reference rules (multi-playbook sequencing, mid-engagement handoffs) are needed to pick correctly.
 
 If no playbook fits, follow the standard lifecycle: information gathering -> vulnerability analysis -> web or exploitation -> post-exploitation -> reporting.
 
@@ -48,10 +48,10 @@ If no playbook fits, follow the standard lifecycle: information gathering -> vul
 
 Follow this 4-layer reading sequence:
 
-1. `.claude/skills/playbooks/SKILL.md` — select the correct playbook from the decision tree (at task start, or when switching playbooks mid-task).
-2. `.claude/skills/playbooks/<playbook>.md` — follow the scenario workflow for the current phase.
-3. `.claude/skills/<category>/SKILL.md` — use Golden Path and Decision Tree to select suitable tools for the current phase.
-4. `.claude/skills/<category>/tools/<toolname>.md` — read only for the tool you are about to run.
+1. `.claude/reference/playbook-selection.md` — select the correct playbook from the decision tree (at task start, or when switching playbooks mid-task).
+2. `Skill(skill: "<playbook>")` — invoke the matched playbook to follow the scenario workflow for the current phase.
+3. `.claude/reference/<category>/INDEX.md` — use Golden Path and Decision Tree to select suitable tools for the current phase.
+4. `.claude/reference/<category>/tools/<toolname>.md` — read only for the tool you are about to run.
 
 When a playbook hands off to another playbook, restart this sequence from layer 2 for the new playbook. Do not pre-read materials for phases you have not reached.
 
@@ -59,20 +59,20 @@ When a playbook hands off to another playbook, restart this sequence from layer 
 
 | Phase | Reference | Start here when... |
 |-------|-----------|---------------------|
-| Information Gathering | `.claude/skills/information-gathering/` | Need to discover hosts, ports, subdomains, or OSINT |
-| Vulnerability Analysis | `.claude/skills/vulnerability/` | Need to enumerate services or find vulnerabilities |
-| Sniffing & Spoofing | `.claude/skills/sniffing-spoofing/` | Need ARP spoofing, MITM, credential sniffing, DNS spoofing, or packet crafting |
-| Web Testing | `.claude/skills/web/` | Target is a web application, API (GraphQL, OpenAPI/REST, gRPC, WebSocket) |
-| Exploitation | `.claude/skills/exploitation/` | Vulnerabilities are confirmed and exploitation is authorized |
-| Password Attacks | `.claude/skills/password/` | Have hashes to crack or credentials/services to test |
-| Wireless | `.claude/skills/wireless/` | Target is a wireless network |
-| Cloud-Native | `.claude/skills/cloud-native/` | Target is cloud accounts, Kubernetes, containers, registries, or Docker hosts |
-| RFID/NFC | `.claude/skills/rfid-nfc/` | Target is RFID/NFC, Proxmark3, PC/SC, smart cards, or physical credentials |
-| VoIP-ICS | `.claude/skills/voip-ics/` | Target is VoIP, SIP/IAX, ICS, OT, PLCs, or Modbus |
-| Reverse Engineering | `.claude/skills/reverse-engineering/` | Need binary analysis, disassembly, firmware extraction, or mobile app decompilation |
-| Forensics | `.claude/skills/forensics/` | Analyzing disk images, memory dumps, traffic captures, or logs |
-| Post-Exploitation | `.claude/skills/post-exploitation/` | Have initial access and need to escalate, pivot, analyze AD, or inspect binaries for privesc |
-| Reporting | `.claude/skills/reporting/` | Testing complete and a report is required |
+| Information Gathering | `.claude/reference/information-gathering/` | Need to discover hosts, ports, subdomains, or OSINT |
+| Vulnerability Analysis | `.claude/reference/vulnerability/` | Need to enumerate services or find vulnerabilities |
+| Sniffing & Spoofing | `.claude/reference/sniffing-spoofing/` | Need ARP spoofing, MITM, credential sniffing, DNS spoofing, or packet crafting |
+| Web Testing | `.claude/reference/web/` | Target is a web application, API (GraphQL, OpenAPI/REST, gRPC, WebSocket) |
+| Exploitation | `.claude/reference/exploitation/` | Vulnerabilities are confirmed and exploitation is authorized |
+| Password Attacks | `.claude/reference/password/` | Have hashes to crack or credentials/services to test |
+| Wireless | `.claude/reference/wireless/` | Target is a wireless network |
+| Cloud-Native | `.claude/reference/cloud-native/` | Target is cloud accounts, Kubernetes, containers, registries, or Docker hosts |
+| RFID/NFC | `.claude/reference/rfid-nfc/` | Target is RFID/NFC, Proxmark3, PC/SC, smart cards, or physical credentials |
+| VoIP-ICS | `.claude/reference/voip-ics/` | Target is VoIP, SIP/IAX, ICS, OT, PLCs, or Modbus |
+| Reverse Engineering | `.claude/reference/reverse-engineering/` | Need binary analysis, disassembly, firmware extraction, or mobile app decompilation |
+| Forensics | `.claude/reference/forensics/` | Analyzing disk images, memory dumps, traffic captures, or logs |
+| Post-Exploitation | `.claude/reference/post-exploitation/` | Have initial access and need to escalate, pivot, analyze AD, or inspect binaries for privesc |
+| Reporting | `.claude/reference/reporting/` | Testing complete and a report is required |
 
 Use multiple complementary tools for critical checks. A clean result from one tool is not proof that the target is clean.
 
@@ -80,7 +80,7 @@ Use multiple complementary tools for critical checks. A clean result from one to
 
 ### Execution Standards
 
-- **Automated tools first**: at each phase, run the automated scanners recommended by the playbook and category SKILL.md before manual testing. Do not silently replace automated tools with manual scripts — manual testing alone cannot match the coverage of purpose-built scanners.
+- **Automated tools first**: at each phase, run the automated scanners recommended by the playbook and category INDEX.md before manual testing. Do not silently replace automated tools with manual scripts — manual testing alone cannot match the coverage of purpose-built scanners.
 - **Tool before script**: when a Kali tool can accomplish the task, use the tool — through a signing proxy or wrapper if needed — rather than writing equivalent custom code. Custom scripts are for target-specific logic that no existing tool covers. A proxy or wrapper that adapts standard tools to custom protocols is part of the workflow, not a reason to skip tools.
 - **New attack surfaces**: after discovering new subdomains, hosts, or services, run the relevant automated scans on each reachable target before proceeding with manual testing.
 - **Check availability**: `which {tool} || apt-get install -y {tool}`. If the tool is not in the apt repository (e.g., katana, httpx, naabu), check the tool's reference file for alternative install methods such as `go install` or `pip install`.
@@ -119,7 +119,7 @@ Large tool outputs (full port scans, vulnerability scanners with thousands of te
 
 ### Error Handling
 
-- **Tool not found and install fails**: try an alternative install method, or switch to an alternative tool from the category SKILL.md. Report only if no workable alternative exists.
+- **Tool not found and install fails**: try an alternative install method, or switch to an alternative tool from the category INDEX.md. Report only if no workable alternative exists.
 - **Parameter or syntax error**: run `{tool} --help` or `{tool} -h` to verify flags and argument format before retrying.
 - **Command times out or hangs**: kill the process, reduce scope, lower concurrency, and retry.
 - **Empty output**: verify reachability (`ping`, `curl`, `nc`, or protocol-specific checks) and confirm the tool supports the target type.
@@ -140,7 +140,7 @@ Large tool outputs (full port scans, vulnerability scanners with thousands of te
 
 ## Step 4: Report
 
-Follow `.claude/skills/playbooks/reporting-workflow.md` step by step — it is an 8-step workflow, not a single "write report" action. Use `.claude/skills/reporting/tools/report-template.md` as the document structure — do not invent a custom structure.
+Invoke `Skill(skill: "reporting")` and follow it step by step — it is an 8-step workflow, not a single "write report" action. Use `.claude/reference/reporting/tools/report-template.md` as the document structure — do not invent a custom structure.
 
 Before starting the report, execute the active playbook's Stop When checklist. Unmet items require returning to the relevant phase — do not proceed to reporting with known coverage gaps undocumented. If any coverage gaps remain after that and cannot be reconciled, ask the user for relevant information or to make a decision. 
 
@@ -152,7 +152,7 @@ Include:
 - Negative results that matter, such as unreachable hosts or services tested with no finding.
 - Artifacts produced and where they were saved.
 
-See `.claude/skills/reporting/SKILL.md` for reporting tool selection.
+See `.claude/reference/reporting/INDEX.md` for reporting tool selection.
 
 ### Report File Generation
 
@@ -163,6 +163,7 @@ Reports can exceed 20KB. Do not attempt to write the full report in a single too
 ## Skills Layout
 
 - `.claude/skills/state-files/` defines how to keep track of the status of the engagement, workflows, and tools.
-- `.claude/skills/playbooks/` defines scenario workflows and decision points.
-- `.claude/skills/<category>/SKILL.md` helps select suitable tools in a category.
-- `.claude/skills/<category>/tools/<name>.md` provides concrete command parameters and examples.
+- `.claude/skills/<playbook>/SKILL.md` defines a scenario workflow — invoke via the Skill tool once selected.
+- `.claude/reference/playbook-selection.md` holds the decision tree and cross-reference map used to pick a playbook.
+- `.claude/reference/<category>/INDEX.md` helps select suitable tools in a category.
+- `.claude/reference/<category>/tools/<name>.md` provides concrete command parameters and examples.

@@ -1,3 +1,8 @@
+---
+name: source-code-audit
+description: Scenario workflow for authorized source code and dependency audits: SAST, secret scanning, software composition analysis, IaC scanning, and CI/CD pipeline review. Use for source repositories, build artifacts, or dependency manifests.
+---
+
 # Source Code & Dependency Audit Playbook
 
 Use for authorized source code repositories, build artifacts, CI/CD pipelines, or dependency manifests where SAST, secret scanning, and software composition analysis are in scope.
@@ -20,7 +25,7 @@ Use for authorized source code repositories, build artifacts, CI/CD pipelines, o
    - Use `gitleaks git` when Git history is in scope; use `gitleaks dir` for unpacked archives or non-Git directories.
    - Treat all findings as sensitive evidence; redact secrets before sharing reports.
 
-   (See `../web/SKILL.md` for `gitleaks` and related tool selection.)
+   (See `../../reference/web/INDEX.md` for `gitleaks` and related tool selection.)
 
    ```bash
    # Scan Git history
@@ -31,7 +36,7 @@ Use for authorized source code repositories, build artifacts, CI/CD pipelines, o
    gitleaks git --baseline-path /tmp/baseline.json --redact -f json -r /tmp/gitleaks_new.json /path/to/repo
    ```
 
-   See `../web/tools/gitleaks.md` for full parameter reference.
+   See `../../reference/web/tools/gitleaks.md` for full parameter reference.
 
    **Zero-secrets verification:** If gitleaks reports zero findings, run a manual spot-check before accepting the result — `grep -rn` for patterns like `AKIA`, `BEGIN RSA`, `BEGIN OPENSSH`, `password\s*=`, `api_key\s*=` across source files. Document the manual check.
 
@@ -51,7 +56,7 @@ Use for authorized source code repositories, build artifacts, CI/CD pipelines, o
 
    **Finding validation methodology:** Do not report raw SAST output as findings. For each high/critical finding: (1) trace data flow from user input (source) to the dangerous function (sink), (2) check whether sanitization or framework-level protection exists along the path, (3) determine if the code path is reachable from an external entry point. Mark each as: confirmed, likely, false positive, or requires live testing.
 
-   See `../vulnerability/tools/trivy.md` for `trivy fs` usage.
+   See `../../reference/vulnerability/tools/trivy.md` for `trivy fs` usage.
 
    3b. **Manual code review**
    - Search for dangerous function patterns that commonly lead to vulnerabilities:
@@ -106,7 +111,7 @@ Use for authorized source code repositories, build artifacts, CI/CD pipelines, o
    grep -rn "password\|secret\|token\|api_key\|AWS_ACCESS" .github/workflows/ .gitlab-ci.yml Jenkinsfile 2>/dev/null
    ```
 
-   See `../vulnerability/tools/trivy.md` for IaC scan modes.
+   See `../../reference/vulnerability/tools/trivy.md` for IaC scan modes.
 
 6. **Triage and deduplication**
    - Correlate secret, SAST, and SCA findings; eliminate duplicates across tools.
@@ -115,9 +120,9 @@ Use for authorized source code repositories, build artifacts, CI/CD pipelines, o
 
 ## Cross-References
 
-- `web-application.md` — live web endpoint testing.
-- `api-security.md` — live API endpoint testing.
-- `reporting-workflow.md` — findings documentation.
+- `../web-application/SKILL.md` — live web endpoint testing.
+- `../api-security/SKILL.md` — live API endpoint testing.
+- `../reporting/SKILL.md` — findings documentation.
 
 ## Expected Artifacts
 
@@ -133,4 +138,4 @@ Use for authorized source code repositories, build artifacts, CI/CD pipelines, o
 - SAST findings have been validated with data-flow tracing, not reported as raw tool output.
 - Zero-secret scanner results have been manually verified.
 - High/critical dependency CVEs have been assessed for reachability.
-- Further work requires accessing production secrets, running code under test, or testing live endpoints (switch to `web-application.md` or `api-security.md`).
+- Further work requires accessing production secrets, running code under test, or testing live endpoints (switch to `../web-application/SKILL.md` or `../api-security/SKILL.md`).

@@ -1,8 +1,3 @@
----
-name: reporting
-description: The penetration test report is the final deliverable. Use when beginning to create the final report.
----
-
 # Reporting
 
 The penetration test report is the final deliverable; its quality directly affects how clients perceive the value of the engagement. A good report addresses two audiences: management (risk summary) and the technical team (reproduction steps).
@@ -67,7 +62,7 @@ pandoc report.md -o report.pdf --pdf-engine=wkhtmltopdf
 
 ## Playbook
 
-For a full scenario workflow covering report generation phases and quality gates, see `../playbooks/reporting-workflow.md`.
+For a full scenario workflow covering report generation phases and quality gates, see `../../skills/reporting/SKILL.md`.
 
 ---
 

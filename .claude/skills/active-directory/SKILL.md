@@ -1,3 +1,8 @@
+---
+name: active-directory
+description: Scenario workflow for authorized Active Directory engagements: enumeration, Kerberoasting, AS-REP roasting, relay attacks, ACL abuse, AD CS, credential extraction, and domain escalation. Use when Kerberos, LDAP, SMB, domain controllers, or AD credentials are in scope.
+---
+
 # Active Directory Playbook
 
 Use when Kerberos, LDAP, SMB, domain controllers, Windows domain names, or AD credentials are in scope.
@@ -14,7 +19,7 @@ Use when Kerberos, LDAP, SMB, domain controllers, Windows domain names, or AD cr
    - Look for ports 53, 88, 135, 139, 389, 445, 464, 593, 636, 3268, 3269, 5985, and 5986.
    - Confirm domain, DCs, DNS, SMB signing, LDAP/LDAPS, and time skew.
 
-   (See `../information-gathering/SKILL.md` for scanning tool selection.)
+   (See `../../reference/information-gathering/INDEX.md` for scanning tool selection.)
 
    ```bash
    # AD port scan on candidate DC
@@ -28,13 +33,13 @@ Use when Kerberos, LDAP, SMB, domain controllers, Windows domain names, or AD cr
    **Zero-findings fallback:** If no domain controller is found, verify DNS resolution (`dig SRV _ldap._tcp.dc._msdcs.<domain>`), scan broader subnets for AD ports (88, 389, 445), and check whether the host is on a segmented VLAN without DC visibility. Do not proceed to Phase 2 without at least one confirmed DC.
 
 2. **Unauthenticated enumeration**
-   - Use `nmap`, `smbclient` (see `../exploitation/tools/smbclient.md`), `smbmap` (see `../vulnerability/tools/smbmap.md`), `enum4linux-ng` (see `../vulnerability/tools/enum4linux-ng.md`), `netexec` (see `../password/tools/netexec.md`), and LDAP/Kerberos checks where allowed.
+   - Use `nmap`, `smbclient` (see `../../reference/exploitation/tools/smbclient.md`), `smbmap` (see `../../reference/vulnerability/tools/smbmap.md`), `enum4linux-ng` (see `../../reference/vulnerability/tools/enum4linux-ng.md`), `netexec` (see `../../reference/password/tools/netexec.md`), and LDAP/Kerberos checks where allowed.
    - Check null sessions, anonymous LDAP, shares, naming contexts, and exposed users.
-   - Be aware of LLMNR/NBT-NS/mDNS poisoning opportunities on the network segment. If name resolution poisoning is in scope, see `responder` usage in the [password audit playbook](password-audit.md).
+   - Be aware of LLMNR/NBT-NS/mDNS poisoning opportunities on the network segment. If name resolution poisoning is in scope, see `responder` usage in the [password audit playbook](../password-audit/SKILL.md).
 
-   (See `../vulnerability/SKILL.md` for enumeration tool selection.)
+   (See `../../reference/vulnerability/INDEX.md` for enumeration tool selection.)
 
-   Run `kerbrute userenum` with a username wordlist (see `../password/tools/kerbrute.md`; flag AS-REP roastable accounts automatically).
+   Run `kerbrute userenum` with a username wordlist (see `../../reference/password/tools/kerbrute.md`; flag AS-REP roastable accounts automatically).
 
    ```bash
    # Comprehensive unauthenticated enumeration
@@ -49,12 +54,12 @@ Use when Kerberos, LDAP, SMB, domain controllers, Windows domain names, or AD cr
    - Use `netexec`, `impacket`, `bloodhound-python` or `bloodhound-ce-python`, `certipy-ad find`, and share enumeration.
    - Collect users, groups, sessions, local admins, ACLs, SPNs, delegation, trusts, and AD CS data.
 
-   (See `../post-exploitation/SKILL.md` for post-exploitation tool selection.)
+   (See `../../reference/post-exploitation/INDEX.md` for post-exploitation tool selection.)
 
    Run authenticated collection tools:
-   - `bloodhound-python -c All` for AD attack path data (see `../post-exploitation/tools/bloodhound.md`)
-   - `certipy-ad find` for AD CS enumeration (see `../post-exploitation/tools/certipy-ad.md`; covers ESC1-ESC16)
-   - `impacket-GetUserSPNs -request` for Kerberoastable accounts (see `../exploitation/tools/impacket.md`)
+   - `bloodhound-python -c All` for AD attack path data (see `../../reference/post-exploitation/tools/bloodhound.md`)
+   - `certipy-ad find` for AD CS enumeration (see `../../reference/post-exploitation/tools/certipy-ad.md`; covers ESC1-ESC16)
+   - `impacket-GetUserSPNs -request` for Kerberoastable accounts (see `../../reference/exploitation/tools/impacket.md`)
 
    ```bash
    # Authenticated SMB/LDAP enumeration with netexec
@@ -65,7 +70,7 @@ Use when Kerberos, LDAP, SMB, domain controllers, Windows domain names, or AD cr
    ldeep ldap -d <domain> -u <user> -p '<password>' -s ldap://<dc-ip> trusts
    ```
 
-   Use `ldeep` for deep LDAP enumeration of delegations, trusts, and GPO data (see `../information-gathering/tools/ldeep.md`).
+   Use `ldeep` for deep LDAP enumeration of delegations, trusts, and GPO data (see `../../reference/information-gathering/tools/ldeep.md`).
 
    **Enumeration completeness verification:** Cross-check user counts between LDAP queries, `bloodhound-python` output, and `nxc` results. If counts differ, investigate before proceeding. Verify that SPN enumeration, delegation configuration queries, ACL collection, and AD CS template enumeration all completed without errors or truncation.
 
@@ -92,14 +97,14 @@ Use when Kerberos, LDAP, SMB, domain controllers, Windows domain names, or AD cr
    - Switch to the password audit playbook for AS-REP roasting, Kerberoasting, spraying, cracking, or hash reuse.
    - Respect lockout policy and require approval for spraying or brute force.
 
-   (See `../password/SKILL.md` for credential and cracking tool selection.)
+   (See `../../reference/password/INDEX.md` for credential and cracking tool selection.)
 
    Extract crackable hashes:
-   - AS-REP roasting: `impacket-GetNPUsers` (see `../exploitation/tools/impacket.md`)
-   - Kerberoasting: `impacket-GetUserSPNs -request` (see `../exploitation/tools/impacket.md`)
-   - Password spray: `kerbrute passwordspray` (see `../password/tools/kerbrute.md`)
+   - AS-REP roasting: `impacket-GetNPUsers` (see `../../reference/exploitation/tools/impacket.md`)
+   - Kerberoasting: `impacket-GetUserSPNs -request` (see `../../reference/exploitation/tools/impacket.md`)
+   - Password spray: `kerbrute passwordspray` (see `../../reference/password/tools/kerbrute.md`)
 
-   Crack obtained hashes with `hashcat` (see `../password/tools/hashcat.md`):
+   Crack obtained hashes with `hashcat` (see `../../reference/password/tools/hashcat.md`):
 
    ```bash
    # AS-REP roast hash cracking (mode 18200)
@@ -113,16 +118,16 @@ Use when Kerberos, LDAP, SMB, domain controllers, Windows domain names, or AD cr
 6. **Coercion, relay, and exploitation**
    - Use `responder`, `coercer`, `mitm6`, `ntlmrelayx`, AD CS abuse, or exploitation only with explicit approval.
 
-   (See `../exploitation/SKILL.md` for exploitation tool selection.)
-   - Use `responder` for LLMNR/NBT-NS/mDNS poisoning to capture Net-NTLMv2 hashes on the local segment (see `../password/tools/responder.md`).
+   (See `../../reference/exploitation/INDEX.md` for exploitation tool selection.)
+   - Use `responder` for LLMNR/NBT-NS/mDNS poisoning to capture Net-NTLMv2 hashes on the local segment (see `../../reference/password/tools/responder.md`).
    - Record exact prerequisites and impact.
 
-   NTLM relay attack chain: set up `impacket-ntlmrelayx` listener, then coerce target authentication with `coercer` (see `../exploitation/tools/impacket.md` and `../exploitation/tools/coercer.md`).
+   NTLM relay attack chain: set up `impacket-ntlmrelayx` listener, then coerce target authentication with `coercer` (see `../../reference/exploitation/tools/impacket.md` and `../../reference/exploitation/tools/coercer.md`).
 
 7. **ACL and delegation abuse**
-   - When BloodHound shows exploitable ACL paths, test with `bloodyad` (see `../post-exploitation/tools/bloodyad.md`):
+   - When BloodHound shows exploitable ACL paths, test with `bloodyad` (see `../../reference/post-exploitation/tools/bloodyad.md`):
 
-   (See `../post-exploitation/SKILL.md` for post-exploitation tool selection.)
+   (See `../../reference/post-exploitation/INDEX.md` for post-exploitation tool selection.)
      - WriteDACL: grant yourself privileges on the target object.
      - GenericAll / GenericWrite: modify target attributes (e.g., set SPN for targeted Kerberoasting, reset password).
      - ForceChangePassword: reset a user password without knowing the current one.
@@ -168,7 +173,7 @@ Use when Kerberos, LDAP, SMB, domain controllers, Windows domain names, or AD cr
 9. **GPO and trust abuse**
    - GPO password extraction: search SYSVOL for `cpassword` values in `Groups.xml`, `Services.xml`, `ScheduledTasks.xml`, and `DataSources.xml`.
 
-   (See `../post-exploitation/SKILL.md` for post-exploitation tool selection.)
+   (See `../../reference/post-exploitation/INDEX.md` for post-exploitation tool selection.)
 
      ```bash
      impacket-Get-GPPPassword domain/user:password@<dc-ip>
@@ -176,10 +181,10 @@ Use when Kerberos, LDAP, SMB, domain controllers, Windows domain names, or AD cr
      gpp-decrypt <cpassword-value>
      ```
 
-   Use `impacket-Get-GPPPassword` to extract GPP passwords from SYSVOL (see `../exploitation/tools/impacket.md`). Use `gpp-decrypt` to decrypt individual `cpassword` values extracted from Group Policy Preference XML files (see `../password/tools/gpp-decrypt.md`).
+   Use `impacket-Get-GPPPassword` to extract GPP passwords from SYSVOL (see `../../reference/exploitation/tools/impacket.md`). Use `gpp-decrypt` to decrypt individual `cpassword` values extracted from Group Policy Preference XML files (see `../../reference/password/tools/gpp-decrypt.md`).
 
    - If write access to a GPO is available, document the abuse path (scheduled task or script deployment) but require explicit approval before modifying GPO objects.
-   - LAPS password reading: query LDAP for `ms-Mcs-AdmPwd` (LAPS v1) or `msLAPS-Password` (LAPS v2) attributes on computer objects. Use `lapsdumper` for streamlined LAPS password extraction (see `../post-exploitation/tools/lapsdumper.md`):
+   - LAPS password reading: query LDAP for `ms-Mcs-AdmPwd` (LAPS v1) or `msLAPS-Password` (LAPS v2) attributes on computer objects. Use `lapsdumper` for streamlined LAPS password extraction (see `../../reference/post-exploitation/tools/lapsdumper.md`):
 
      ```bash
      # Dump LAPS passwords from AD
@@ -191,8 +196,8 @@ Use when Kerberos, LDAP, SMB, domain controllers, Windows domain names, or AD cr
 10. **Credential materialization**
     - After obtaining domain admin or equivalent privileges (requires explicit authorization for each action):
 
-    (See `../post-exploitation/SKILL.md` for credential extraction tool selection.)
-      - DCSync: extract domain credential database with `impacket-secretsdump` (see `../exploitation/tools/impacket.md`).
+    (See `../../reference/post-exploitation/INDEX.md` for credential extraction tool selection.)
+      - DCSync: extract domain credential database with `impacket-secretsdump` (see `../../reference/exploitation/tools/impacket.md`).
 
         ```bash
         impacket-secretsdump domain/admin:password@<dc-ip> -just-dc
@@ -200,35 +205,35 @@ Use when Kerberos, LDAP, SMB, domain controllers, Windows domain names, or AD cr
 
       - Golden Ticket creation: document feasibility with obtained `krbtgt` hash. Note: creates persistent domain-level access; requires explicit authorization and scope confirmation.
       - Shadow credentials: write to `msDS-KeyCredentialLink` attribute to enable certificate-based authentication as the target principal.
-      - DPAPI secrets extraction: use `dploot` to retrieve domain backup keys and decrypt DPAPI-protected secrets (see `../post-exploitation/tools/dploot.md`).
+      - DPAPI secrets extraction: use `dploot` to retrieve domain backup keys and decrypt DPAPI-protected secrets (see `../../reference/post-exploitation/tools/dploot.md`).
 
         ```bash
         dploot backupkey -d <domain> -u administrator -p '<password>' -t <dc-ip>
         ```
 
-      - Bulk DPAPI credential extraction: use `hekatomb` to extract DPAPI-protected credentials across all domain computers (see `../post-exploitation/tools/hekatomb.md`):
+      - Bulk DPAPI credential extraction: use `hekatomb` to extract DPAPI-protected credentials across all domain computers (see `../../reference/post-exploitation/tools/hekatomb.md`):
 
         ```bash
         # Bulk DPAPI credential extraction across all domain computers
         hekatomb <domain>/<user>:'<password>'@<dc-ip>
         ```
 
-      - LSASS credential extraction: use `lsassy` for remote LSASS dump and credential parsing (see `../post-exploitation/tools/lsassy.md`).
+      - LSASS credential extraction: use `lsassy` for remote LSASS dump and credential parsing (see `../../reference/post-exploitation/tools/lsassy.md`).
 
         ```bash
         lsassy -d <domain> -u administrator -p '<password>' <target-ip>
         ```
     - All credential materialization actions must have explicit authorization documented before execution.
-    - After domain compromise, continue with the [post-exploitation playbook](post-exploitation.md) for lateral movement and persistence documentation.
-    - For cracking obtained hashes, refer to the [password audit playbook](password-audit.md).
+    - After domain compromise, continue with the [post-exploitation playbook](../post-exploitation/SKILL.md) for lateral movement and persistence documentation.
+    - For cracking obtained hashes, refer to the [password audit playbook](../password-audit/SKILL.md).
 
 ## Cross-References
 
-- `password-audit.md` — spraying, cracking, hash reuse workflows.
-- `post-exploitation.md` — lateral movement, persistence, and privilege escalation after domain compromise.
-- `internal-network.md` — network-level enumeration and pivoting within the internal environment.
-- `cloud-native-assessment.md` — when Azure AD / Entra ID hybrid configuration, Azure AD Connect, or cloud-synced accounts are discovered.
-- `reporting-workflow.md` — structuring findings and evidence into deliverable reports.
+- `../password-audit/SKILL.md` — spraying, cracking, hash reuse workflows.
+- `../post-exploitation/SKILL.md` — lateral movement, persistence, and privilege escalation after domain compromise.
+- `../internal-network/SKILL.md` — network-level enumeration and pivoting within the internal environment.
+- `../cloud-native-assessment/SKILL.md` — when Azure AD / Entra ID hybrid configuration, Azure AD Connect, or cloud-synced accounts are discovered.
+- `../reporting/SKILL.md` — structuring findings and evidence into deliverable reports.
 
 ## Expected Artifacts
 

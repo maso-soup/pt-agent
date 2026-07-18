@@ -1,8 +1,3 @@
----
-name: reverse-engineering
-description: CLI/headless binary analysis tools for pentest decisions including security-attribute checking, symbol/import analysis, targeted disassembly, and Android app decompilation.
----
-
 # Reverse Engineering
 
 CLI/headless binary analysis tools for pentest decisions: security-attribute checking, symbol/import analysis, targeted disassembly, and Android app decompilation.
@@ -118,16 +113,16 @@ Select the approach when the Golden Path doesn't fit:
 
 ## Related Categories
 
-- For privilege escalation using binary analysis findings, see `../post-exploitation/SKILL.md`.
+- For privilege escalation using binary analysis findings, see `../post-exploitation/INDEX.md`.
 - For mobile app runtime testing (Frida, objection), see the Mobile / Runtime Analysis section above.
-- For firmware extraction from forensic disk images, see `../forensics/SKILL.md`.
+- For firmware extraction from forensic disk images, see `../forensics/INDEX.md`.
 
 ---
 
 ## Playbook
 
-For binary analysis during post-exploitation, see `../playbooks/post-exploitation.md`.
-For Android app static analysis workflows, see `../playbooks/mobile-application.md`.
+For binary analysis during post-exploitation, see `../../skills/post-exploitation/SKILL.md`.
+For Android app static analysis workflows, see `../../skills/mobile-application/SKILL.md`.
 
 ---
 

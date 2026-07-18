@@ -1,10 +1,15 @@
+---
+name: internal-network-protocols
+description: Protocol-specific enumeration and testing procedures for internal network assessments: SMB, MSRPC, SNMP, SMTP, DNS, database, and RDP. Referenced from the internal-network skill when discovered services require protocol-level testing.
+---
+
 # Internal Network Protocol Enumeration
 
-Protocol-specific testing procedures for internal network assessments. Referenced by `internal-network.md` Phase 5 when discovered services require protocol-level testing.
+Protocol-specific testing procedures for internal network assessments. Referenced by `../internal-network/SKILL.md` Phase 5 when discovered services require protocol-level testing.
 
-For each protocol below, apply the per-service test matrix and CVE evaluation procedure from `internal-network.md` Phase 3.
+For each protocol below, apply the per-service test matrix and CVE evaluation procedure from `../internal-network/SKILL.md` Phase 3.
 
-(See `../vulnerability/SKILL.md` for protocol-specific tool selection.)
+(See `../../reference/vulnerability/INDEX.md` for protocol-specific tool selection.)
 
 ## SMB
 
@@ -23,7 +28,7 @@ smbclient //<ip>/<share> -N -c 'recurse ON; prompt OFF; ls'
 
 ## MSRPC
 
-RPC endpoint enumeration (see `../exploitation/tools/impacket.md`):
+RPC endpoint enumeration (see `../../reference/exploitation/tools/impacket.md`):
 
 ```bash
 impacket-rpcdump <ip> | grep -E 'Protocol|Provider'                     # enumerate RPC interfaces
@@ -32,7 +37,7 @@ impacket-rpcdump <ip> | grep -i 'MS-RPRN\|MS-EFSR\|MS-DFSNM\|MS-SCMR'   # check 
 
 ## SNMP
 
-Community string testing and full walk (see `../vulnerability/tools/onesixtyone.md` and `../vulnerability/tools/snmpwalk.md`):
+Community string testing and full walk (see `../../reference/vulnerability/tools/onesixtyone.md` and `../../reference/vulnerability/tools/snmpwalk.md`):
 
 ```bash
 onesixtyone -c /usr/share/seclists/Discovery/SNMP/common-snmp-community-strings.txt <ip>
@@ -43,7 +48,7 @@ snmpwalk -v2c -c public <ip> 1.3.6.1.4.1.77.1.2.25   # Windows user accounts
 
 ## Kerberos
 
-Cross-reference `active-directory.md` for full AD testing:
+Cross-reference `../active-directory/SKILL.md` for full AD testing:
 
 ```bash
 nmap -p 88 --script krb5-enum-users --script-args krb5-enum-users.realm='<domain>' <dc-ip>
@@ -78,7 +83,7 @@ nxc winrm <ip> -u '' -p ''                          # test null authentication
 evil-winrm -i <ip> -u <user> -p <password>          # connect with valid credentials
 ```
 
-Use `evil-winrm` for interactive PowerShell access via WinRM after obtaining credentials (see `../exploitation/tools/evil-winrm.md`).
+Use `evil-winrm` for interactive PowerShell access via WinRM after obtaining credentials (see `../../reference/exploitation/tools/evil-winrm.md`).
 
 ## SSH
 
@@ -119,7 +124,7 @@ nmap --script pgsql-brute -p 5432 <ip>
 psql -h <ip> -U postgres -c '\l' 2>&1             # test direct connection
 ```
 
-Use `mssqlpwner` for MSSQL linked server exploitation and privilege escalation when credentials are available (see `../exploitation/tools/mssqlpwner.md`).
+Use `mssqlpwner` for MSSQL linked server exploitation and privilege escalation when credentials are available (see `../../reference/exploitation/tools/mssqlpwner.md`).
 
 ## Mail
 
@@ -133,7 +138,7 @@ swaks --to test@<target> --from test@attacker.com --server <ip>
 swaks --to test@<target> --server <ip> --auth LOGIN --auth-user <user> --auth-password <pass>
 ```
 
-Use `swaks` for flexible SMTP relay and authentication testing (see `../vulnerability/tools/swaks.md`). Use `smtp-user-enum` for VRFY/EXPN/RCPT user enumeration (see `../vulnerability/tools/smtp-user-enum.md`).
+Use `swaks` for flexible SMTP relay and authentication testing (see `../../reference/vulnerability/tools/swaks.md`). Use `smtp-user-enum` for VRFY/EXPN/RCPT user enumeration (see `../../reference/vulnerability/tools/smtp-user-enum.md`).
 
 ## NFS
 
@@ -167,7 +172,7 @@ redis-cli -h <ip> CONFIG GET requirepass # check authentication status
 redis-cli -h <ip> CONFIG GET dir        # check write capability (dir writable = exploitable)
 redis-cli -h <ip> CONFIG GET dbfilename # current dump filename
 # If CONFIG is accessible with no auth: SSH key injection, webshell write, or cron exploitation possible
-# See ../exploitation/SKILL.md Path 3 (Redis writable) for exploitation steps
+# See ../../reference/exploitation/INDEX.md Path 3 (Redis writable) for exploitation steps
 nmap -p 27017 --script mongodb-info,mongodb-databases <ip>
 ```
 
@@ -177,5 +182,5 @@ For services not covered above (e.g., VNC, Telnet, Elasticsearch, Java RMI, Orac
 
 ## Cross-References
 
-- `internal-network.md` — parent playbook; this file is invoked from its Phase 5, and the per-service test matrix, CVE evaluation, and depth directives live in its Phase 3.
-- `active-directory.md` — switch to it for full AD testing when Kerberos, LDAP, or SMB enumeration reveals a domain environment.
+- `../internal-network/SKILL.md` — parent playbook; this file is invoked from its Phase 5, and the per-service test matrix, CVE evaluation, and depth directives live in its Phase 3.
+- `../active-directory/SKILL.md` — switch to it for full AD testing when Kerberos, LDAP, or SMB enumeration reveals a domain environment.

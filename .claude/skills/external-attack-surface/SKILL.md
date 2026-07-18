@@ -1,3 +1,8 @@
+---
+name: external-attack-surface
+description: Scenario workflow for authorized external reconnaissance: OSINT, subdomain enumeration, port/service discovery, and web fingerprinting, with handoff to web or API playbooks. Use for domains, organization names, or public IP ranges.
+---
+
 # External Attack Surface Playbook
 
 Use for authorized domains, organizations, cloud keywords, or public IP ranges.
@@ -11,10 +16,10 @@ Use for authorized domains, organizations, cloud keywords, or public IP ranges.
 ## Workflow
 
 1. **Passive discovery**
-   - Use `amass`, `subfinder`, `assetfinder` (see `../information-gathering/tools/assetfinder.md`), `theHarvester`, `shodan` (see `../information-gathering/tools/shodan.md`), and certificate/DNS sources (see `../information-gathering/tools/subfinder.md`, `../information-gathering/tools/theHarvester.md`, `../information-gathering/tools/amass.md`).
+   - Use `amass`, `subfinder`, `assetfinder` (see `../../reference/information-gathering/tools/assetfinder.md`), `theHarvester`, `shodan` (see `../../reference/information-gathering/tools/shodan.md`), and certificate/DNS sources (see `../../reference/information-gathering/tools/subfinder.md`, `../../reference/information-gathering/tools/theHarvester.md`, `../../reference/information-gathering/tools/amass.md`).
    - Keep passive and active findings separate.
 
-   (See `../information-gathering/SKILL.md` for reconnaissance tool selection.)
+   (See `../../reference/information-gathering/INDEX.md` for reconnaissance tool selection.)
    - **Email security records**: check SPF (`dig TXT <domain>` and look for `v=spf1` records), DKIM, and DMARC (`dig TXT _dmarc.<domain>`) to identify email spoofing risk.
    - **Historical URL discovery**: query Wayback Machine and web archives for old endpoints, removed pages, and legacy API paths.
    - **Code repository exposure**: search for the organization's public repositories on GitHub/GitLab; check for `.git` directory exposure on discovered web servers.
@@ -35,7 +40,7 @@ Use for authorized domains, organizations, cloud keywords, or public IP ranges.
    certgraph -json <domain> > /tmp/certgraph.json
    ```
 
-   Use `findomain` for fast passive subdomain discovery across multiple sources (see `../information-gathering/tools/findomain.md`). Use `getallurls` (`gau`) for historical URL collection from Wayback Machine and other web archives (see `../information-gathering/tools/getallurls.md`). Use `certgraph` for certificate transparency graph exploration (see `../information-gathering/tools/certgraph.md`).
+   Use `findomain` for fast passive subdomain discovery across multiple sources (see `../../reference/information-gathering/tools/findomain.md`). Use `getallurls` (`gau`) for historical URL collection from Wayback Machine and other web archives (see `../../reference/information-gathering/tools/getallurls.md`). Use `certgraph` for certificate transparency graph exploration (see `../../reference/information-gathering/tools/certgraph.md`).
 
    **Subdomain enumeration completeness:** Run at least three independent passive sources (e.g., amass, subfinder, certificate transparency logs via crt.sh). If any source produces unique results not found by others, add a fourth source. Do not rely on a single tool for subdomain discovery.
 
@@ -56,8 +61,8 @@ Use for authorized domains, organizations, cloud keywords, or public IP ranges.
    ```
 
 3. **HTTP and port exposure**
-   - Probe HTTP services with `httpx` (see `../information-gathering/tools/httpx.md`).
-   - Use `naabu` (see `../information-gathering/tools/naabu.md`), `nmap` (see `../information-gathering/tools/nmap.md`), or `masscan` (see `../information-gathering/tools/masscan.md`) according to authorized depth and rate limits.
+   - Probe HTTP services with `httpx` (see `../../reference/information-gathering/tools/httpx.md`).
+   - Use `naabu` (see `../../reference/information-gathering/tools/naabu.md`), `nmap` (see `../../reference/information-gathering/tools/nmap.md`), or `masscan` (see `../../reference/information-gathering/tools/masscan.md`) according to authorized depth and rate limits.
    - Capture titles, status codes, technologies, and TLS metadata.
    - **WAF/CDN identification**: use `wafw00f` results to determine the testing approach. If a CDN is detected, attempt to find the origin IP via historical DNS records, SSL certificate subjects, or direct IP scanning.
 
@@ -71,7 +76,7 @@ Use for authorized domains, organizations, cloud keywords, or public IP ranges.
    wafw00f -i resolved_domains.txt -o /tmp/waf_results.txt
    ```
 
-   After port discovery, apply the two-phase confirmation, unknown service identification, and per-service test matrix from `internal-network.md` Phase 3.
+   After port discovery, apply the two-phase confirmation, unknown service identification, and per-service test matrix from `../internal-network/SKILL.md` Phase 3.
 
 4. **Subdomain takeover assessment**
    - Check for dangling CNAME records pointing to decommissioned cloud services (S3, Azure, Heroku, GitHub Pages, Fastly, Shopify).
@@ -87,7 +92,7 @@ Use for authorized domains, organizations, cloud keywords, or public IP ranges.
    subjack -w all_subdomains.txt -a -ssl -o /tmp/subjack_results.txt
    ```
 
-   Use `subjack` for automated subdomain takeover detection across common cloud services (see `../web/tools/subjack.md`).
+   Use `subjack` for automated subdomain takeover detection across common cloud services (see `../../reference/web/tools/subjack.md`).
 
 5. **Cloud exposure**
    - Use `cloud-enum` or `cloudbrute` only for cloud namespaces that are in scope.
@@ -102,11 +107,11 @@ Use for authorized domains, organizations, cloud keywords, or public IP ranges.
    - Run low-impact `nuclei` templates first.
    - Run `nikto`, SSL/TLS checks, CMS scanners, and web playbook steps on confirmed live applications.
 
-   (See `../vulnerability/SKILL.md` for vulnerability scanner selection.)
+   (See `../../reference/vulnerability/INDEX.md` for vulnerability scanner selection.)
    - **Triage decision logic**:
      - Findings with confirmed remote code execution, authentication bypass, or data exposure are immediately reportable.
-     - Web applications with complex attack surfaces should be handed off to `web-application.md` for deeper testing.
-     - Discovered API endpoints (REST, GraphQL, gRPC) should be handed off to `api-security.md`.
+     - Web applications with complex attack surfaces should be handed off to `../web-application/SKILL.md` for deeper testing.
+     - Discovered API endpoints (REST, GraphQL, gRPC) should be handed off to `../api-security/SKILL.md`.
      - Informational findings (version disclosure, minor misconfigurations) are documented but deprioritized.
      - Subdomain takeover candidates confirmed in Phase 4 are high-priority findings.
 
@@ -122,11 +127,11 @@ Use for authorized domains, organizations, cloud keywords, or public IP ranges.
 
 ## Cross-References
 
-- `web-application.md` — for deeper testing of discovered web applications.
-- `api-security.md` — for REST, GraphQL, gRPC, or WebSocket endpoints found during discovery.
-- `internal-network.md` — when external reconnaissance reveals VPN, exposed internal services, or pivot opportunities.
-- `reporting-workflow.md` — for structuring findings into a deliverable report.
-- `cloud-native-assessment.md` — when cloud assets beyond simple storage buckets are discovered (e.g., exposed Kubernetes dashboards, cloud metadata endpoints).
+- `../web-application/SKILL.md` — for deeper testing of discovered web applications.
+- `../api-security/SKILL.md` — for REST, GraphQL, gRPC, or WebSocket endpoints found during discovery.
+- `../internal-network/SKILL.md` — when external reconnaissance reveals VPN, exposed internal services, or pivot opportunities.
+- `../reporting/SKILL.md` — for structuring findings into a deliverable report.
+- `../cloud-native-assessment/SKILL.md` — when cloud assets beyond simple storage buckets are discovered (e.g., exposed Kubernetes dashboards, cloud metadata endpoints).
 
 ## Expected Artifacts
 

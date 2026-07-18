@@ -1,3 +1,8 @@
+---
+name: mobile-application
+description: Scenario workflow for authorized mobile app assessments: static analysis, data storage review, network security testing, runtime instrumentation, and binary protection checks. Use for Android APKs, iOS IPAs, or mobile API clients.
+---
+
 # Mobile Application Playbook
 
 Use for authorized Android APKs, iOS IPAs, mobile API clients, or mobile runtime testing.
@@ -15,8 +20,8 @@ Use for authorized Android APKs, iOS IPAs, mobile API clients, or mobile runtime
    - Record app hash, version, signing/certificate data, and device state.
    - Determine platform to select tool chain:
 
-   (See `../reverse-engineering/SKILL.md` for reverse engineering tool selection.)
-     - Android: `apktool` (see `../reverse-engineering/tools/apktool.md`), `jadx` (see `../reverse-engineering/tools/jadx.md`), `objection` (see `../reverse-engineering/tools/objection.md`), `frida` (see `../reverse-engineering/tools/frida.md`), `adb`.
+   (See `../../reference/reverse-engineering/INDEX.md` for reverse engineering tool selection.)
+     - Android: `apktool` (see `../../reference/reverse-engineering/tools/apktool.md`), `jadx` (see `../../reference/reverse-engineering/tools/jadx.md`), `objection` (see `../../reference/reverse-engineering/tools/objection.md`), `frida` (see `../../reference/reverse-engineering/tools/frida.md`), `adb`.
      - iOS: `otool`, `class-dump`, `objection`, `frida`, `codesign`.
    - Acquire the binary: use `adb pull` for installed Android apps or use provided APK/IPA files.
 
@@ -80,7 +85,7 @@ Use for authorized Android APKs, iOS IPAs, mobile API clients, or mobile runtime
    - Verify screenshot/task-switcher leakage: check whether the app masks content on background or allows screenshots of sensitive screens.
 
 4. **Network security** (OWASP MASTG M5)
-   - Configure proxy for mobile traffic interception using `mitmproxy` (see `../web/tools/mitmproxy.md`):
+   - Configure proxy for mobile traffic interception using `mitmproxy` (see `../../reference/web/tools/mitmproxy.md`):
      ```bash
      # Start mitmproxy on the test machine
      mitmproxy -p 8080
@@ -168,14 +173,14 @@ Use for authorized Android APKs, iOS IPAs, mobile API clients, or mobile runtime
 
 7. **Backend API and reporting**
    - Build an endpoint list from static strings and runtime traffic.
-   - Switch to `api-security.md` and `web-application.md` for backend API and HTTP testing.
+   - Switch to `../api-security/SKILL.md` and `../web-application/SKILL.md` for backend API and HTTP testing.
    - Consolidate findings by OWASP MASTG category and include reproduction steps, affected versions, and evidence.
 
 ## Cross-References
 
-- `api-security.md` — backend API testing.
-- `web-application.md` — backend web testing.
-- `reporting-workflow.md` — findings documentation.
+- `../api-security/SKILL.md` — backend API testing.
+- `../web-application/SKILL.md` — backend web testing.
+- `../reporting/SKILL.md` — findings documentation.
 
 ## Expected Artifacts
 
@@ -191,5 +196,5 @@ Use for authorized Android APKs, iOS IPAs, mobile API clients, or mobile runtime
 
 - Static analysis has covered: manifest/plist inspection, hardcoded secret search, exported component review, and binary protection assessment.
 - Runtime checks have covered: data storage security, network interception with pinning bypass, IPC testing, and root/jailbreak detection bypass.
-- Backend endpoints have been inventoried and handed off to `api-security.md` or `web-application.md`.
+- Backend endpoints have been inventoried and handed off to `../api-security/SKILL.md` or `../web-application/SKILL.md`.
 - Further testing requires bypassing controls, extracting user data, or attacking backend services beyond scope.

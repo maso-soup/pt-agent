@@ -1,8 +1,3 @@
----
-name: wireless
-description: A toolkit for security testing of Wi-Fi (802.11), Bluetooth, and other wireless networks. Testing wireless networks requires a wireless adapter that supports Monitor Mode (e.g., Alfa AWUS036ACH).
----
-
 # Wireless Security
 
 A toolkit for security testing of Wi-Fi (802.11), Bluetooth, and other wireless networks. Testing wireless networks requires a wireless adapter that supports Monitor Mode (e.g., Alfa AWUS036ACH).
@@ -186,13 +181,13 @@ Select the approach when the Golden Path doesn't fit:
 
 ## Related Categories
 
-- For RFID/NFC, Proxmark3, PC/SC smart-card, and physical credential assessment, read `../rfid-nfc/SKILL.md`.
+- For RFID/NFC, Proxmark3, PC/SC smart-card, and physical credential assessment, read `../rfid-nfc/INDEX.md`.
 
 ---
 
 ## Playbook
 
-For a full scenario workflow covering phases, decision points, and risk gates, see `../playbooks/wireless-assessment.md`.
+For a full scenario workflow covering phases, decision points, and risk gates, see `../../skills/wireless-assessment/SKILL.md`.
 
 ---
 

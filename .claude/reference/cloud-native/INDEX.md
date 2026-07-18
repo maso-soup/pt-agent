@@ -1,8 +1,3 @@
----
-name: cloud-native
-description: Tools for authorized cloud, Kubernetes, container image, container registry, and Docker host security assessment. Use when the scope includes cloud accounts, Kubernetes clusters, deployment manifests, container images, registries, or Docker hosts.
----
-
 # Cloud-Native Security
 
 Tools for authorized cloud, Kubernetes, container image, container registry, and Docker host security assessment. Used this when the scope includes cloud accounts, Kubernetes clusters, deployment manifests, container images, registries, or Docker hosts.
@@ -92,7 +87,7 @@ Match the target environment to the right tool chain:
 
 ## Playbook
 
-For the full scenario workflow, priority checks, and risk gates, see `../playbooks/cloud-native-assessment.md`.
+For the full scenario workflow, priority checks, and risk gates, see `../../skills/cloud-native-assessment/SKILL.md`.
 
 ## Decision Tree
 
