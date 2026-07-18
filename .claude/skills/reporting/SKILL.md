@@ -1,76 +1,101 @@
----
-name: reporting
-description: The penetration test report is the final deliverable. Use when beginning to create the final report.
----
+# Reporting Workflow Playbook
 
-# Reporting
+Use after testing, or throughout testing to keep evidence ready for a final report.
 
-The penetration test report is the final deliverable; its quality directly affects how clients perceive the value of the engagement. A good report addresses two audiences: management (risk summary) and the technical team (reproduction steps).
+## Inputs
 
----
+- Authorized scope and test dates.
+- Confirmed findings, raw tool output, screenshots, requests/responses, and notes.
+- Required report format and audience.
 
-## Golden Path
+## Workflow
 
-| Scenario | Primary Tool Chain | When Not to Use |
-|----------|-------------------|-----------------|
-| Web page screenshots | `gowitness` | Use `eyewitness` when manual screenshot judgment is needed |
-| Document format conversion | `pandoc` | — |
-| Report structure | `tools/report-template.md` | — |
+1. **Executive summary**
+   - Cover: engagement scope, testing approach and methodology, key risk themes identified, count of critical and high findings, and overall risk posture assessment.
+   - Keep language non-technical — frame risks in business impact terms (data exposure, service disruption, regulatory consequence).
+   - This section is the first thing stakeholders read; ensure it stands alone as a meaningful summary.
 
----
+2. **Normalize evidence**
+   - Group evidence by finding, affected asset, severity, and proof.
+   - Keep raw tool output separate from analyst conclusions.
 
-## Screenshots and Documentation
+   (See `../reporting/SKILL.md` for reporting tool selection.)
 
-For bulk web service screenshots, use `gowitness` or `eyewitness` from the information gathering category.
+   ```bash
+   mkdir -p /tmp/report/{evidence/{screenshots,scans,raw},findings}
+   cat nuclei_findings.jsonl | jq -r '[.info.severity, .info.name, .host] | @tsv' > /tmp/report/finding_summary.tsv
+   ```
 
----
+3. **Validate findings**
+   - Confirm each finding has reproducible evidence.
+   - Remove duplicates and mark false positives clearly.
+   - For tool-only findings, add manual or second-tool validation when feasible.
 
-## Document Processing
+   **Finding completeness check:** Verify that every tested service and every tool run has at least one finding or an explicit negative-result entry. Do not leave tested services undocumented — negative results are evidence that testing was performed.
 
-**[pandoc](tools/pandoc.md)** — Document format conversion  
-Converts Markdown to Word/PDF/HTML and other formats. Can be used with report templates to batch-generate professional reports.  
+4. **Assign severity**
+   - Rate impact and likelihood in context.
+   - Note exploitability, authentication requirement, exposure, and compensating controls.
+   - Apply Environmental and Temporal adjustments when the target environment context is known (e.g., compensating controls, defense-in-depth, exploit maturity).
 
----
 
-## Report Templates and Standards
+5. **Write findings**
+   - Include title, description, impact, likelihood, evidence, affected assets, reproduction steps, and remediation.
+   - Avoid unsupported claims and clearly state limitations.
 
-**[report-template](tools/report-template.md)** — Standard report template  
-Includes a complete penetration test report structure template, risk level definitions (CVSS scoring), and vulnerability description standards.  
+6. **Create supporting artifacts**
+   - Before generating the report, copy all tool outputs and evidence files produced during the test from the remote environment to the host; report generation should run on the host.
+   - Use `gowitness` for screenshots when needed (see `../information-gathering/tools/gowitness.md`).
+   - Use `pandoc` for format conversion when requested (see `../reporting/tools/pandoc.md`).
+   - Use `../reporting/tools/report-template.md` as the base structure.
+   - Write long reports in sections rather than as a single operation to avoid write failures.
 
----
+   ```bash
+   # gowitness v3 syntax (Kali 2024+)
+   gowitness scan file -f urls.txt --screenshot-path /tmp/report/evidence/screenshots/
+   pandoc /tmp/report/report.md -o /tmp/report/report.pdf --pdf-engine=wkhtmltopdf
+   ```
 
-## Report Structure
+7. **Peer review**
+   - Before final delivery, conduct a peer review covering:
+     - Technical accuracy: are findings correctly described and categorized?
+     - Reproducibility: can each finding be reproduced using the documented steps?
+     - Sensitive data redaction: verify no client credentials, tokens, or PII appear in the report body or evidence.
+     - Severity consistency: are similar findings rated at the same severity across the report?
+     - Spelling and grammar check on all narrative sections.
 
-A professional penetration test report should include:
+8. **Final review**
+   - Check scope alignment, sensitive data handling, command log accuracy, and artifact references.
+   - Include important negative results and unreachable-target notes when they affect conclusions.
 
-1. **Executive Summary** — high-level risk overview for management; no technical jargon
-2. **Scope and Methodology** — target assets, testing window, approach, and any limitations
-3. **Findings** — each finding with title, severity, description, evidence (screenshots/commands), affected assets, and remediation
+## Cross-References
 
----
+- `active-directory.md` — final deliverable step after AD testing completes.
+- `api-security.md` — final deliverable step after API testing completes.
+- `cloud-native-assessment.md` — final deliverable step after cloud assessment completes.
+- `external-attack-surface.md` — final deliverable step after external testing completes.
+- `forensics-triage.md` — final deliverable step after forensic triage completes.
+- `internal-network.md` — final deliverable step after internal network testing completes.
+- `mobile-application.md` — final deliverable step after mobile testing completes.
+- `password-audit.md` — final deliverable step after password audit completes.
+- `post-exploitation.md` — final deliverable step after post-exploitation completes.
+- `rfid-nfc.md` — final deliverable step after RFID/NFC testing completes.
+- `source-code-audit.md` — final deliverable step after source code audit completes.
+- `voip-ics.md` — final deliverable step after VoIP/ICS testing completes.
+- `web-application.md` — final deliverable step after web application testing completes.
+- `wireless-assessment.md` — final deliverable step after wireless assessment completes.
 
-## Quick Reporting Workflow
+## Expected Artifacts
 
-```bash
-# 1. Record findings in real time to markdown files during testing
-# 2. Use gowitness to screenshot and archive discovered web services
-# 3. After testing, organize findings and add CVSS scores
-# 4. Convert to Word/PDF with pandoc and deliver
+- Final report.
+- Evidence bundle or artifact index.
+- Command log summary.
+- Remediation summary.
 
-# Simple approach:
-# Record directly in Markdown and convert to PDF with pandoc
-# Requires wkhtmltopdf: sudo apt install wkhtmltopdf
-pandoc report.md -o report.pdf --pdf-engine=wkhtmltopdf
-```
+## Stop When
 
----
-
-## Playbook
-
-For a full scenario workflow covering report generation phases and quality gates, see `../playbooks/reporting-workflow.md`.
-
----
-
-## Official References
-
-- [Kali Tools](https://www.kali.org/tools/all-tools/)
+- Every confirmed finding has evidence and remediation.
+- Scope, limitations, and residual risks are documented.
+- Client has accepted the deliverable format.
+- Retest plan is documented with timeline and responsible parties.
+- All critical findings have been communicated via the agreed channel (e.g., immediate notification for critical/high severity).
