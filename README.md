@@ -20,7 +20,8 @@ start of every task and follows its 4-step lifecycle:
 
 1. **Plan** — confirm scope and authorization, pick a depth (Quick/Standard/Deep),
    and select a playbook from `reference/playbook-selection.md`'s decision tree.
-2. **Execute** — invoke the matched playbook Skill for the workflow, read the
+2. **Execute** — enter the matched playbook for the workflow (via the Skill tool,
+   or by reading its `SKILL.md` if that tool is unavailable), read the
    category `INDEX.md` for tool selection, and the individual tool doc only for
    the tool about to run. Playbooks hand off to each other as new signals appear
    (e.g. an AD domain found mid-scan switches to the Active Directory playbook).
@@ -51,7 +52,7 @@ pt-agent/
     ├── skills/
     │   ├── state-files/       # state/output directory conventions (not scenario-triggered)
     │   └── <playbook>/         # one directory per scenario playbook, real Skill
-    │       └── SKILL.md        # workflow, phases, risk gates — invoke via the Skill tool
+    │       └── SKILL.md        # workflow, phases, risk gates — enter via the Skill tool or by reading this file
     └── reference/
         ├── playbook-selection.md  # decision tree + cross-reference map for picking a playbook
         └── <category>/        # one directory per tool category, not a Skill
@@ -63,10 +64,12 @@ pt-agent/
 
 Playbooks are workflow guides, not parameter references — they decide phases,
 stopping points, risk gates, and expected artifacts, then point into the tool
-categories below for the actual commands. Each is registered as a real Skill
-under `.claude/skills/<name>/SKILL.md`. Select one via
+categories below for the actual commands. Each lives under
+`.claude/skills/<name>/SKILL.md` (registered as a Skill in the Claude Code
+harness). Select one via
 [reference/playbook-selection.md](.claude/reference/playbook-selection.md)'s
-decision tree, then invoke it with the Skill tool; `internal-network` is the
+decision tree, then enter it — invoke it with the Skill tool, or read its
+`SKILL.md` directly in harnesses without that tool; `internal-network` is the
 default when nothing else matches.
 
 | Playbook | Use for |

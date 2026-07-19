@@ -38,7 +38,13 @@ Do not run Deep or intrusive checks by default unless the user explicitly reques
 
 ### 1.3 Select Playbook
 
-Read the decision tree in `.claude/reference/playbook-selection.md` to select the correct playbook, then invoke it via `Skill(skill: "<name>")` rather than reading it as a plain file. Do not rely on automatic Skill-description matching alone — the routing doc's branching and cross-reference rules (multi-playbook sequencing, mid-engagement handoffs) are needed to pick correctly.
+Read the decision tree in `.claude/reference/playbook-selection.md` to select the correct playbook, then **enter** it rather than reading it as a plain reference. Do not rely on automatic Skill-description matching alone — the routing doc's branching and cross-reference rules (multi-playbook sequencing, mid-engagement handoffs) are needed to pick correctly.
+
+> **Entering a playbook** means loading its scenario workflow so the harness can apply its risk gates. Do it whichever way your harness supports:
+> - **Skill tool available (default in the Claude Code harness):** invoke `Skill(skill: "<name>")`.
+> - **No Skill tool (e.g. Continue CLI or other harnesses):** read `.claude/skills/<name>/SKILL.md` directly.
+>
+> Both satisfy the PreToolUse playbook gate. The rest of this document says "enter the playbook" to mean either method.
 
 If no playbook fits, follow the standard lifecycle: information gathering -> vulnerability analysis -> web or exploitation -> post-exploitation -> reporting.
 
@@ -49,11 +55,13 @@ If no playbook fits, follow the standard lifecycle: information gathering -> vul
 Follow this 4-layer reading sequence:
 
 1. `.claude/reference/playbook-selection.md` — select the correct playbook from the decision tree (at task start, or when switching playbooks mid-task).
-2. `Skill(skill: "<playbook>")` — invoke the matched playbook to follow the scenario workflow for the current phase.
+2. **Enter the matched playbook** (`Skill(skill: "<playbook>")`, or read `.claude/skills/<playbook>/SKILL.md` if the Skill tool is unavailable) — follow its scenario workflow for the current phase.
 3. `.claude/reference/<category>/INDEX.md` — use Golden Path and Decision Tree to select suitable tools for the current phase.
 4. `.claude/reference/<category>/tools/<toolname>.md` — read only for the tool you are about to run.
 
 When a playbook hands off to another playbook, restart this sequence from layer 2 for the new playbook. Do not pre-read materials for phases you have not reached.
+
+**Switch-trigger self-check (mandatory):** A cross-reference trigger fires the moment you discover a new attack surface that maps to a different playbook — a web app or API on an enumerated host, an AD domain, a cloud/Kubernetes/registry asset, VoIP/ICS services, captured hashes, or newly gained initial access (see the full trigger list in `.claude/reference/playbook-selection.md`). When one fires, **enter the matched playbook BEFORE running any tool against that new surface** — not after you have already started poking at it. Before firing recon or exploitation at a newly discovered surface, stop and ask yourself: *"Does this surface map to a playbook I have not entered this engagement?"* If yes, enter that playbook first. Prior knowledge of the target's software or a known CVE is never a reason to skip this — "I already know the exploit" is exactly the rationalization that leads to unstructured, incomplete testing. Entering the playbook is what guarantees the per-surface test matrix, risk gates, and stop conditions are applied. (A PreToolUse hook enforces this at the tool level, but the self-check is your responsibility — the hook only checks that *a* playbook was entered, not that you switched to the *right* one for the current surface.)
 
 ### Tool Categories
 
@@ -140,7 +148,7 @@ Large tool outputs (full port scans, vulnerability scanners with thousands of te
 
 ## Step 4: Report
 
-Invoke `Skill(skill: "reporting")` and follow it step by step — it is an 8-step workflow, not a single "write report" action. Use `.claude/reference/reporting/tools/report-template.md` as the document structure — do not invent a custom structure.
+Enter the reporting playbook (`Skill(skill: "reporting")`, or read `.claude/skills/reporting/SKILL.md`) and follow it step by step — it is an 8-step workflow, not a single "write report" action. Use `.claude/reference/reporting/tools/report-template.md` as the document structure — do not invent a custom structure.
 
 Before starting the report, execute the active playbook's Stop When checklist. Unmet items require returning to the relevant phase — do not proceed to reporting with known coverage gaps undocumented. If any coverage gaps remain after that and cannot be reconciled, ask the user for relevant information or to make a decision. 
 
@@ -163,7 +171,7 @@ Reports can exceed 20KB. Do not attempt to write the full report in a single too
 ## Skills Layout
 
 - `.claude/skills/state-files/` defines how to keep track of the status of the engagement, workflows, and tools.
-- `.claude/skills/<playbook>/SKILL.md` defines a scenario workflow — invoke via the Skill tool once selected.
+- `.claude/skills/<playbook>/SKILL.md` defines a scenario workflow — enter it once selected (via the Skill tool, or by reading the file directly if that tool is unavailable).
 - `.claude/reference/playbook-selection.md` holds the decision tree and cross-reference map used to pick a playbook.
 - `.claude/reference/<category>/INDEX.md` helps select suitable tools in a category.
 - `.claude/reference/<category>/tools/<name>.md` provides concrete command parameters and examples.

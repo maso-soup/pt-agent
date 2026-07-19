@@ -1,11 +1,11 @@
 # Playbook Selection
 
-Scenario playbooks describe how an agent should combine tools across categories. They are workflow guides, not parameter references. Each playbook is now a real Skill under `.claude/skills/<name>/SKILL.md` — invoke it with the Skill tool once selected below rather than reading it as a plain file.
+Scenario playbooks describe how an agent should combine tools across categories. They are workflow guides, not parameter references. Each playbook lives under `.claude/skills/<name>/SKILL.md` — **enter** it once selected below rather than treating it as a plain reference. Entering means invoking `Skill(skill: "<name>")` when the Skill tool is available (the default in the Claude Code harness), or reading `.claude/skills/<name>/SKILL.md` directly when it is not (e.g. Continue CLI). Both satisfy the PreToolUse playbook gate.
 
 Use in this order:
 
 1. Select the playbook that matches the authorized task using the Decision Tree below.
-2. Invoke it via `Skill(skill: "<name>")` — it decides phases, stopping points, risk gates, and expected artifacts.
+2. Enter it (`Skill(skill: "<name>")`, or read `.claude/skills/<name>/SKILL.md`) — it decides phases, stopping points, risk gates, and expected artifacts.
 3. Read `<category>/INDEX.md` files under `.claude/reference/` — use Golden Path and Decision Tree to select suitable tools.
 4. Read `<category>/tools/<name>.md` only when running that tool.
 
