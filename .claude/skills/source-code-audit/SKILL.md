@@ -1,6 +1,6 @@
 ---
 name: source-code-audit
-description: Scenario workflow for authorized source code and dependency audits: SAST, secret scanning, software composition analysis, IaC scanning, and CI/CD pipeline review. Use for source repositories, build artifacts, or dependency manifests.
+description: Scenario workflow for authorized source code and dependency audits — SAST, secret scanning, software composition analysis, IaC scanning, and CI/CD pipeline review. Use for source repositories, build artifacts, or dependency manifests.
 ---
 
 # Source Code & Dependency Audit Playbook

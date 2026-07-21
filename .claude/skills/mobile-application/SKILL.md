@@ -1,6 +1,6 @@
 ---
 name: mobile-application
-description: Scenario workflow for authorized mobile app assessments: static analysis, data storage review, network security testing, runtime instrumentation, and binary protection checks. Use for Android APKs, iOS IPAs, or mobile API clients.
+description: Scenario workflow for authorized mobile app assessments — static analysis, data storage review, network security testing, runtime instrumentation, and binary protection checks. Use for Android APKs, iOS IPAs, or mobile API clients.
 ---
 
 # Mobile Application Playbook

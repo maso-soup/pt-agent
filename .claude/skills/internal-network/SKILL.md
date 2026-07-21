@@ -1,6 +1,6 @@
 ---
 name: internal-network
-description: Scenario workflow for authorized internal network or full pentest engagements: host discovery, port scanning, service enumeration, vulnerability validation, credential testing, and pivoting to specialized playbooks. Use for IP ranges, CIDRs, lab networks, or general pentest tasks with an unclear target type (this is the default playbook).
+description: Scenario workflow for authorized internal network or full pentest engagements — host discovery, port scanning, service enumeration, vulnerability validation, credential testing, and pivoting to specialized playbooks. Use for IP ranges, CIDRs, lab networks, or general pentest tasks with an unclear target type (this is the default playbook).
 ---
 
 # Internal Network Playbook

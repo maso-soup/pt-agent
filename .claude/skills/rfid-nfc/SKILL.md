@@ -1,6 +1,6 @@
 ---
 name: rfid-nfc
-description: Scenario workflow for authorized RFID/NFC and physical-access-hardware assessments: card identification, smart-card testing, embedded device checks, and firmware analysis. Use for RFID/NFC, Proxmark3, PC/SC smart cards, tokens, or physical credentials, with required hardware and physical-access authorization.
+description: Scenario workflow for authorized RFID/NFC and physical-access-hardware assessments — card identification, smart-card testing, embedded device checks, and firmware analysis. Use for RFID/NFC, Proxmark3, PC/SC smart cards, tokens, or physical credentials, with required hardware and physical-access authorization.
 ---
 
 # RFID/NFC & Hardware Access Playbook

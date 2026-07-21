@@ -1,6 +1,6 @@
 ---
 name: forensics-triage
-description: Scenario workflow for authorized forensic analysis: evidence handling, memory/disk/network analysis, timeline construction, log analysis, and artifact extraction. Use for disk images, memory dumps, packet captures, logs, or suspected hidden data.
+description: Scenario workflow for authorized forensic analysis — evidence handling, memory/disk/network analysis, timeline construction, log analysis, and artifact extraction. Use for disk images, memory dumps, packet captures, logs, or suspected hidden data.
 ---
 
 # Forensics Triage Playbook

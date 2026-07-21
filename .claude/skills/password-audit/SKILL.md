@@ -1,6 +1,6 @@
 ---
 name: password-audit
-description: Scenario workflow for authorized password and credential attacks: hash identification, offline cracking (hashcat/john), password spraying, default credential checks, and credential reuse testing. Use for hash files, credential lists, or service logins.
+description: Scenario workflow for authorized password and credential attacks — hash identification, offline cracking (hashcat/john), password spraying, default credential checks, and credential reuse testing. Use for hash files, credential lists, or service logins.
 ---
 
 # Password Audit Playbook

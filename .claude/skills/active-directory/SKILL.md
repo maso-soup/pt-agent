@@ -1,6 +1,6 @@
 ---
 name: active-directory
-description: Scenario workflow for authorized Active Directory engagements: enumeration, Kerberoasting, AS-REP roasting, relay attacks, ACL abuse, AD CS, credential extraction, and domain escalation. Use when Kerberos, LDAP, SMB, domain controllers, or AD credentials are in scope.
+description: Scenario workflow for authorized Active Directory engagements — enumeration, Kerberoasting, AS-REP roasting, relay attacks, ACL abuse, AD CS, credential extraction, and domain escalation. Use when Kerberos, LDAP, SMB, domain controllers, or AD credentials are in scope.
 ---
 
 # Active Directory Playbook

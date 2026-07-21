@@ -1,6 +1,6 @@
 ---
 name: internal-network-protocols
-description: Protocol-specific enumeration and testing procedures for internal network assessments: SMB, MSRPC, SNMP, SMTP, DNS, database, and RDP. Referenced from the internal-network skill when discovered services require protocol-level testing.
+description: Protocol-specific enumeration and testing procedures for internal network assessments — SMB, MSRPC, SNMP, SMTP, DNS, database, and RDP. Referenced from the internal-network skill when discovered services require protocol-level testing.
 ---
 
 # Internal Network Protocol Enumeration

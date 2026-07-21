@@ -1,6 +1,6 @@
 ---
 name: api-security
-description: Scenario workflow for authorized API testing: schema recovery, endpoint discovery, authorization testing (BOLA, JWT), fuzzing, rate limiting, and business logic abuse. Use for GraphQL, OpenAPI/REST, gRPC, WebSocket, or API-heavy web application targets.
+description: Scenario workflow for authorized API testing — schema recovery, endpoint discovery, authorization testing (BOLA, JWT), fuzzing, rate limiting, and business logic abuse. Use for GraphQL, OpenAPI/REST, gRPC, WebSocket, or API-heavy web application targets.
 ---
 
 # API Security Playbook

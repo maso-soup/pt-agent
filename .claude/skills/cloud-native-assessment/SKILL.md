@@ -1,6 +1,6 @@
 ---
 name: cloud-native-assessment
-description: Scenario workflow for authorized cloud, Kubernetes, container, and CI/CD assessments: multi-cloud posture review, provider-specific audits (AWS/Azure/GCP), Kubernetes security, container/registry scanning, and serverless review. Use for cloud accounts, Kubernetes clusters, container images, registries, or Docker hosts.
+description: Scenario workflow for authorized cloud, Kubernetes, container, and CI/CD assessments — multi-cloud posture review, provider-specific audits (AWS/Azure/GCP), Kubernetes security, container/registry scanning, and serverless review. Use for cloud accounts, Kubernetes clusters, container images, registries, or Docker hosts.
 ---
 
 # Cloud-Native Assessment Playbook

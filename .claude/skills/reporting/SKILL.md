@@ -1,6 +1,6 @@
 ---
 name: reporting
-description: Scenario workflow for producing the penetration test deliverable: finding organization, severity scoring, evidence packaging, report generation, and delivery. Use after testing completes, or throughout testing to keep evidence report-ready.
+description: Scenario workflow for producing the penetration test deliverable — finding organization, severity scoring, evidence packaging, report generation, and delivery. Use after testing completes, or throughout testing to keep evidence report-ready.
 ---
 
 # Reporting Workflow Playbook

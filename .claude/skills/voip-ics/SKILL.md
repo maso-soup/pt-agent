@@ -1,6 +1,6 @@
 ---
 name: voip-ics
-description: Scenario workflow for authorized specialized-protocol testing: VoIP/SIP enumeration, ICS/OT discovery, IPMI/BMC checks, SNMP testing, and protocol-specific read-only validation. Use for VoIP, SIP/IAX, ICS/OT, PLC, Modbus, or other high-sensitivity protocols.
+description: Scenario workflow for authorized specialized-protocol testing — VoIP/SIP enumeration, ICS/OT discovery, IPMI/BMC checks, SNMP testing, and protocol-specific read-only validation. Use for VoIP, SIP/IAX, ICS/OT, PLC, Modbus, or other high-sensitivity protocols.
 ---
 
 # Specialized Protocols Playbook

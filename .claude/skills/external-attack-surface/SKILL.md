@@ -1,6 +1,6 @@
 ---
 name: external-attack-surface
-description: Scenario workflow for authorized external reconnaissance: OSINT, subdomain enumeration, port/service discovery, and web fingerprinting, with handoff to web or API playbooks. Use for domains, organization names, or public IP ranges.
+description: Scenario workflow for authorized external reconnaissance — OSINT, subdomain enumeration, port/service discovery, and web fingerprinting, with handoff to web or API playbooks. Use for domains, organization names, or public IP ranges.
 ---
 
 # External Attack Surface Playbook

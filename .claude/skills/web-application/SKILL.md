@@ -1,6 +1,6 @@
 ---
 name: web-application
-description: Scenario workflow for authorized web application testing: crawling, DAST scanning, authentication testing, injection detection, CMS-specific checks, and manual validation. Use for web applications, APIs, CMS targets, or HTTP services discovered during reconnaissance.
+description: Scenario workflow for authorized web application testing — crawling, DAST scanning, authentication testing, injection detection, CMS-specific checks, and manual validation. Use for web applications, APIs, CMS targets, or HTTP services discovered during reconnaissance.
 ---
 
 # Web Application Playbook

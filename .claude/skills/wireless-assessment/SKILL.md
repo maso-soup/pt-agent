@@ -1,6 +1,6 @@
 ---
 name: wireless-assessment
-description: Scenario workflow for authorized wireless testing: adapter setup, Wi-Fi reconnaissance, handshake capture, WPS attacks, evil twin attacks, Bluetooth/BLE enumeration, and post-authentication testing. Use for Wi-Fi, Bluetooth, or BLE targets with physical access and compatible hardware.
+description: Scenario workflow for authorized wireless testing — adapter setup, Wi-Fi reconnaissance, handshake capture, WPS attacks, evil twin attacks, Bluetooth/BLE enumeration, and post-authentication testing. Use for Wi-Fi, Bluetooth, or BLE targets with physical access and compatible hardware.
 ---
 
 # Wireless Assessment Playbook
