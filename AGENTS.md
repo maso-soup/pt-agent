@@ -93,6 +93,7 @@ Use multiple complementary tools for critical checks. A clean result from one to
 - **New attack surfaces**: after discovering new subdomains, hosts, or services, run the relevant automated scans on each reachable target before proceeding with manual testing.
 - **Check availability**: `which {tool} || apt-get install -y {tool}`. If the tool is not in the apt repository (e.g., katana, httpx, naabu), check the tool's reference file for alternative install methods such as `go install` or `pip install`.
 - **Non-interactive**: use `-y`, `--batch`, `--no-interaction`, or equivalent flags to prevent hangs.
+- **Interactive shells**: the agent drives via stateless tool calls and has no controlling terminal, so a bare backgrounded `nc` cannot be typed into. When you obtain an interactive shell, handle it per `.claude/reference/exploitation/interactive-shell-handling.md` — prefer an exec primitive or SSH-with-key, and broker any genuinely interactive session through tmux (`send-keys`/`capture-pane`), never a raw `nc </dev/null &`.
 - **Long tasks**: redirect output to a task-specific log, e.g. `nohup {cmd} </dev/null > /tmp/{task}.log 2>&1 & echo \$!`.
 - **Do not reuse logs**: each long-running tool gets a unique log filename.
 - **Retrieve files**: use `scp` for SSH.
